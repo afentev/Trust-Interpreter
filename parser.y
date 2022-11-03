@@ -39,6 +39,12 @@
 %token
     END 0 "end of file"
     FN "fn"
+    WHILE "while"
+    FOR "for"
+    IN "in"
+    RANGE ".."
+    RANGEEQ "..="
+    QUOTE "\""
     MAIN "main"
     LET "let"
     MUT "mut"
@@ -49,11 +55,20 @@
     PLUS "+"
     STAR "*"
     SLASH "/"
+    PERCENT "%"
     LBRACE "{"
     RBRACE "}"
     LPAREN "("
     RPAREN ")"
     NOT "!"
+    AND "&&"
+    OR "||"
+    EQUAL "=="
+    NEQUAL "!="
+    GREATER ">"
+    GREQ ">="
+    LESS "<"
+    LEEQ "<="
     SEMICOLON ";"
     IF "if"
     ELSE "else"
@@ -86,18 +101,30 @@ statements:
 statement:
     "{" statements "}" {}
     | ";" {}
-    | if_statement {}
     | let_statement {}
+    | "identifier" "=" expression {}
     | expression ";" {}
+    | if_statement {}
+    | "while" predicate "{" statements "}" {}
+    | "for" expression "in" iterator "{" statements "}" {}
     | "return" ";" {};
 
 if_statement:
-    "if" expression "{" statements "}" {}
-    | "if" expression "{" statements "}" "else" statement {};
+    "if" predicate "{" statements "}" {}
+    | "if" predicate "{" statements "}" "else" if_statement {}
+    | "if" predicate "{" statements "}" "else" "{" statements "}" {};
 
 let_statement:
-    const_statement {}
+    bool_const_statement {}
+    | bool_mut_statement {}
+    | const_statement {}
     | mut_statement {};
+
+bool_mut_statement:
+    "let" "mut" "identifier" ":" "bool" "=" predicate ";" {}
+
+bool_const_statement:
+    "let" "identifier" ":" "bool" "=" predicate ";" {}
 
 mut_statement:
     "let" "mut" "identifier" ":" type "=" expression ";" {}
@@ -106,18 +133,35 @@ mut_statement:
 const_statement:
     "let" "identifier" ":" type "=" expression ";" {};
 
+
+iterator:
+    expression ".." expression {}
+    | expression "..=" expression {};
+
 type:
     "i32" {}
     | "String" {}
     | "bool" {};
 
+predicate:
+    "false" {}
+    | "true" {}
+    | "identifier" {}
+    | "(" predicate ")" {}
+    | "!" predicate {}
+    | expression "<" expression {}
+    | expression "<=" expression {}
+    | expression "==" expression {}
+    | expression "!=" expression {}
+    | expression ">=" expression {}
+    | expression ">" expression {}
+    | predicate "&&" predicate {}
+    | predicate "||" predicate {};
+
 expression:
     "number" {}
-    | "identifier" {}
     | "(" expression ")" {}
-    | "!" expression {}
-    | "false" {}
-    | "true" {};
+    | predicate {};
 
 %%
 

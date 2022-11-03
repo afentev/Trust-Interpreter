@@ -96,6 +96,19 @@ blank [ \t\r]
 ";"        return yy::parser::make_SEMICOLON(loc);
 "if"       return yy::parser::make_IF(loc);
 "else"     return yy::parser::make_ELSE(loc);
+"while"    return yy::parser::make_WHILE(loc);
+"for"      return yy::parser::make_FOR(loc);
+"in"       return yy::parser::make_IN(loc);
+".."       return yy::parser::make_RANGE(loc);
+"..="      return yy::parser::make_RANGEEQ(loc);
+">"        return yy::parser::make_GREATER(loc);
+">="       return yy::parser::make_GREQ(loc);
+"=="       return yy::parser::make_EQUAL(loc);
+"!="       return yy::parser::make_NEQUAL(loc);
+"<="       return yy::parser::make_LEEQ(loc);
+"<"        return yy::parser::make_LESS(loc);
+"&&"       return yy::parser::make_AND(loc);
+"||"       return yy::parser::make_OR(loc);
 
 {int}      return make_NUMBER(yytext, loc);
 {id}       {
