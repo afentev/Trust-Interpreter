@@ -1,1 +1,1 @@
-# Mini-Fortran-Interpreter
+# Mini-Rust-Interpreter
