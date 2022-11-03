@@ -70,16 +70,32 @@ blank [ \t\r]
     loc.step();
 }
 
+"let"      return yy::parser::make_LET(loc);
+"mut"      return yy::parser::make_MUT(loc);
+"return"   return yy::parser::make_RETURN(loc);
+"fn"       return yy::parser::make_FN(loc);
+"main"     return yy::parser::make_MAIN(loc);
+":"        return yy::parser::make_COLON(loc);
+"i32"      return yy::parser::make_INT32(loc);
+"String"   return yy::parser::make_STRING(loc);
+"bool"     return yy::parser::make_BOOL(loc);
+"true"     return yy::parser::make_TRUE(loc);
+"false"     return yy::parser::make_FALSE(loc);
 "-"        {
               return yy::parser::make_MINUS  (loc);
            }
 "+"        return yy::parser::make_PLUS   (loc);
 "*"        return yy::parser::make_STAR   (loc);
 "/"        return yy::parser::make_SLASH  (loc);
+"{"        return yy::parser::make_LBRACE  (loc);
+"}"        return yy::parser::make_RBRACE  (loc);
 "("        return yy::parser::make_LPAREN (loc);
 ")"        return yy::parser::make_RPAREN (loc);
-":="       return yy::parser::make_ASSIGN (loc);
+"!"        return yy::parser::make_NOT   (loc);
+"="        return yy::parser::make_ASSIGN (loc);
 ";"        return yy::parser::make_SEMICOLON(loc);
+"if"       return yy::parser::make_IF(loc);
+"else"     return yy::parser::make_ELSE(loc);
 
 {int}      return make_NUMBER(yytext, loc);
 {id}       {

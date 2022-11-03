@@ -38,19 +38,35 @@
 // token name in variable
 %token
     END 0 "end of file"
-    ASSIGN ":="
+    FN "fn"
+    MAIN "main"
+    LET "let"
+    MUT "mut"
+    RETURN "return"
+    COLON ":"
+    ASSIGN "="
     MINUS "-"
     PLUS "+"
     STAR "*"
     SLASH "/"
+    LBRACE "{"
+    RBRACE "}"
     LPAREN "("
     RPAREN ")"
+    NOT "!"
     SEMICOLON ";"
+    IF "if"
+    ELSE "else"
+    TRUE "true"
+    FALSE "false"
+    INT32 "i32"
+    STRING "String"
+    BOOL "bool"
 ;
 
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
-%nterm <int> exp
+%nterm <int> expression
 
 // Prints output in parsing option for debugging location terminal
 %printer { yyo << $$; } <*>;
@@ -60,34 +76,48 @@
 %left "*" "/";
 
 %start unit;
-unit: assignments exp ";" { driver.result = $2; };
+unit:
+    "fn" "main" "(" ")" "{" statements "}" {};
 
-assignments:
+statements:
     %empty {}
-    | assignments assignment {};
+    | statements statement {};
 
-assignment:
-    "identifier" ":=" exp ";" {
-        driver.variables[$1] = $3;
-        if (driver.location_debug) {
-            std::cerr << driver.location << std::endl;
-        }
-    }
-    | error ";" {
-    	// Hint for compilation error, resuming producing messages
-    	std::cerr << "You should provide assignment in the form: variable := expression ; " << std::endl;
-    };
+statement:
+    "{" statements "}" {}
+    | ";" {}
+    | if_statement {}
+    | let_statement {}
+    | expression ";" {}
+    | "return" ";" {};
 
+if_statement:
+    "if" expression "{" statements "}" {}
+    | "if" expression "{" statements "}" "else" statement {};
 
+let_statement:
+    const_statement {}
+    | mut_statement {};
 
-exp:
-    "number"
-    | "identifier" {$$ = driver.variables[$1];}
-    | exp "+" exp {$$ = $1 + $3; }
-    | exp "-" exp {$$ = $1 - $3; }
-    | exp "*" exp {$$ = $1 * $3; }
-    | exp "/" exp {$$ = $1 / $3; }
-    | "(" exp ")" {$$ = $2; };
+mut_statement:
+    "let" "mut" "identifier" ":" type "=" expression ";" {}
+    | "let" "mut" "identifier" ":" type ";" {};
+
+const_statement:
+    "let" "identifier" ":" type "=" expression ";" {};
+
+type:
+    "i32" {}
+    | "String" {}
+    | "bool" {};
+
+expression:
+    "number" {}
+    | "identifier" {}
+    | "(" expression ")" {}
+    | "!" expression {}
+    | "false" {}
+    | "true" {};
 
 %%
 
