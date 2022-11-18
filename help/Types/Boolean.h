@@ -22,7 +22,7 @@ public:
     bool operator|| (const Object& other) override;
     bool operator! () override;
     Boolean* operator- () override;
-    void accept(Visitor& visitor) override;
+    void accept(Visitor* visitor) override;
     ~Boolean() override;
 
 private:

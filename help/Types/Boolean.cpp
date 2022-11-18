@@ -68,7 +68,7 @@ Boolean* Boolean::operator- () {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
 }
 
-void Boolean::accept(Visitor& visitor) {
+void Boolean::accept(Visitor* visitor) {
     ;
 }
 

@@ -66,7 +66,7 @@ Integer* Integer::operator- () {
     return new Integer(-number);
 }
 
-void Integer::accept(Visitor& visitor) {
+void Integer::accept(Visitor* visitor) {
     ;
 }
 

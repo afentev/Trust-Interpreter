@@ -23,7 +23,7 @@ public:
     bool operator|| (const Object& other) override;
     bool operator! () override;
     String* operator- () override;
-    void accept(Visitor& visitor) override;
+    void accept(Visitor* visitor) override;
     ~String() override;
 
 private:

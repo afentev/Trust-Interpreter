@@ -23,6 +23,21 @@
     class String;
     class Integer;
     class NotExpression;
+    class AndExpression;
+    class OrExpression;
+    class EqualExpression;
+    class NotEqualExpression;
+    class LessEqExpression;
+    class LessExpression;
+    class GreaterEqExpression;
+    class GreaterExpression;
+    class PlusExpression;
+    class MinusExpression;
+    class UnaryMinusExpression;
+    class MulExpression;
+    class DivExpression;
+    class ModExpression;
+    class IDExpression;
 }
 
 
@@ -43,6 +58,21 @@
     #include "help/Types/Integer.h"
     #include "help/Types/String.h"
     #include "help/Expressions/NotExpression.h"
+    #include "help/Expressions/AndExpression.h"
+    #include "help/Expressions/OrExpression.h"
+    #include "help/Expressions/EqualExpression.h"
+    #include "help/Expressions/NotEqualExpression.h"
+    #include "help/Expressions/GreaterExpression.h"
+    #include "help/Expressions/GreaterEqExpression.h"
+    #include "help/Expressions/LessExpression.h"
+    #include "help/Expressions/LessEqExpression.h"
+    #include "help/Expressions/PlusExpression.h"
+    #include "help/Expressions/MinusExpression.h"
+    #include "help/Expressions/UnaryMinusExpression.h"
+    #include "help/Expressions/MulExpression.h"
+    #include "help/Expressions/ModExpression.h"
+    #include "help/Expressions/DivExpression.h"
+    #include "help/Expressions/IDExpression.h"
 
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
@@ -170,23 +200,23 @@ expression:
     "number" {$$ = std::make_shared<Integer> ($1);}
     | "false" {$$ = std::make_shared<Boolean> (false);}
     | "true" {$$ = std::make_shared<Boolean> (true);}
-    | "identifier" {$$ = std::make_shared<Integer> (1);}
+    | "identifier" {$$ = std::make_shared<IDExpression> ($1);}
     | "!" expression {$$ = std::make_shared<NotExpression> ($2);}
     | "(" expression ")" {$$ = $2;}
-    | "-" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "<" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "<=" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "==" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "!=" expression {$$ = std::make_shared<Integer> (1);}
-    | expression ">=" expression {$$ = std::make_shared<Integer> (1);}
-    | expression ">" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "&&" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "||" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "*" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "/" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "%" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "+" expression {$$ = std::make_shared<Integer> (1);}
-    | expression "-" expression {$$ = std::make_shared<Integer> (1);};
+    | "-" expression {$$ = std::make_shared<UnaryMinusExpression> ($2);}
+    | expression "<" expression {$$ = std::make_shared<LessExpression> ($1, $3);}
+    | expression "<=" expression {$$ = std::make_shared<LessEqExpression> ($1, $3);}
+    | expression "==" expression {$$ = std::make_shared<EqualExpression> ($1, $3);}
+    | expression "!=" expression {$$ = std::make_shared<NotEqualExpression> ($1, $3);}
+    | expression ">=" expression {$$ = std::make_shared<GreaterEqExpression> ($1, $3);}
+    | expression ">" expression {$$ = std::make_shared<GreaterExpression> ($1, $3);}
+    | expression "&&" expression {$$ = std::make_shared<AndExpression> ($1, $3);}
+    | expression "||" expression {$$ = std::make_shared<OrExpression> ($1, $3);}
+    | expression "*" expression {$$ = std::make_shared<MulExpression> ($1, $3);}
+    | expression "/" expression {$$ = std::make_shared<DivExpression> ($1, $3);}
+    | expression "%" expression {$$ = std::make_shared<ModExpression> ($1, $3);}
+    | expression "+" expression {$$ = std::make_shared<PlusExpression> ($1, $3);}
+    | expression "-" expression {$$ = std::make_shared<MinusExpression> ($1, $3);};
 
 %left "=";
 %left "||";

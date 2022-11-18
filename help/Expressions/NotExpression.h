@@ -7,7 +7,7 @@
 class NotExpression: public Expression {
 public:
     NotExpression(std::shared_ptr<Expression> expression);
-    void accept(Visitor& visitor) override;
+    void accept(Visitor* visitor) override;
     std::shared_ptr<Expression> get_expression();
 
     ~NotExpression() override;

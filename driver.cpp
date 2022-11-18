@@ -1,6 +1,8 @@
 #include "driver.hh"
 #include "parser.hh"
 
+#include <help/Visitor.h>
+
 
 
 Driver::Driver() :
@@ -8,8 +10,8 @@ Driver::Driver() :
     trace_scanning(false),
     location_debug(false),
     scanner(*this), parser(scanner, *this) {
-    variables["one"] = 1;
-    variables["two"] = 2;
+//    variables["one"] = 1;
+//    variables["two"] = 2;
 }
 
 
@@ -41,3 +43,9 @@ void Driver::scan_end()
     stream.close();
 }
 
+void Driver::execute() {
+    Visitor visitor;
+    visitor.visit(program);
+
+//    call_visitor.Visit(class_tree.GetNode("main")->GetFunction("main"));
+}

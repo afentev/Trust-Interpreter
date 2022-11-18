@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
         } else if (argv[i] == std::string("-l")) {
             driver.location_debug = true;
         } else if (!driver.parse(argv[i])) {
-            std::cout << driver.result << std::endl;
+            driver.execute();
         } else {
             result = 1;
         }

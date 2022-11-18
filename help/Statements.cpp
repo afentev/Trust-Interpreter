@@ -1,6 +1,6 @@
 #include "Statements.h"
 
-void Statements::accept(Visitor& visitor) {
+void Statements::accept(Visitor* visitor) {
 
 }
 

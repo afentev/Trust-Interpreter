@@ -67,7 +67,7 @@ String* String::operator- () {
     throw "Invalid operand type for operator!. i32 expected, but i32 found";
 }
 
-void String::accept(Visitor& visitor) {
+void String::accept(Visitor* visitor) {
     ;
 }
 

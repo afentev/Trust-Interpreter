@@ -1,6 +1,6 @@
 #include "NotExpression.h"
 
-void NotExpression::accept(Visitor& visitor) {
+void NotExpression::accept(Visitor* visitor) {
 
 }
 

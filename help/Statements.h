@@ -7,7 +7,7 @@
 class Statements: public Statement {
 public:
     void add_statement(std::shared_ptr<Statement> statement);
-    void accept(Visitor &visitor) override;
+    void accept(Visitor* visitor) override;
     ~Statements() override = default;
 
     std::vector<std::shared_ptr<Statement>> statements;

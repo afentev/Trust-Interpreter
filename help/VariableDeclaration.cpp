@@ -1,6 +1,6 @@
 #include "VariableDeclaration.h"
 
-void VariableDeclaration::accept(Visitor& visitor) {
+void VariableDeclaration::accept(Visitor* visitor) {
 
 }
 

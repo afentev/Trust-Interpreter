@@ -7,7 +7,7 @@
 class VariableDeclaration: public Statement {
 public:
     explicit VariableDeclaration(std::string, std::string);
-    void accept(Visitor &visitor) override;
+    void accept(Visitor* visitor) override;
     ~VariableDeclaration() override;
 
 private:
