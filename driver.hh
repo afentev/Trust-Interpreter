@@ -5,6 +5,7 @@
 #include <fstream>
 #include "scanner.h"
 #include "parser.hh"
+#include "help/Program.h"
 
 
 class Driver {
@@ -18,6 +19,7 @@ class Driver {
 
     void scan_begin();
     void scan_end();
+    void execute();
 
     bool trace_parsing;
     bool trace_scanning;
@@ -27,6 +29,8 @@ class Driver {
     Scanner scanner;
     yy::parser parser;
     bool location_debug;
+
+    std::shared_ptr<Program> program;
  private:
     std::ifstream stream;
 
