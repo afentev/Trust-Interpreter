@@ -1,7 +1,7 @@
 #include "EqualExpression.h"
 
 void EqualExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 EqualExpression::EqualExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

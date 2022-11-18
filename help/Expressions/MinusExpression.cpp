@@ -1,7 +1,7 @@
 #include "MinusExpression.h"
 
 void MinusExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 MinusExpression::MinusExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

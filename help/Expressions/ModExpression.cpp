@@ -1,7 +1,7 @@
 #include "ModExpression.h"
 
 void ModExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 ModExpression::ModExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

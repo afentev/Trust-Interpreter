@@ -1,7 +1,7 @@
 #include "LessEqExpression.h"
 
 void LessEqExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 LessEqExpression::LessEqExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

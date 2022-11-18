@@ -42,7 +42,7 @@
 
 
 // Unqualified %code blocks.
-#line 47 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 55 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
 
     #include "driver.hh"
     #include "location.hh"
@@ -53,6 +53,7 @@
     #include "help/Statement.h"
     #include "help/Statements.h"
     #include "help/VariableDeclaration.h"
+    #include "help/VariableDeclInit.h"
     #include "help/Types/Boolean.h"
     #include "help/Types/Integer.h"
     #include "help/Types/String.h"
@@ -73,12 +74,19 @@
     #include "help/Expressions/DivExpression.h"
     #include "help/Expressions/IDExpression.h"
 
+    #include "help/Statements/WhileStatement.h"
+    #include "help/Statements/IfStatement.h"
+    #include "help/Statements/IfElseStatement.h"
+    #include "help/Statements/IfElifStatement.h"
+    #include "help/Statements/ForStatement.h"
+    #include "help/Statements/Iterator.h"
+
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
         return scanner.ScanToken();
     }
 
-#line 82 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 90 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
 
 
 #ifndef YY_
@@ -170,7 +178,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 174 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 182 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
 
   /// Build a parser object.
   parser::parser (Scanner &scanner_yyarg, Driver &driver_yyarg)
@@ -247,22 +255,24 @@ namespace yy {
         value.YY_MOVE_OR_COPY< std::shared_ptr<Expression> > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.YY_MOVE_OR_COPY< std::shared_ptr<Iterator> > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_program: // program
         value.YY_MOVE_OR_COPY< std::shared_ptr<Program> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.YY_MOVE_OR_COPY< std::shared_ptr<Statement> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_statements: // statements
         value.YY_MOVE_OR_COPY< std::shared_ptr<Statements> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.YY_MOVE_OR_COPY< std::shared_ptr<VariableDeclaration> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -293,22 +303,24 @@ namespace yy {
         value.move< std::shared_ptr<Expression> > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.move< std::shared_ptr<Iterator> > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_program: // program
         value.move< std::shared_ptr<Program> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.move< std::shared_ptr<Statement> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_statements: // statements
         value.move< std::shared_ptr<Statements> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.move< std::shared_ptr<VariableDeclaration> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -339,22 +351,24 @@ namespace yy {
         value.copy< std::shared_ptr<Expression> > (that.value);
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.copy< std::shared_ptr<Iterator> > (that.value);
+        break;
+
       case symbol_kind::S_program: // program
         value.copy< std::shared_ptr<Program> > (that.value);
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.copy< std::shared_ptr<Statement> > (that.value);
         break;
 
       case symbol_kind::S_statements: // statements
         value.copy< std::shared_ptr<Statements> > (that.value);
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.copy< std::shared_ptr<VariableDeclaration> > (that.value);
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -384,22 +398,24 @@ namespace yy {
         value.move< std::shared_ptr<Expression> > (that.value);
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.move< std::shared_ptr<Iterator> > (that.value);
+        break;
+
       case symbol_kind::S_program: // program
         value.move< std::shared_ptr<Program> > (that.value);
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.move< std::shared_ptr<Statement> > (that.value);
         break;
 
       case symbol_kind::S_statements: // statements
         value.move< std::shared_ptr<Statements> > (that.value);
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.move< std::shared_ptr<VariableDeclaration> > (that.value);
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -444,63 +460,75 @@ namespace yy {
         switch (yykind)
     {
       case symbol_kind::S_IDENTIFIER: // "identifier"
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < std::string > (); }
-#line 450 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 466 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_NUMBER: // "number"
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < int > (); }
-#line 456 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 472 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_program: // program
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < std::shared_ptr<Program> > (); }
-#line 462 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 478 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_statements: // statements
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < std::shared_ptr<Statements> > (); }
-#line 468 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 484 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_statement: // statement
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < std::shared_ptr<Statement> > (); }
-#line 474 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 490 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+        break;
+
+      case symbol_kind::S_if_statement: // if_statement
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                 { yyo << yysym.value.template as < std::shared_ptr<Statement> > (); }
+#line 496 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_let_statement: // let_statement
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                 { yyo << yysym.value.template as < std::shared_ptr<VariableDeclaration> > (); }
-#line 480 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                 { yyo << yysym.value.template as < std::shared_ptr<Statement> > (); }
+#line 502 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_mut_let_statement: // mut_let_statement
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                 { yyo << yysym.value.template as < std::shared_ptr<VariableDeclaration> > (); }
-#line 486 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                 { yyo << yysym.value.template as < std::shared_ptr<Statement> > (); }
+#line 508 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_const_let_statement: // const_let_statement
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                 { yyo << yysym.value.template as < std::shared_ptr<VariableDeclaration> > (); }
-#line 492 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                 { yyo << yysym.value.template as < std::shared_ptr<Statement> > (); }
+#line 514 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+        break;
+
+      case symbol_kind::S_iterator: // iterator
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                 { yyo << yysym.value.template as < std::shared_ptr<Iterator> > (); }
+#line 520 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_type: // type
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < std::string > (); }
-#line 498 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 526 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       case symbol_kind::S_expression: // expression
-#line 147 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                  { yyo << yysym.value.template as < std::shared_ptr<Expression> > (); }
-#line 504 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 532 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
         break;
 
       default:
@@ -738,22 +766,24 @@ namespace yy {
         yylhs.value.emplace< std::shared_ptr<Expression> > ();
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        yylhs.value.emplace< std::shared_ptr<Iterator> > ();
+        break;
+
       case symbol_kind::S_program: // program
         yylhs.value.emplace< std::shared_ptr<Program> > ();
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         yylhs.value.emplace< std::shared_ptr<Statement> > ();
         break;
 
       case symbol_kind::S_statements: // statements
         yylhs.value.emplace< std::shared_ptr<Statements> > ();
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        yylhs.value.emplace< std::shared_ptr<VariableDeclaration> > ();
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -782,286 +812,286 @@ namespace yy {
           switch (yyn)
             {
   case 2: // program: "fn" "main" "(" ")" "{" statements "}"
-#line 153 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 171 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
                                            {
     yylhs.value.as < std::shared_ptr<Program> > () = std::make_shared<Program>(yystack_[1].value.as < std::shared_ptr<Statements> > ());
     driver.program = yylhs.value.as < std::shared_ptr<Program> > ();
     }
-#line 791 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
-    break;
-
-  case 3: // statements: %empty
-#line 159 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-           {yylhs.value.as < std::shared_ptr<Statements> > () = std::make_shared<Statements>();}
-#line 797 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
-    break;
-
-  case 4: // statements: statements statement
-#line 160 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                           {yystack_[1].value.as < std::shared_ptr<Statements> > ()->add_statement(yystack_[0].value.as < std::shared_ptr<Statement> > ()); yylhs.value.as < std::shared_ptr<Statements> > () = yystack_[1].value.as < std::shared_ptr<Statements> > ();}
-#line 803 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
-    break;
-
-  case 5: // statement: "{" statements "}"
-#line 163 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                       {}
-#line 809 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
-    break;
-
-  case 6: // statement: ";"
-#line 164 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-          {}
-#line 815 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
-    break;
-
-  case 7: // statement: let_statement
-#line 165 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                    {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[0].value.as < std::shared_ptr<VariableDeclaration> > ();}
 #line 821 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 8: // statement: "identifier" "=" expression
-#line 166 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                  {}
+  case 3: // statements: %empty
+#line 177 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+           {yylhs.value.as < std::shared_ptr<Statements> > () = std::make_shared<Statements>();}
 #line 827 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 9: // statement: expression ";"
-#line 167 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                     {}
+  case 4: // statements: statements statement
+#line 178 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                           {yystack_[1].value.as < std::shared_ptr<Statements> > ()->add_statement(yystack_[0].value.as < std::shared_ptr<Statement> > ()); yylhs.value.as < std::shared_ptr<Statements> > () = yystack_[1].value.as < std::shared_ptr<Statements> > ();}
 #line 833 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 10: // statement: if_statement
-#line 168 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                   {}
+  case 5: // statement: "{" statements "}"
+#line 181 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                       {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[1].value.as < std::shared_ptr<Statements> > ();}
 #line 839 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 11: // statement: "while" expression "{" statements "}"
-#line 169 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                            {}
+  case 6: // statement: ";"
+#line 182 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+          {}
 #line 845 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 12: // statement: "for" "identifier" "in" iterator "{" statements "}"
-#line 170 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                                          {}
+  case 7: // statement: let_statement
+#line 183 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                    {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[0].value.as < std::shared_ptr<Statement> > ();}
 #line 851 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 13: // statement: "return" ";"
-#line 171 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                   {}
+  case 8: // statement: "identifier" "=" expression
+#line 184 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                  {}
 #line 857 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 14: // if_statement: "if" expression "{" statements "}"
-#line 174 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                       {}
+  case 9: // statement: expression ";"
+#line 185 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                     {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[1].value.as < std::shared_ptr<Expression> > ();}
 #line 863 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 15: // if_statement: "if" expression "{" statements "}" "else" if_statement
-#line 175 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                                             {}
+  case 10: // statement: if_statement
+#line 186 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                   {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[0].value.as < std::shared_ptr<Statement> > ();}
 #line 869 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 16: // if_statement: "if" expression "{" statements "}" "else" "{" statements "}"
-#line 176 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                                                   {}
+  case 11: // statement: "while" expression "{" statements "}"
+#line 187 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                            {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<WhileStatement>(yystack_[3].value.as < std::shared_ptr<Expression> > (), yystack_[1].value.as < std::shared_ptr<Statements> > ());}
 #line 875 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 17: // let_statement: const_let_statement
-#line 179 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                        {yylhs.value.as < std::shared_ptr<VariableDeclaration> > () = yystack_[0].value.as < std::shared_ptr<VariableDeclaration> > ();}
+  case 12: // statement: "for" "identifier" "in" iterator "{" statements "}"
+#line 188 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                                          {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<ForStatement>(yystack_[5].value.as < std::string > (), yystack_[3].value.as < std::shared_ptr<Iterator> > (), yystack_[1].value.as < std::shared_ptr<Statements> > ());}
 #line 881 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 18: // let_statement: mut_let_statement
-#line 180 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                        {yylhs.value.as < std::shared_ptr<VariableDeclaration> > () = yystack_[0].value.as < std::shared_ptr<VariableDeclaration> > ();}
+  case 13: // statement: "return" ";"
+#line 189 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                   {}
 #line 887 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 19: // mut_let_statement: "let" "mut" "identifier" ":" type "=" expression ";"
-#line 183 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                                         {yylhs.value.as < std::shared_ptr<VariableDeclaration> > () = std::make_shared<VariableDeclaration>(yystack_[5].value.as < std::string > (), yystack_[3].value.as < std::string > ());}
+  case 14: // if_statement: "if" expression "{" statements "}"
+#line 192 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                       {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<IfStatement>(yystack_[3].value.as < std::shared_ptr<Expression> > (), yystack_[1].value.as < std::shared_ptr<Statements> > ());}
 #line 893 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 20: // mut_let_statement: "let" "mut" "identifier" ":" type ";"
-#line 184 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                            {yylhs.value.as < std::shared_ptr<VariableDeclaration> > () = std::make_shared<VariableDeclaration>(yystack_[3].value.as < std::string > (), yystack_[1].value.as < std::string > ());}
+  case 15: // if_statement: "if" expression "{" statements "}" "else" if_statement
+#line 193 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                                             {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<IfElifStatement>(yystack_[5].value.as < std::shared_ptr<Expression> > (), yystack_[3].value.as < std::shared_ptr<Statements> > (), yystack_[0].value.as < std::shared_ptr<Statement> > ());}
 #line 899 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 21: // const_let_statement: "let" "identifier" ":" type "=" expression ";"
-#line 187 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                                   {yylhs.value.as < std::shared_ptr<VariableDeclaration> > () = std::make_shared<VariableDeclaration>(yystack_[5].value.as < std::string > (), yystack_[3].value.as < std::string > ());}
+  case 16: // if_statement: "if" expression "{" statements "}" "else" "{" statements "}"
+#line 194 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                                                   {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<IfElseStatement>(yystack_[7].value.as < std::shared_ptr<Expression> > (), yystack_[5].value.as < std::shared_ptr<Statements> > (), yystack_[1].value.as < std::shared_ptr<Statements> > ());}
 #line 905 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 22: // iterator: expression ".." expression
-#line 190 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                               {}
+  case 17: // let_statement: const_let_statement
+#line 197 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                        {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[0].value.as < std::shared_ptr<Statement> > ();}
 #line 911 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 23: // iterator: expression "..=" expression
-#line 191 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                  {}
+  case 18: // let_statement: mut_let_statement
+#line 198 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                        {yylhs.value.as < std::shared_ptr<Statement> > () = yystack_[0].value.as < std::shared_ptr<Statement> > ();}
 #line 917 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 24: // iterator: expression
-#line 192 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                 {}
+  case 19: // mut_let_statement: "let" "mut" "identifier" ":" type "=" expression ";"
+#line 201 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                                         {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<VariableDeclInit>(yystack_[5].value.as < std::string > (), yystack_[3].value.as < std::string > (), false, yystack_[1].value.as < std::shared_ptr<Expression> > ());}
 #line 923 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 25: // type: "i32"
-#line 195 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-          {yylhs.value.as < std::string > () = "i32";}
+  case 20: // mut_let_statement: "let" "mut" "identifier" ":" type ";"
+#line 202 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                            {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<VariableDeclaration>(yystack_[3].value.as < std::string > (), yystack_[1].value.as < std::string > ());}
 #line 929 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 26: // type: "String"
-#line 196 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-               {yylhs.value.as < std::string > () = "String";}
+  case 21: // const_let_statement: "let" "identifier" ":" type "=" expression ";"
+#line 205 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                                   {yylhs.value.as < std::shared_ptr<Statement> > () = std::make_shared<VariableDeclInit>(yystack_[5].value.as < std::string > (), yystack_[3].value.as < std::string > (), true, yystack_[1].value.as < std::shared_ptr<Expression> > ());}
 #line 935 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 27: // type: "bool"
-#line 197 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-             {yylhs.value.as < std::string > () = "bool";}
+  case 22: // iterator: expression ".." expression
+#line 208 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                               {}
 #line 941 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 28: // expression: "number"
-#line 200 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-             {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<Integer> (yystack_[0].value.as < int > ());}
+  case 23: // iterator: expression "..=" expression
+#line 209 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                  {}
 #line 947 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 29: // expression: "false"
-#line 201 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-              {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<Boolean> (false);}
+  case 24: // iterator: expression
+#line 210 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                 {}
 #line 953 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 30: // expression: "true"
-#line 202 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-             {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<Boolean> (true);}
+  case 25: // type: "i32"
+#line 213 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+          {yylhs.value.as < std::string > () = "i32";}
 #line 959 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 31: // expression: "identifier"
-#line 203 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                   {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<IDExpression> (yystack_[0].value.as < std::string > ());}
+  case 26: // type: "String"
+#line 214 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+               {yylhs.value.as < std::string > () = "String";}
 #line 965 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 32: // expression: "!" expression
-#line 204 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                     {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<NotExpression> (yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 27: // type: "bool"
+#line 215 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+             {yylhs.value.as < std::string > () = "bool";}
 #line 971 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 33: // expression: "(" expression ")"
-#line 205 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                         {yylhs.value.as < std::shared_ptr<Expression> > () = yystack_[1].value.as < std::shared_ptr<Expression> > ();}
+  case 28: // expression: "number"
+#line 218 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+             {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<Integer> (yystack_[0].value.as < int > ());}
 #line 977 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 34: // expression: "-" expression
-#line 206 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                     {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<UnaryMinusExpression> (yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 29: // expression: "false"
+#line 219 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+              {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<Boolean> (false);}
 #line 983 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 35: // expression: expression "<" expression
-#line 207 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<LessExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 30: // expression: "true"
+#line 220 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+             {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<Boolean> (true);}
 #line 989 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 36: // expression: expression "<=" expression
-#line 208 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<LessEqExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 31: // expression: "identifier"
+#line 221 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                   {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<IDExpression> (yystack_[0].value.as < std::string > ());}
 #line 995 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 37: // expression: expression "==" expression
-#line 209 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<EqualExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 32: // expression: "!" expression
+#line 222 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                     {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<NotExpression> (yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1001 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 38: // expression: expression "!=" expression
-#line 210 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<NotEqualExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 33: // expression: "(" expression ")"
+#line 223 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                         {yylhs.value.as < std::shared_ptr<Expression> > () = yystack_[1].value.as < std::shared_ptr<Expression> > ();}
 #line 1007 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 39: // expression: expression ">=" expression
-#line 211 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<GreaterEqExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 34: // expression: "-" expression
+#line 224 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                     {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<UnaryMinusExpression> (yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1013 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 40: // expression: expression ">" expression
-#line 212 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<GreaterExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 35: // expression: expression "<" expression
+#line 225 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<LessExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1019 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 41: // expression: expression "&&" expression
-#line 213 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<AndExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 36: // expression: expression "<=" expression
+#line 226 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<LessEqExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1025 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 42: // expression: expression "||" expression
-#line 214 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<OrExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 37: // expression: expression "==" expression
+#line 227 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<EqualExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1031 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 43: // expression: expression "*" expression
-#line 215 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<MulExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 38: // expression: expression "!=" expression
+#line 228 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<NotEqualExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1037 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 44: // expression: expression "/" expression
-#line 216 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<DivExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 39: // expression: expression ">=" expression
+#line 229 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<GreaterEqExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1043 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 45: // expression: expression "%" expression
-#line 217 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<ModExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 40: // expression: expression ">" expression
+#line 230 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<GreaterExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1049 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 46: // expression: expression "+" expression
-#line 218 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<PlusExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 41: // expression: expression "&&" expression
+#line 231 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<AndExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1055 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
-  case 47: // expression: expression "-" expression
-#line 219 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
-                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<MinusExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+  case 42: // expression: expression "||" expression
+#line 232 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                 {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<OrExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
 #line 1061 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
     break;
 
+  case 43: // expression: expression "*" expression
+#line 233 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<MulExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+#line 1067 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+    break;
 
-#line 1065 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+  case 44: // expression: expression "/" expression
+#line 234 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<DivExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+#line 1073 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+    break;
+
+  case 45: // expression: expression "%" expression
+#line 235 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<ModExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+#line 1079 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+    break;
+
+  case 46: // expression: expression "+" expression
+#line 236 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<PlusExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+#line 1085 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+    break;
+
+  case 47: // expression: expression "-" expression
+#line 237 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+                                {yylhs.value.as < std::shared_ptr<Expression> > () = std::make_shared<MinusExpression> (yystack_[2].value.as < std::shared_ptr<Expression> > (), yystack_[0].value.as < std::shared_ptr<Expression> > ());}
+#line 1091 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+    break;
+
+
+#line 1095 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
 
             default:
               break;
@@ -1620,11 +1650,11 @@ namespace yy {
   const unsigned char
   parser::yyrline_[] =
   {
-       0,   153,   153,   159,   160,   163,   164,   165,   166,   167,
-     168,   169,   170,   171,   174,   175,   176,   179,   180,   183,
-     184,   187,   190,   191,   192,   195,   196,   197,   200,   201,
-     202,   203,   204,   205,   206,   207,   208,   209,   210,   211,
-     212,   213,   214,   215,   216,   217,   218,   219
+       0,   171,   171,   177,   178,   181,   182,   183,   184,   185,
+     186,   187,   188,   189,   192,   193,   194,   197,   198,   201,
+     202,   205,   208,   209,   210,   213,   214,   215,   218,   219,
+     220,   221,   222,   223,   224,   225,   226,   227,   228,   229,
+     230,   231,   232,   233,   234,   235,   236,   237
   };
 
   void
@@ -1656,9 +1686,9 @@ namespace yy {
 
 
 } // yy
-#line 1660 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
+#line 1690 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.cpp"
 
-#line 230 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
+#line 248 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.y"
 
 
 void

@@ -59,6 +59,7 @@
     class Statement;
     class Statements;
     class VariableDeclaration;
+    class VariableDeclInit;
     class Boolean;
     class String;
     class Integer;
@@ -79,7 +80,14 @@
     class ModExpression;
     class IDExpression;
 
-#line 83 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+    class WhileStatement;
+    class IfStatement;
+    class IfElseStatement;
+    class IfElifStatement;
+    class ForStatement;
+    class Iterator;
+
+#line 91 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -219,7 +227,7 @@
 #endif
 
 namespace yy {
-#line 223 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 231 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
@@ -444,19 +452,21 @@ namespace yy {
       // expression
       char dummy2[sizeof (std::shared_ptr<Expression>)];
 
+      // iterator
+      char dummy3[sizeof (std::shared_ptr<Iterator>)];
+
       // program
-      char dummy3[sizeof (std::shared_ptr<Program>)];
+      char dummy4[sizeof (std::shared_ptr<Program>)];
 
       // statement
-      char dummy4[sizeof (std::shared_ptr<Statement>)];
-
-      // statements
-      char dummy5[sizeof (std::shared_ptr<Statements>)];
-
+      // if_statement
       // let_statement
       // mut_let_statement
       // const_let_statement
-      char dummy6[sizeof (std::shared_ptr<VariableDeclaration>)];
+      char dummy5[sizeof (std::shared_ptr<Statement>)];
+
+      // statements
+      char dummy6[sizeof (std::shared_ptr<Statements>)];
 
       // "identifier"
       // type
@@ -671,22 +681,24 @@ namespace yy {
         value.move< std::shared_ptr<Expression> > (std::move (that.value));
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.move< std::shared_ptr<Iterator> > (std::move (that.value));
+        break;
+
       case symbol_kind::S_program: // program
         value.move< std::shared_ptr<Program> > (std::move (that.value));
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.move< std::shared_ptr<Statement> > (std::move (that.value));
         break;
 
       case symbol_kind::S_statements: // statements
         value.move< std::shared_ptr<Statements> > (std::move (that.value));
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.move< std::shared_ptr<VariableDeclaration> > (std::move (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -746,6 +758,20 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<Iterator>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<Iterator>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, std::shared_ptr<Program>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -781,20 +807,6 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const std::shared_ptr<Statements>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<VariableDeclaration>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<VariableDeclaration>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -847,22 +859,24 @@ switch (yykind)
         value.template destroy< std::shared_ptr<Expression> > ();
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.template destroy< std::shared_ptr<Iterator> > ();
+        break;
+
       case symbol_kind::S_program: // program
         value.template destroy< std::shared_ptr<Program> > ();
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.template destroy< std::shared_ptr<Statement> > ();
         break;
 
       case symbol_kind::S_statements: // statements
         value.template destroy< std::shared_ptr<Statements> > ();
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.template destroy< std::shared_ptr<VariableDeclaration> > ();
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -2114,22 +2128,24 @@ switch (yykind)
         value.copy< std::shared_ptr<Expression> > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.copy< std::shared_ptr<Iterator> > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_program: // program
         value.copy< std::shared_ptr<Program> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.copy< std::shared_ptr<Statement> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_statements: // statements
         value.copy< std::shared_ptr<Statements> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.copy< std::shared_ptr<VariableDeclaration> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -2176,22 +2192,24 @@ switch (yykind)
         value.move< std::shared_ptr<Expression> > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_iterator: // iterator
+        value.move< std::shared_ptr<Iterator> > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_program: // program
         value.move< std::shared_ptr<Program> > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_statement: // statement
+      case symbol_kind::S_if_statement: // if_statement
+      case symbol_kind::S_let_statement: // let_statement
+      case symbol_kind::S_mut_let_statement: // mut_let_statement
+      case symbol_kind::S_const_let_statement: // const_let_statement
         value.move< std::shared_ptr<Statement> > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_statements: // statements
         value.move< std::shared_ptr<Statements> > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_let_statement: // let_statement
-      case symbol_kind::S_mut_let_statement: // mut_let_statement
-      case symbol_kind::S_const_let_statement: // const_let_statement
-        value.move< std::shared_ptr<VariableDeclaration> > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
@@ -2265,7 +2283,7 @@ switch (yykind)
 
 
 } // yy
-#line 2269 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 2287 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 

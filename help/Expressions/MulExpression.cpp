@@ -1,7 +1,7 @@
 #include "MulExpression.h"
 
 void MulExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 MulExpression::MulExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

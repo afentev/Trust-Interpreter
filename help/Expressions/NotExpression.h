@@ -4,7 +4,7 @@
 #include <memory>
 #include "help/Expression.h"
 
-class NotExpression: public Expression {
+class NotExpression: public Expression, public std::enable_shared_from_this<NotExpression> {
 public:
     NotExpression(std::shared_ptr<Expression> expression);
     void accept(Visitor* visitor) override;

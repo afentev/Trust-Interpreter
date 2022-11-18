@@ -2,9 +2,10 @@
 #define PARSEREXAMPLE_VARIABLEDECLARATION_H
 
 #include <string>
+#include <utility>
 #include "help/Statement.h"
 
-class VariableDeclaration: public Statement {
+class VariableDeclaration: public Statement, public std::enable_shared_from_this<VariableDeclaration> {
 public:
     explicit VariableDeclaration(std::string, std::string);
     void accept(Visitor* visitor) override;

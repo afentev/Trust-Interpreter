@@ -19,6 +19,7 @@
     class Statement;
     class Statements;
     class VariableDeclaration;
+    class VariableDeclInit;
     class Boolean;
     class String;
     class Integer;
@@ -38,6 +39,13 @@
     class DivExpression;
     class ModExpression;
     class IDExpression;
+
+    class WhileStatement;
+    class IfStatement;
+    class IfElseStatement;
+    class IfElifStatement;
+    class ForStatement;
+    class Iterator;
 }
 
 
@@ -54,6 +62,7 @@
     #include "help/Statement.h"
     #include "help/Statements.h"
     #include "help/VariableDeclaration.h"
+    #include "help/VariableDeclInit.h"
     #include "help/Types/Boolean.h"
     #include "help/Types/Integer.h"
     #include "help/Types/String.h"
@@ -73,6 +82,13 @@
     #include "help/Expressions/ModExpression.h"
     #include "help/Expressions/DivExpression.h"
     #include "help/Expressions/IDExpression.h"
+
+    #include "help/Statements/WhileStatement.h"
+    #include "help/Statements/IfStatement.h"
+    #include "help/Statements/IfElseStatement.h"
+    #include "help/Statements/IfElifStatement.h"
+    #include "help/Statements/ForStatement.h"
+    #include "help/Statements/Iterator.h"
 
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
@@ -138,9 +154,11 @@
 %nterm <std::shared_ptr<Program>> program
 %nterm <std::shared_ptr<Statements>> statements;
 %nterm <std::shared_ptr<Statement>> statement;
-%nterm <std::shared_ptr<VariableDeclaration>> let_statement;
-%nterm <std::shared_ptr<VariableDeclaration>> mut_let_statement;
-%nterm <std::shared_ptr<VariableDeclaration>> const_let_statement;
+%nterm <std::shared_ptr<Statement>> let_statement;
+%nterm <std::shared_ptr<Statement>> mut_let_statement;
+%nterm <std::shared_ptr<Statement>> const_let_statement;
+%nterm <std::shared_ptr<Statement>> if_statement;
+%nterm <std::shared_ptr<Iterator>> iterator;
 %nterm <std::string> type;
 
 // Prints output in parsing option for debugging location terminal
@@ -160,31 +178,31 @@ statements:
     | statements statement {$1->add_statement($2); $$ = $1;};
 
 statement:
-    "{" statements "}" {}
+    "{" statements "}" {$$ = $2;}
     | ";" {}
     | let_statement {$$ = $1;}
     | "identifier" "=" expression {}
-    | expression ";" {}
-    | if_statement {}
-    | "while" expression "{" statements "}" {}
-    | "for" "identifier" "in" iterator "{" statements "}" {}
+    | expression ";" {$$ = $1;}
+    | if_statement {$$ = $1;}
+    | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}
+    | "for" "identifier" "in" iterator "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6);}
     | "return" ";" {};
 
 if_statement:
-    "if" expression "{" statements "}" {}
-    | "if" expression "{" statements "}" "else" if_statement {}
-    | "if" expression "{" statements "}" "else" "{" statements "}" {};
+    "if" expression "{" statements "}" {$$ = std::make_shared<IfStatement>($2, $4);}
+    | "if" expression "{" statements "}" "else" if_statement {$$ = std::make_shared<IfElifStatement>($2, $4, $7);}
+    | "if" expression "{" statements "}" "else" "{" statements "}" {$$ = std::make_shared<IfElseStatement>($2, $4, $8);};
 
 let_statement:
     const_let_statement {$$ = $1;}
     | mut_let_statement {$$ = $1;};
 
 mut_let_statement:
-    "let" "mut" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclaration>($3, $5);}
+    "let" "mut" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclInit>($3, $5, false, $7);}
     | "let" "mut" "identifier" ":" type ";" {$$ = std::make_shared<VariableDeclaration>($3, $5);};
 
 const_let_statement:
-    "let" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclaration>($2, $4);};
+    "let" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclInit>($2, $4, true, $6);};
 
 iterator:
     expression ".." expression {}

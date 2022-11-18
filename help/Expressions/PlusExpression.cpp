@@ -1,7 +1,7 @@
 #include "PlusExpression.h"
 
 void PlusExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 PlusExpression::PlusExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

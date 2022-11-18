@@ -10,27 +10,31 @@ enum Types {
     boolean
 };
 
+class Boolean;
+
 class Object: public Expression {
 public:
     virtual Types get_type() = 0;
 
-    virtual Object* operator- () = 0;
-    virtual Object* operator+ (const Object& other) = 0;
-    virtual Object* operator- (const Object& other) = 0;
-    virtual Object* operator* (const Object& other) = 0;
-    virtual Object* operator/ (const Object& other) = 0;
-    virtual Object* operator% (const Object& other) = 0;
+    virtual std::shared_ptr<Object> operator- () = 0;
+    virtual std::shared_ptr<Object> operator+ (const Object& other) = 0;
+    virtual std::shared_ptr<Object> operator- (const Object& other) = 0;
+    virtual std::shared_ptr<Object> operator* (const Object& other) = 0;
+    virtual std::shared_ptr<Object> operator/ (const Object& other) = 0;
+    virtual std::shared_ptr<Object> operator% (const Object& other) = 0;
 
-    virtual bool operator< (const Object& other) = 0;
-    virtual bool operator<= (const Object& other) = 0;
-    virtual bool operator== (const Object& other) = 0;
-    virtual bool operator!= (const Object& other) = 0;
-    virtual bool operator>= (const Object& other) = 0;
-    virtual bool operator> (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator< (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator<= (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator== (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator!= (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator>= (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator> (const Object& other) = 0;
 
-    virtual bool operator&& (const Object& other) = 0;
-    virtual bool operator|| (const Object& other) = 0;
-    virtual bool operator! () = 0;
+    virtual std::shared_ptr<Boolean> operator&& (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator|| (const Object& other) = 0;
+    virtual std::shared_ptr<Boolean> operator! () = 0;
+
+    virtual bool as_predicate() = 0;
 
     ~Object() override = default;
 };

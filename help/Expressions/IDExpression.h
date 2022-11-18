@@ -6,7 +6,7 @@
 #include <string>
 #include "help/Expression.h"
 
-class IDExpression: public Expression {
+class IDExpression: public Expression, public std::enable_shared_from_this<IDExpression> {
 public:
     explicit IDExpression(std::string id);
     void accept(Visitor* visitor) override;

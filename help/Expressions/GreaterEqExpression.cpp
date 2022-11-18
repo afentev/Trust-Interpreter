@@ -1,7 +1,7 @@
 #include "GreaterEqExpression.h"
 
 void GreaterEqExpression::accept(Visitor* visitor) {
-
+    visitor->visit(shared_from_this());
 }
 
 GreaterEqExpression::GreaterEqExpression(std::shared_ptr<Expression> left, std::shared_ptr<Expression> right):

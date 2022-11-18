@@ -10,6 +10,7 @@ class Program;
 class Statement;
 class Statements;
 class VariableDeclaration;
+class VariableDeclInit;
 class Boolean;
 class String;
 class Integer;
@@ -30,17 +31,22 @@ class DivExpression;
 class ModExpression;
 class IDExpression;
 
+class WhileStatement;
+class IfStatement;
+class IfElseStatement;
+class IfElifStatement;
+class ForStatement;
+class Iterator;
+
 class Visitor {
 public:
     virtual void visit(std::shared_ptr<Program> expression);
-    virtual void visit(std::shared_ptr<Statement> expression);
-    virtual void visit(std::shared_ptr<Statements> expression);
-    virtual void visit(std::shared_ptr<Expression> expression);
-    virtual void visit(std::shared_ptr<VariableDeclaration> expression);
-    virtual void visit(std::shared_ptr<Object> expression);
+
+//    virtual std::shared_ptr<Object> visit(std::shared_ptr<Object> expression);
     virtual void visit(std::shared_ptr<Boolean> expression);
     virtual void visit(std::shared_ptr<Integer> expression);
     virtual void visit(std::shared_ptr<String> expression);
+    virtual void visit(std::shared_ptr<NotExpression> expression);
     virtual void visit(std::shared_ptr<AndExpression> expression);
     virtual void visit(std::shared_ptr<OrExpression> expression);
     virtual void visit(std::shared_ptr<DivExpression> expression);
@@ -56,6 +62,16 @@ public:
     virtual void visit(std::shared_ptr<LessEqExpression> expression);
     virtual void visit(std::shared_ptr<LessExpression> expression);
     virtual void visit(std::shared_ptr<IDExpression> expression);
+
+    virtual void visit(std::shared_ptr<Statements> expression);
+    virtual void visit(std::shared_ptr<VariableDeclaration> expression);
+    virtual void visit(std::shared_ptr<VariableDeclInit> expression);
+    virtual void visit(std::shared_ptr<WhileStatement> expression);
+    virtual void visit(std::shared_ptr<IfStatement> expression);
+    virtual void visit(std::shared_ptr<IfElseStatement> expression);
+    virtual void visit(std::shared_ptr<IfElifStatement> expression);
+    virtual void visit(std::shared_ptr<ForStatement> expression);
+    virtual void visit(std::shared_ptr<Iterator> expression);
     virtual ~Visitor();
 
     std::shared_ptr<Object> object;

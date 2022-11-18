@@ -8,68 +8,72 @@ Types Boolean::get_type() {
     return Types::i32;
 }
 
-Boolean* Boolean::operator+ (const Object& other) {
+std::shared_ptr<Object> Boolean::operator+ (const Object& other) {
     throw "Invalid operand type for operator&&. String or i32 expected, but bool found";
 }
 
-Boolean* Boolean::operator- (const Object& other) {
+std::shared_ptr<Object> Boolean::operator- (const Object& other) {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
 }
 
-Boolean* Boolean::operator* (const Object& other) {
+std::shared_ptr<Object> Boolean::operator* (const Object& other) {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
 }
 
-Boolean* Boolean::operator/ (const Object& other) {
+std::shared_ptr<Object> Boolean::operator/ (const Object& other) {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
 }
 
-Boolean* Boolean::operator% (const Object& other) {
+std::shared_ptr<Object> Boolean::operator% (const Object& other) {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
 }
 
-bool Boolean::operator< (const Object& other) {
-    return value < static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator< (const Object& other) {
+    return std::make_shared<Boolean>(value < dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator<= (const Object& other) {
-    return value <= static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator<= (const Object& other) {
+    return std::make_shared<Boolean>(value <= dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator== (const Object& other) {
-    return value == static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator== (const Object& other) {
+    return std::make_shared<Boolean>(value == dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator!= (const Object& other) {
-    return value != static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator!= (const Object& other) {
+    return std::make_shared<Boolean>(value != dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator>= (const Object& other) {
-    return value >= static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator>= (const Object& other) {
+    return std::make_shared<Boolean>(value >= dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator> (const Object& other) {
-    return value > static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator> (const Object& other) {
+    return std::make_shared<Boolean>(value > dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator&& (const Object& other) {
-    return value && static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator&& (const Object& other) {
+    return std::make_shared<Boolean>(value && dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator|| (const Object& other) {
-    return value || static_cast<const Boolean&>(other).value;
+std::shared_ptr<Boolean> Boolean::operator|| (const Object& other) {
+    return std::make_shared<Boolean>(value || dynamic_cast<const Boolean&>(other).value);
 }
 
-bool Boolean::operator! () {
-    return !value;
+std::shared_ptr<Boolean> Boolean::operator! () {
+    return std::make_shared<Boolean>(!value);
 }
 
-Boolean* Boolean::operator- () {
+std::shared_ptr<Object> Boolean::operator- () {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
+}
+
+bool Boolean::as_predicate() {
+    return value;
 }
 
 void Boolean::accept(Visitor* visitor) {
-    ;
+    visitor->visit(shared_from_this());
 }
 
 Boolean::~Boolean() = default;
