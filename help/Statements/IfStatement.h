@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_IFSTATEMENT_H
 
 #include <memory>
-#include "help/Statement.h"
+#include "Statement.h"
 
 class IfStatement: public Statement, public std::enable_shared_from_this<IfStatement> {
 public:

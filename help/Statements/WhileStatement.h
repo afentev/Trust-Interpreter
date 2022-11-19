@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_WHILESTATEMENT_H
 
 #include <memory>
-#include "help/Statement.h"
+#include "Statement.h"
 
 class WhileStatement: public Statement, public std::enable_shared_from_this<WhileStatement> {
 public:

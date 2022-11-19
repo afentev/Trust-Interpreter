@@ -83,9 +83,9 @@
     class WhileStatement;
     class IfStatement;
     class IfElseStatement;
-    class IfElifStatement;
     class ForStatement;
     class Iterator;
+    class AssignmentStatement;
 
 #line 91 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
@@ -2047,7 +2047,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 423,     ///< Last index in yytable_.
+      yylast_ = 443,     ///< Last index in yytable_.
       yynnts_ = 11,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };

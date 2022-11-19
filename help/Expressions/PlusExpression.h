@@ -6,7 +6,7 @@
 #define PARSEREXAMPLE_PLUSEXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class PlusExpression: public Expression, public std::enable_shared_from_this<PlusExpression> {
 public:

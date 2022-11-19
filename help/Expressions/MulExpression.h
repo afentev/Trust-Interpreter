@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_MULEXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class MulExpression: public Expression, public std::enable_shared_from_this<MulExpression> {
 public:

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include "help/Statement.h"
+#include "Statement.h"
 #include "help/Statements/Iterator.h"
 
 class ForStatement: public Statement, public std::enable_shared_from_this<ForStatement> {

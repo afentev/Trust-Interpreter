@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_UNARYMINUSEXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class UnaryMinusExpression: public Expression, public std::enable_shared_from_this<UnaryMinusExpression> {
 public:

@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_OREXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class OrExpression: public Expression, public std::enable_shared_from_this<OrExpression> {
 public:

@@ -7,7 +7,11 @@
 class Integer: public Object, public std::enable_shared_from_this<Integer> {
 public:
     explicit Integer(int32_t);
-    Types get_type() override;
+    Object& operator=(const Boolean&) override;
+    Object& operator=(const Integer&) override;
+    Object& operator=(const String&) override;
+    void assign_into(std::shared_ptr<Object>) override;
+
     std::shared_ptr<Object> operator+ (const Object& other) override;
     std::shared_ptr<Object> operator- (const Object& other) override;
     std::shared_ptr<Object> operator* (const Object& other) override;

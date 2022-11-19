@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_MODEXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class ModExpression: public Expression, public std::enable_shared_from_this<ModExpression> {
 public:

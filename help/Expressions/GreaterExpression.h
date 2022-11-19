@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_GREATEREXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class GreaterExpression: public Expression, public std::enable_shared_from_this<GreaterExpression> {
 public:

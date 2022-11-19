@@ -2,6 +2,7 @@
 #define PARSEREXAMPLE_VISITOR_H
 
 #include <memory>
+#include "help/IDTable.h"
 
 class Object;
 class Visitor;
@@ -34,9 +35,9 @@ class IDExpression;
 class WhileStatement;
 class IfStatement;
 class IfElseStatement;
-class IfElifStatement;
 class ForStatement;
 class Iterator;
+class AssignmentStatement;
 
 class Visitor {
 public:
@@ -69,12 +70,14 @@ public:
     virtual void visit(std::shared_ptr<WhileStatement> expression);
     virtual void visit(std::shared_ptr<IfStatement> expression);
     virtual void visit(std::shared_ptr<IfElseStatement> expression);
-    virtual void visit(std::shared_ptr<IfElifStatement> expression);
     virtual void visit(std::shared_ptr<ForStatement> expression);
     virtual void visit(std::shared_ptr<Iterator> expression);
+    virtual void visit(std::shared_ptr<AssignmentStatement> expression);
     virtual ~Visitor();
 
+private:
     std::shared_ptr<Object> object;
+    IDTable variables;
 };
 
 

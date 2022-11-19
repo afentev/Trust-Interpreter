@@ -3,8 +3,21 @@
 
 String::String(const std::string& value): string(value) {};
 
-Types String::get_type() {
-    return Types::Str;
+Object& String::operator=(const Boolean& other) {
+    throw "Can not assign bool to String";
+}
+
+Object& String::operator=(const Integer& other) {
+    throw "Can not assign i32 to String";
+}
+
+Object& String::operator=(const String& other) {
+    string = other.string;
+    return *this;
+}
+
+void String::assign_into(std::shared_ptr<Object> lhs) {
+    lhs->operator=(*this);
 }
 
 std::shared_ptr<Object> String::operator+ (const Object& other) {

@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_MINUSEXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class MinusExpression: public Expression, public std::enable_shared_from_this<MinusExpression> {
 public:

@@ -2,7 +2,7 @@
 #define PARSEREXAMPLE_NOTEXPRESSION_H
 
 #include <memory>
-#include "help/Expression.h"
+#include "Expression.h"
 
 class NotExpression: public Expression, public std::enable_shared_from_this<NotExpression> {
 public:

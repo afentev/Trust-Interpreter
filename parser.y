@@ -43,9 +43,9 @@
     class WhileStatement;
     class IfStatement;
     class IfElseStatement;
-    class IfElifStatement;
     class ForStatement;
     class Iterator;
+    class AssignmentStatement;
 }
 
 
@@ -56,13 +56,8 @@
     #include "driver.hh"
     #include "location.hh"
 
-    #include "help/Expression.h"
     #include "help/Visitor.h"
     #include "help/Program.h"
-    #include "help/Statement.h"
-    #include "help/Statements.h"
-    #include "help/VariableDeclaration.h"
-    #include "help/VariableDeclInit.h"
     #include "help/Types/Boolean.h"
     #include "help/Types/Integer.h"
     #include "help/Types/String.h"
@@ -86,9 +81,11 @@
     #include "help/Statements/WhileStatement.h"
     #include "help/Statements/IfStatement.h"
     #include "help/Statements/IfElseStatement.h"
-    #include "help/Statements/IfElifStatement.h"
     #include "help/Statements/ForStatement.h"
     #include "help/Statements/Iterator.h"
+    #include "help/Statements/VariableDeclaration.h"
+    #include "help/Statements/VariableDeclInit.h"
+    #include "help/Statements/AssignmentStatement.h"
 
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
@@ -180,8 +177,9 @@ statements:
 statement:
     "{" statements "}" {$$ = $2;}
     | ";" {}
+    | "print!"
     | let_statement {$$ = $1;}
-    | "identifier" "=" expression {}
+    | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}
     | expression ";" {$$ = $1;}
     | if_statement {$$ = $1;}
     | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}
@@ -190,7 +188,7 @@ statement:
 
 if_statement:
     "if" expression "{" statements "}" {$$ = std::make_shared<IfStatement>($2, $4);}
-    | "if" expression "{" statements "}" "else" if_statement {$$ = std::make_shared<IfElifStatement>($2, $4, $7);}
+    | "if" expression "{" statements "}" "else" if_statement {$$ = std::make_shared<IfElseStatement>($2, $4, $7);}
     | "if" expression "{" statements "}" "else" "{" statements "}" {$$ = std::make_shared<IfElseStatement>($2, $4, $8);};
 
 let_statement:

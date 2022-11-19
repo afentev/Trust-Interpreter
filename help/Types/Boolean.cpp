@@ -4,8 +4,21 @@ Boolean::Boolean(bool value): value(value) {
     ;
 }
 
-Types Boolean::get_type() {
-    return Types::i32;
+Object& Boolean::operator=(const Boolean& other) {
+    value = other.value;
+    return *this;
+}
+
+Object& Boolean::operator=(const Integer& other) {
+    throw "Can not assign i32 to bool";
+}
+
+Object& Boolean::operator=(const String& other) {
+    throw "Can not assign String to bool";
+}
+
+void Boolean::assign_into(std::shared_ptr<Object> lhs) {
+    lhs->operator=(*this);
 }
 
 std::shared_ptr<Object> Boolean::operator+ (const Object& other) {

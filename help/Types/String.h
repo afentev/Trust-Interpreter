@@ -8,7 +8,11 @@
 class String: public Object, public std::enable_shared_from_this<String> {
 public:
     explicit String(const std::string&);
-    Types get_type() override;
+    Object& operator=(const Boolean&) override;
+    Object& operator=(const Integer&) override;
+    Object& operator=(const String&) override;
+    void assign_into(std::shared_ptr<Object>) override;
+
     std::shared_ptr<Object> operator+ (const Object& other) override;
     std::shared_ptr<Object> operator- (const Object& other) override;
     std::shared_ptr<Object> operator* (const Object& other) override;

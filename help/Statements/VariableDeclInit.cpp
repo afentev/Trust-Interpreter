@@ -9,4 +9,20 @@ VariableDeclInit::VariableDeclInit(std::string var_name, std::string var_type, b
         variable_name(std::move(var_name)), variable_type(std::move(var_type)), is_constant(constantness),
         value(std::move(expr)) {}
 
+std::string VariableDeclInit::get_name() {
+    return variable_name;
+}
+
+std::string VariableDeclInit::get_type() {
+    return variable_type;
+}
+
+bool VariableDeclInit::is_const() {
+    return is_constant;
+}
+
+std::shared_ptr<Expression> VariableDeclInit::get_value() {
+    return value;
+}
+
 VariableDeclInit::~VariableDeclInit() = default;

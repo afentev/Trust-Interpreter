@@ -67,16 +67,19 @@ add_executable(
         help/Expressions/DivExpression.cpp help/Expressions/ModExpression.cpp
         help/Expressions/MulExpression.cpp help/Expressions/UnaryMinusExpression.cpp
         help/Expressions/PlusExpression.cpp help/Expressions/MinusExpression.cpp
+        help/Expressions/IDExpression.cpp
 
         help/Statements/WhileStatement.cpp help/Statements/IfStatement.cpp help/Statements/IfElseStatement.cpp
-        help/Statements/IfElifStatement.cpp help/Statements/ForStatement.cpp help/Statements/Iterator.cpp
+        help/Statements/ForStatement.cpp help/Statements/Iterator.cpp help/Statements/AssignmentStatement.cpp
 
-        help/VariableDeclInit.cpp
-        help/Visitor.cpp help/Statements.cpp help/Program.cpp help/VariableDeclaration.cpp
+        help/Statements/VariableDeclInit.cpp
+        help/Visitor.cpp help/Statements/Statements.cpp help/Program.cpp help/Statements/VariableDeclaration.cpp
         help/Types/Boolean.cpp help/Types/Integer.cpp help/Types/String.cpp
+
+        help/IDTable.cpp help/Identifier.cpp
     main.cpp
     driver.cpp
     ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS}
-        help/Expressions/GreaterExpression.cpp help/Expressions/GreaterExpression.h help/Expressions/GreaterEqExpression.cpp help/Expressions/GreaterEqExpression.h help/Expressions/EqualExpression.cpp help/Expressions/EqualExpression.h help/Expressions/LessExpression.cpp help/Expressions/LessExpression.h help/Expressions/LessEqExpression.cpp help/Expressions/LessEqExpression.h help/Expressions/NotEqualExpression.cpp help/Expressions/NotEqualExpression.h help/Expressions/OrExpression.cpp help/Expressions/OrExpression.h help/Expressions/MulExpression.cpp help/Expressions/MulExpression.h help/Expressions/DivExpression.cpp help/Expressions/DivExpression.h help/Expressions/PlusExpression.cpp help/Expressions/PlusExpression.h help/Expressions/MinusExpression.cpp help/Expressions/MinusExpression.h help/Expressions/ModExpression.cpp help/Expressions/ModExpression.h help/Expressions/UnaryMinusExpression.cpp help/Expressions/UnaryMinusExpression.h help/Expressions/IDExpression.cpp help/Expressions/IDExpression.h help/VariableDeclInit.cpp help/VariableDeclInit.h help/Statements/WhileStatement.cpp help/Statements/WhileStatement.h help/Statements/IfStatement.cpp help/Statements/IfStatement.h help/Statements/IfElseStatement.cpp help/Statements/IfElseStatement.h help/Statements/IfElifStatement.cpp help/Statements/IfElifStatement.h help/Statements/ForStatement.cpp help/Statements/ForStatement.h help/Statements/Iterator.cpp help/Statements/Iterator.h)
+    ${FLEX_MyScanner_OUTPUTS} )
+
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})
