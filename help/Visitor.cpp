@@ -34,6 +34,7 @@
 #include "help/Statements/AssignmentStatement.h"
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
+#include "help/Statements/Interruptions/BreakStatement.h"
 
 void Visitor::visit(std::shared_ptr<Program> program) {
     program->get_statements()->accept(this);
@@ -252,7 +253,11 @@ void Visitor::visit(std::shared_ptr<VariableDeclInit> expression) {
 void Visitor::visit(std::shared_ptr<WhileStatement> expression) {
     expression->get_condition()->accept(this);
     while (object->as_predicate()) {
-        expression->get_statement()->accept(this);
+        try {
+            expression->get_statement()->accept(this);
+        } catch (BreakInterruption&) {
+            break;
+        } catch (ContinueInterruption&) {}
         expression->get_condition()->accept(this);
     }
     std::cout << "Visit WhileStatement!" << std::endl;
@@ -320,6 +325,14 @@ void Visitor::visit(std::shared_ptr<PrintStatement> expression) {
     }
 
     std::cout << "Visit PrintStatement!" << std::endl;
+}
+
+void Visitor::visit(std::shared_ptr<BreakStatement> expression) {
+    throw BreakInterruption();
+}
+
+void Visitor::visit(std::shared_ptr<ContinueStatement> expression) {
+    throw ContinueInterruption();
 }
 
 Visitor::~Visitor() = default;

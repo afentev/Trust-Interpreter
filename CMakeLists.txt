@@ -67,7 +67,9 @@ add_executable(
         help/Expressions/DivExpression.cpp help/Expressions/ModExpression.cpp
         help/Expressions/MulExpression.cpp help/Expressions/UnaryMinusExpression.cpp
         help/Expressions/PlusExpression.cpp help/Expressions/MinusExpression.cpp
-        help/Expressions/IDExpression.cpp
+        help/Expressions/IDExpression.cpp help/Statements/ExpressionList.cpp
+        help/Statements/PrintStatement.cpp help/Statements/Interruptions/BreakStatement.cpp
+        help/Statements/Interruptions/Interruptions.cpp help/Statements/Interruptions/ContinueStatement.cpp
 
         help/Statements/WhileStatement.cpp help/Statements/IfStatement.cpp help/Statements/IfElseStatement.cpp
         help/Statements/ForStatement.cpp help/Statements/Iterator.cpp help/Statements/AssignmentStatement.cpp
@@ -80,6 +82,6 @@ add_executable(
     main.cpp
     driver.cpp
     ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS} help/Statements/ExpressionList.cpp help/Statements/ExpressionList.h help/Statements/PrintStatement.cpp help/Statements/PrintStatement.h)
+    ${FLEX_MyScanner_OUTPUTS})
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

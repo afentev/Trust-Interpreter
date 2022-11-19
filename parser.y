@@ -48,6 +48,8 @@
     class AssignmentStatement;
     class ExpressionList;
     class PrintStatement;
+    class BreakStatement;
+    class ContinueStatement;
 }
 
 
@@ -90,6 +92,8 @@
     #include "help/Statements/AssignmentStatement.h"
     #include "help/Statements/ExpressionList.h"
     #include "help/Statements/PrintStatement.h"
+    #include "help/Statements/Interruptions/BreakStatement.h"
+    #include "help/Statements/Interruptions/ContinueStatement.h"
 
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
@@ -119,6 +123,8 @@
     LET "let"
     MUT "mut"
     RETURN "return"
+    BREAK "break"
+    CONTINUE "continue"
     COLON ":"
     ASSIGN "="
     MINUS "-"
@@ -187,6 +193,8 @@ statements:
 statement:
     "{" statements "}" {$$ = $2;}
     | ";" {}
+    | "break" {$$ = std::make_shared<BreakStatement>();}
+    | "continue" {$$ = std::make_shared<ContinueStatement>();}
     | print_statement {$$ = $1;}
     | let_statement {$$ = $1;}
     | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}

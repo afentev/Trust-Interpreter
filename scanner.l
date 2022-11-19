@@ -74,6 +74,8 @@ string_literal \"([^\\\"]|\\.)*\"
 "let"      return yy::parser::make_LET(loc);
 "mut"      return yy::parser::make_MUT(loc);
 "return"   return yy::parser::make_RETURN(loc);
+"break"    return yy::parser::make_BREAK(loc);
+"continue" return yy::parser::make_CONTINUE(loc);
 "fn"       return yy::parser::make_FN(loc);
 "main"     return yy::parser::make_MAIN(loc);
 ":"        return yy::parser::make_COLON(loc);
