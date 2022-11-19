@@ -40,6 +40,7 @@ public:
 
     virtual bool as_predicate() = 0;
     virtual std::string as_string() = 0;
+    virtual std::string get_type() = 0;
 
     ~Object() override = default;
 };

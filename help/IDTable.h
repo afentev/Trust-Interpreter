@@ -15,7 +15,7 @@ public:
     uint8_t get_scope();
     ~IDTable();
 private:
-    std::unordered_map<std::string, Identifier> identifiers;
+    std::unordered_map<std::string, std::stack<Identifier>> identifiers;
     std::stack<std::string> stack;
     uint8_t current_scope;
 };

@@ -93,6 +93,10 @@ std::string Boolean::as_string() {
     }
 }
 
+std::string Boolean::get_type() {
+    return "bool";
+}
+
 void Boolean::accept(Visitor* visitor) {
     visitor->visit(shared_from_this());
 }

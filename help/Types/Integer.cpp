@@ -87,6 +87,10 @@ std::string Integer::as_string() {
     return std::to_string(number);
 }
 
+std::string Integer::get_type() {
+    return "i32";
+}
+
 void Integer::accept(Visitor* visitor) {
     visitor->visit(shared_from_this());
 }

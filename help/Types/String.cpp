@@ -88,6 +88,10 @@ std::string String::as_string() {
     return string;
 }
 
+std::string String::get_type() {
+    return "String";
+}
+
 void String::accept(Visitor* visitor) {
     visitor->visit(shared_from_this());
 }

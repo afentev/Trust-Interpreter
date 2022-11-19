@@ -1,7 +1,6 @@
 #include "Visitor.h"
 #include <iostream>
 #include <algorithm>
-#include <iomanip>
 
 #include "help/Statements/Statements.h"
 #include "help/Program.h"
@@ -31,6 +30,7 @@
 #include "help/Statements/Iterator.h"
 #include "help/Statements/VariableDeclaration.h"
 #include "help/Statements/VariableDeclInit.h"
+#include "help/Statements/TypelessVariableDecl.h"
 #include "help/Statements/AssignmentStatement.h"
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
@@ -228,10 +228,14 @@ void Visitor::visit(std::shared_ptr<IDExpression> expression) {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Visitor::visit(std::shared_ptr<Statements> expression) {
+    variables.add_scope();
+
     auto statements = expression->get_statements();
     for (const auto& statement: statements) {
         statement->accept(this);
     }
+
+    variables.left_scope();
     std::cout << "Visit Statements!" << std::endl;
 }
 
@@ -250,38 +254,63 @@ void Visitor::visit(std::shared_ptr<VariableDeclInit> expression) {
     std::cout << "Visit VariableDeclInit!" << std::endl;
 }
 
+void Visitor::visit(std::shared_ptr<TypelessVariableDecl> expression) {
+    expression->get_value()->accept(this);
+    Identifier var(create_object(object->get_type()), variables.get_scope(),
+                   expression->is_const(), true);
+    object->assign_into(var.get_object());
+    variables.add_identifier(expression->get_name(), var);
+    std::cout << "Visit TypelessVariableDecl!" << std::endl;
+}
+
 void Visitor::visit(std::shared_ptr<WhileStatement> expression) {
     expression->get_condition()->accept(this);
     while (object->as_predicate()) {
+        variables.add_scope();
+
         try {
             expression->get_statement()->accept(this);
         } catch (BreakInterruption&) {
+            variables.left_scope();
             break;
         } catch (ContinueInterruption&) {}
+
+        variables.left_scope();
         expression->get_condition()->accept(this);
     }
     std::cout << "Visit WhileStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<IfStatement> expression) {
+    variables.add_scope();
+
     expression->get_condition()->accept(this);
     if (object->as_predicate()) {
         expression->get_statement()->accept(this);
     }
+
+    variables.left_scope();
     std::cout << "Visit IfStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<IfElseStatement> expression) {
+    variables.add_scope();
+
     expression->get_condition()->accept(this);
     if (object->as_predicate()) {
         expression->get_true_statement()->accept(this);
     } else {
         expression->get_false_statement()->accept(this);
     }
+
+    variables.left_scope();
     std::cout << "Visit IfElseStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<ForStatement> expression) {
+    variables.add_scope();
+
+    variables.left_scope();
     std::cout << "Visit ForStatement!" << std::endl;
 }
 

@@ -20,6 +20,7 @@
     class Statements;
     class VariableDeclaration;
     class VariableDeclInit;
+    class TypelessVariableDecl;
     class Boolean;
     class String;
     class Integer;
@@ -89,6 +90,7 @@
     #include "help/Statements/Iterator.h"
     #include "help/Statements/VariableDeclaration.h"
     #include "help/Statements/VariableDeclInit.h"
+    #include "help/Statements/TypelessVariableDecl.h"
     #include "help/Statements/AssignmentStatement.h"
     #include "help/Statements/ExpressionList.h"
     #include "help/Statements/PrintStatement.h"
@@ -219,10 +221,12 @@ let_statement:
 
 mut_let_statement:
     "let" "mut" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclInit>($3, $5, false, $7);}
-    | "let" "mut" "identifier" ":" type ";" {$$ = std::make_shared<VariableDeclaration>($3, $5);};
+    | "let" "mut" "identifier" ":" type ";" {$$ = std::make_shared<VariableDeclaration>($3, $5);}
+    | "let" "mut" "identifier" "=" expression ";" {$$ = std::make_shared<TypelessVariableDecl>($3, false, $5);};
 
 const_let_statement:
-    "let" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclInit>($2, $4, true, $6);};
+    "let" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclInit>($2, $4, true, $6);}
+    | "let" "identifier" "=" expression ";" {$$ = std::make_shared<TypelessVariableDecl>($2, true, $4);};
 
 iterator:
     expression ".." expression {}

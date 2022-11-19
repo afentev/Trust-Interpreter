@@ -12,6 +12,7 @@ class Statement;
 class Statements;
 class VariableDeclaration;
 class VariableDeclInit;
+class TypelessVariableDecl;
 class Boolean;
 class String;
 class Integer;
@@ -71,6 +72,7 @@ public:
     virtual void visit(std::shared_ptr<Statements> expression);
     virtual void visit(std::shared_ptr<VariableDeclaration> expression);
     virtual void visit(std::shared_ptr<VariableDeclInit> expression);
+    virtual void visit(std::shared_ptr<TypelessVariableDecl> expression);
     virtual void visit(std::shared_ptr<WhileStatement> expression);
     virtual void visit(std::shared_ptr<IfStatement> expression);
     virtual void visit(std::shared_ptr<IfElseStatement> expression);

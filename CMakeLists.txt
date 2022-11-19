@@ -82,6 +82,6 @@ add_executable(
     main.cpp
     driver.cpp
     ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS})
+    ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp help/Statements/TypelessVariableDecl.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})
