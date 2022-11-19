@@ -29,6 +29,7 @@ public:
     std::shared_ptr<Boolean> operator! () override;
     std::shared_ptr<Object> operator- () override;
     bool as_predicate() override;
+    std::string as_string() override;
     void accept(Visitor* visitor) override;
     ~String() override;
 

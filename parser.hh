@@ -86,8 +86,10 @@
     class ForStatement;
     class Iterator;
     class AssignmentStatement;
+    class ExpressionList;
+    class PrintStatement;
 
-#line 91 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 93 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -227,7 +229,7 @@
 #endif
 
 namespace yy {
-#line 231 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 233 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
@@ -452,25 +454,32 @@ namespace yy {
       // expression
       char dummy2[sizeof (std::shared_ptr<Expression>)];
 
+      // expression_list
+      char dummy3[sizeof (std::shared_ptr<ExpressionList>)];
+
       // iterator
-      char dummy3[sizeof (std::shared_ptr<Iterator>)];
+      char dummy4[sizeof (std::shared_ptr<Iterator>)];
+
+      // print_statement
+      char dummy5[sizeof (std::shared_ptr<PrintStatement>)];
 
       // program
-      char dummy4[sizeof (std::shared_ptr<Program>)];
+      char dummy6[sizeof (std::shared_ptr<Program>)];
 
       // statement
       // if_statement
       // let_statement
       // mut_let_statement
       // const_let_statement
-      char dummy5[sizeof (std::shared_ptr<Statement>)];
+      char dummy7[sizeof (std::shared_ptr<Statement>)];
 
       // statements
-      char dummy6[sizeof (std::shared_ptr<Statements>)];
+      char dummy8[sizeof (std::shared_ptr<Statements>)];
 
       // "identifier"
+      // "string_literal"
       // type
-      char dummy7[sizeof (std::string)];
+      char dummy9[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -555,15 +564,19 @@ namespace yy {
     TOK_LESS = 287,                // "<"
     TOK_LEEQ = 288,                // "<="
     TOK_SEMICOLON = 289,           // ";"
-    TOK_IF = 290,                  // "if"
-    TOK_ELSE = 291,                // "else"
-    TOK_TRUE = 292,                // "true"
-    TOK_FALSE = 293,               // "false"
-    TOK_INT32 = 294,               // "i32"
-    TOK_STRING = 295,              // "String"
-    TOK_BOOL = 296,                // "bool"
-    TOK_IDENTIFIER = 297,          // "identifier"
-    TOK_NUMBER = 298               // "number"
+    TOK_COMMA = 290,               // ","
+    TOK_IF = 291,                  // "if"
+    TOK_ELSE = 292,                // "else"
+    TOK_TRUE = 293,                // "true"
+    TOK_FALSE = 294,               // "false"
+    TOK_INT32 = 295,               // "i32"
+    TOK_STRING = 296,              // "String"
+    TOK_BOOL = 297,                // "bool"
+    TOK_PRINT = 298,               // "print!"
+    TOK_PRINTLN = 299,             // "println!"
+    TOK_IDENTIFIER = 300,          // "identifier"
+    TOK_NUMBER = 301,              // "number"
+    TOK_STRLITERAL = 302           // "string_literal"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -580,7 +593,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 44, ///< Number of tokens.
+        YYNTOKENS = 48, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -617,26 +630,32 @@ namespace yy {
         S_LESS = 32,                             // "<"
         S_LEEQ = 33,                             // "<="
         S_SEMICOLON = 34,                        // ";"
-        S_IF = 35,                               // "if"
-        S_ELSE = 36,                             // "else"
-        S_TRUE = 37,                             // "true"
-        S_FALSE = 38,                            // "false"
-        S_INT32 = 39,                            // "i32"
-        S_STRING = 40,                           // "String"
-        S_BOOL = 41,                             // "bool"
-        S_IDENTIFIER = 42,                       // "identifier"
-        S_NUMBER = 43,                           // "number"
-        S_YYACCEPT = 44,                         // $accept
-        S_program = 45,                          // program
-        S_statements = 46,                       // statements
-        S_statement = 47,                        // statement
-        S_if_statement = 48,                     // if_statement
-        S_let_statement = 49,                    // let_statement
-        S_mut_let_statement = 50,                // mut_let_statement
-        S_const_let_statement = 51,              // const_let_statement
-        S_iterator = 52,                         // iterator
-        S_type = 53,                             // type
-        S_expression = 54                        // expression
+        S_COMMA = 35,                            // ","
+        S_IF = 36,                               // "if"
+        S_ELSE = 37,                             // "else"
+        S_TRUE = 38,                             // "true"
+        S_FALSE = 39,                            // "false"
+        S_INT32 = 40,                            // "i32"
+        S_STRING = 41,                           // "String"
+        S_BOOL = 42,                             // "bool"
+        S_PRINT = 43,                            // "print!"
+        S_PRINTLN = 44,                          // "println!"
+        S_IDENTIFIER = 45,                       // "identifier"
+        S_NUMBER = 46,                           // "number"
+        S_STRLITERAL = 47,                       // "string_literal"
+        S_YYACCEPT = 48,                         // $accept
+        S_program = 49,                          // program
+        S_statements = 50,                       // statements
+        S_statement = 51,                        // statement
+        S_print_statement = 52,                  // print_statement
+        S_if_statement = 53,                     // if_statement
+        S_let_statement = 54,                    // let_statement
+        S_mut_let_statement = 55,                // mut_let_statement
+        S_const_let_statement = 56,              // const_let_statement
+        S_iterator = 57,                         // iterator
+        S_type = 58,                             // type
+        S_expression = 59,                       // expression
+        S_expression_list = 60                   // expression_list
       };
     };
 
@@ -681,8 +700,16 @@ namespace yy {
         value.move< std::shared_ptr<Expression> > (std::move (that.value));
         break;
 
+      case symbol_kind::S_expression_list: // expression_list
+        value.move< std::shared_ptr<ExpressionList> > (std::move (that.value));
+        break;
+
       case symbol_kind::S_iterator: // iterator
         value.move< std::shared_ptr<Iterator> > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_print_statement: // print_statement
+        value.move< std::shared_ptr<PrintStatement> > (std::move (that.value));
         break;
 
       case symbol_kind::S_program: // program
@@ -702,6 +729,7 @@ namespace yy {
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_type: // type
         value.move< std::string > (std::move (that.value));
         break;
@@ -758,6 +786,20 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ExpressionList>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ExpressionList>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, std::shared_ptr<Iterator>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -765,6 +807,20 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const std::shared_ptr<Iterator>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<PrintStatement>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<PrintStatement>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -859,8 +915,16 @@ switch (yykind)
         value.template destroy< std::shared_ptr<Expression> > ();
         break;
 
+      case symbol_kind::S_expression_list: // expression_list
+        value.template destroy< std::shared_ptr<ExpressionList> > ();
+        break;
+
       case symbol_kind::S_iterator: // iterator
         value.template destroy< std::shared_ptr<Iterator> > ();
+        break;
+
+      case symbol_kind::S_print_statement: // print_statement
+        value.template destroy< std::shared_ptr<PrintStatement> > ();
         break;
 
       case symbol_kind::S_program: // program
@@ -880,6 +944,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_type: // type
         value.template destroy< std::string > ();
         break;
@@ -982,7 +1047,7 @@ switch (yykind)
       {
 #if !defined _MSC_VER || defined __clang__
         YY_ASSERT (tok == token::TOK_END
-                   || (token::TOK_YYerror <= tok && tok <= token::TOK_BOOL));
+                   || (token::TOK_YYerror <= tok && tok <= token::TOK_PRINTLN));
 #endif
       }
 #if 201103L <= YY_CPLUSPLUS
@@ -1006,7 +1071,8 @@ switch (yykind)
 #endif
       {
 #if !defined _MSC_VER || defined __clang__
-        YY_ASSERT (tok == token::TOK_IDENTIFIER);
+        YY_ASSERT (tok == token::TOK_IDENTIFIER
+                   || tok == token::TOK_STRLITERAL);
 #endif
       }
     };
@@ -1585,6 +1651,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_COMMA (location_type l)
+      {
+        return symbol_type (token::TOK_COMMA, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_COMMA (const location_type& l)
+      {
+        return symbol_type (token::TOK_COMMA, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_IF (location_type l)
       {
         return symbol_type (token::TOK_IF, std::move (l));
@@ -1690,6 +1771,36 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_PRINT (location_type l)
+      {
+        return symbol_type (token::TOK_PRINT, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PRINT (const location_type& l)
+      {
+        return symbol_type (token::TOK_PRINT, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PRINTLN (location_type l)
+      {
+        return symbol_type (token::TOK_PRINTLN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PRINTLN (const location_type& l)
+      {
+        return symbol_type (token::TOK_PRINTLN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_IDENTIFIER (std::string v, location_type l)
       {
         return symbol_type (token::TOK_IDENTIFIER, std::move (v), std::move (l));
@@ -1715,6 +1826,21 @@ switch (yykind)
       make_NUMBER (const int& v, const location_type& l)
       {
         return symbol_type (token::TOK_NUMBER, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRLITERAL (std::string v, location_type l)
+      {
+        return symbol_type (token::TOK_STRLITERAL, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_STRLITERAL (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::TOK_STRLITERAL, v, l);
       }
 #endif
 
@@ -2047,8 +2173,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 443,     ///< Last index in yytable_.
-      yynnts_ = 11,  ///< Number of nonterminal symbols.
+      yylast_ = 487,     ///< Last index in yytable_.
+      yynnts_ = 13,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
 
@@ -2098,10 +2224,11 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42,    43
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47
     };
     // Last valid token kind.
-    const int code_max = 298;
+    const int code_max = 302;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2128,8 +2255,16 @@ switch (yykind)
         value.copy< std::shared_ptr<Expression> > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_expression_list: // expression_list
+        value.copy< std::shared_ptr<ExpressionList> > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_iterator: // iterator
         value.copy< std::shared_ptr<Iterator> > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_print_statement: // print_statement
+        value.copy< std::shared_ptr<PrintStatement> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_program: // program
@@ -2149,6 +2284,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_type: // type
         value.copy< std::string > (YY_MOVE (that.value));
         break;
@@ -2192,8 +2328,16 @@ switch (yykind)
         value.move< std::shared_ptr<Expression> > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_expression_list: // expression_list
+        value.move< std::shared_ptr<ExpressionList> > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_iterator: // iterator
         value.move< std::shared_ptr<Iterator> > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_print_statement: // print_statement
+        value.move< std::shared_ptr<PrintStatement> > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_program: // program
@@ -2213,6 +2357,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_type: // type
         value.move< std::string > (YY_MOVE (s.value));
         break;
@@ -2283,7 +2428,7 @@ switch (yykind)
 
 
 } // yy
-#line 2287 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 2432 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 

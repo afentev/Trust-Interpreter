@@ -80,6 +80,6 @@ add_executable(
     main.cpp
     driver.cpp
     ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS} )
+    ${FLEX_MyScanner_OUTPUTS} help/Statements/ExpressionList.cpp help/Statements/ExpressionList.h help/Statements/PrintStatement.cpp help/Statements/PrintStatement.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

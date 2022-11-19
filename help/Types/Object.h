@@ -39,6 +39,7 @@ public:
     virtual std::shared_ptr<Boolean> operator! () = 0;
 
     virtual bool as_predicate() = 0;
+    virtual std::string as_string() = 0;
 
     ~Object() override = default;
 };

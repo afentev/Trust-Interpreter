@@ -1,5 +1,7 @@
 #include "Visitor.h"
 #include <iostream>
+#include <algorithm>
+#include <iomanip>
 
 #include "help/Statements/Statements.h"
 #include "help/Program.h"
@@ -30,6 +32,8 @@
 #include "help/Statements/VariableDeclaration.h"
 #include "help/Statements/VariableDeclInit.h"
 #include "help/Statements/AssignmentStatement.h"
+#include "help/Statements/ExpressionList.h"
+#include "help/Statements/PrintStatement.h"
 
 void Visitor::visit(std::shared_ptr<Program> program) {
     program->get_statements()->accept(this);
@@ -217,7 +221,7 @@ void Visitor::visit(std::shared_ptr<LessExpression> expression) {
 
 void Visitor::visit(std::shared_ptr<IDExpression> expression) {
     object = variables.get_identifier(expression->get_id());
-    std::cout << "Visit IDExpression!" << std::endl;
+    //std::cout << "Visit IDExpression!" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +242,9 @@ void Visitor::visit(std::shared_ptr<VariableDeclaration> expression) {
 
 void Visitor::visit(std::shared_ptr<VariableDeclInit> expression) {
     expression->get_value()->accept(this);
-    Identifier var(object, variables.get_scope(), expression->is_const(), true);
+    Identifier var(create_object(expression->get_type()), variables.get_scope(),
+                   expression->is_const(), true);
+    object->assign_into(var.get_object());
     variables.add_identifier(expression->get_name(), var);
     std::cout << "Visit VariableDeclInit!" << std::endl;
 }
@@ -280,9 +286,40 @@ void Visitor::visit(std::shared_ptr<Iterator> expression) {
 
 void Visitor::visit(std::shared_ptr<AssignmentStatement> expression) {
     expression->get_expression()->accept(this);
-    std::shared_ptr<Object> hz = variables.get_identifier(expression->get_identifier());
     variables.mut_identifier(expression->get_identifier(), object);
     std::cout << "Visit AssignmentStatement!" << std::endl;
+}
+
+void Visitor::visit(std::shared_ptr<ExpressionList> expression) {
+    std::cout << "Visit ExpressionList!" << std::endl;
+}
+
+void Visitor::visit(std::shared_ptr<PrintStatement> expression) {
+    size_t prev = 1;
+    size_t index;
+    std::string string = PrintStatement::remove_escape_chars(expression->get_string());
+    size_t sub_number = 0;
+    while ((index = string.find("{}", prev)) != std::string::npos) {
+        std::cout << string.substr(prev, index - prev);
+
+        std::shared_ptr<Expression> value = expression->get_substitution(sub_number);
+        value->accept(this);
+        ++sub_number;
+        std::cout << object->as_string();
+
+        prev = index + 2;
+    }
+    std::cout << string.substr(prev, string.size() - prev - 1);
+    if (expression->newline()) {
+        std::cout << "\n";
+    }
+    std::cout.flush();
+
+    if (sub_number != expression->subs_number()) {
+        throw "More values than slots were provided";
+    }
+
+    std::cout << "Visit PrintStatement!" << std::endl;
 }
 
 Visitor::~Visitor() = default;

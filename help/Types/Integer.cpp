@@ -83,6 +83,10 @@ bool Integer::as_predicate() {
     throw "Invalid usage of type integer in condition";
 }
 
+std::string Integer::as_string() {
+    return std::to_string(number);
+}
+
 void Integer::accept(Visitor* visitor) {
     visitor->visit(shared_from_this());
 }

@@ -84,6 +84,10 @@ bool String::as_predicate() {
     throw "Invalid usage of type string in condition";
 }
 
+std::string String::as_string() {
+    return string;
+}
+
 void String::accept(Visitor* visitor) {
     visitor->visit(shared_from_this());
 }

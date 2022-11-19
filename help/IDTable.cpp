@@ -20,6 +20,9 @@ void IDTable::add_identifier(const std::string& name, const Identifier& id) {
 
 void IDTable::mut_identifier(const std::string& name, std::shared_ptr<Object> value) {
     Identifier& object = identifiers.at(name);
+    if (object.get_constantness()) {
+        throw "Attempt of modifying non-mut identifier";
+    }
     object.set_object(std::move(value));
     object.set_initialised(true);
 }

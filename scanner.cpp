@@ -393,8 +393,8 @@ int yyFlexLexer::yylex()
 /* %% [3.0] code to copy yytext_ptr to yytext[] goes here, if %array \ */\
 	(yy_c_buf_p) = yy_cp;
 /* %% [4.0] data tables for the DFA and the user's section 1 definitions go here */
-#define YY_NUM_RULES 43
-#define YY_END_OF_BUFFER 44
+#define YY_NUM_RULES 47
+#define YY_END_OF_BUFFER 48
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -402,17 +402,20 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[90] =
+static const flex_int16_t yy_accept[104] =
     {   0,
-        0,    0,   44,   42,    1,    2,   22,   42,   20,   21,
-       16,   15,   14,   42,   17,   40,    8,   24,   37,   23,
-       32,   41,   41,   41,   41,   41,   41,   41,   41,   41,
-       41,   41,   18,   42,   19,    1,    2,   35,   38,   30,
-       40,   36,   34,   33,   41,   41,   41,   41,   41,    6,
-       41,   41,   25,   29,   41,   41,   41,   41,   41,   41,
-       39,   31,   41,   41,   41,   41,   28,    9,    3,   41,
-        4,   41,   41,   41,   41,   11,   26,   41,    7,   41,
-       12,   41,   41,   13,   41,   27,   10,    5,    0
+        0,    0,   48,   46,    1,    2,   22,   46,   46,   20,
+       21,   16,   15,   25,   14,   46,   17,   44,    8,   24,
+       38,   23,   33,   45,   45,   45,   45,   45,   45,   45,
+       45,   45,   45,   45,   45,   18,   46,   19,    1,    2,
+       36,    0,   43,    0,   39,   31,   44,   37,   35,   34,
+       45,   45,   45,   45,   45,    6,   45,   45,   26,   30,
+       45,   45,   45,   45,   45,   45,   45,   40,   32,   45,
+       45,   45,   45,   29,    9,    3,   45,    4,   45,   45,
+       45,   45,   45,   11,   27,   45,    7,   45,   45,   12,
+       45,   45,   13,   45,   45,   28,   10,   41,   45,    5,
+
+       45,   42,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -420,17 +423,17 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    4,    1,    1,    1,    1,    5,    1,    6,
-        7,    8,    9,    1,   10,   11,   12,   13,   13,   14,
-       15,   13,   13,   13,   13,   13,   13,   16,   17,   18,
-       19,   20,    1,    1,   21,   21,   21,   21,   21,   21,
-       21,   21,   21,   21,   21,   21,   21,   21,   21,   21,
-       21,   21,   22,   21,   21,   21,   21,   21,   21,   21,
-        1,    1,    1,    1,   23,    1,   24,   25,   21,   21,
+        1,    2,    4,    5,    1,    1,    1,    6,    1,    7,
+        8,    9,   10,   11,   12,   13,   14,   15,   15,   16,
+       17,   15,   15,   15,   15,   15,   15,   18,   19,   20,
+       21,   22,    1,    1,   23,   23,   23,   23,   23,   23,
+       23,   23,   23,   23,   23,   23,   23,   23,   23,   23,
+       23,   23,   24,   23,   23,   23,   23,   23,   23,   23,
+        1,   25,    1,    1,   26,    1,   27,   28,   23,   23,
 
-       26,   27,   28,   29,   30,   21,   21,   31,   32,   33,
-       34,   21,   21,   35,   36,   37,   38,   21,   39,   21,
-       21,   21,   40,   41,   42,    1,    1,    1,    1,    1,
+       29,   30,   31,   32,   33,   23,   23,   34,   35,   36,
+       37,   38,   23,   39,   40,   41,   42,   23,   43,   23,
+       23,   23,   44,   45,   46,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -447,88 +450,98 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[43] =
+static const YY_CHAR yy_meta[47] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    2,    2,    2,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    2,    2,    2,    1,    1,    1,
+        1,    1,    2,    2,    1,    2,    2,    2,    2,    2,
         2,    2,    2,    2,    2,    2,    2,    2,    2,    2,
-        2,    2,    2,    2,    2,    2,    2,    2,    2,    1,
-        1,    1
+        2,    2,    2,    1,    1,    1
     } ;
 
-static const flex_int16_t yy_base[91] =
+static const flex_int16_t yy_base[106] =
     {   0,
-        0,    0,  103,  104,  100,   98,   81,   94,  104,  104,
-      104,  104,  104,   87,  104,   30,  104,  104,   78,   77,
-       76,    0,   57,   59,   61,   22,   32,   65,   24,   64,
-       54,   59,  104,   46,  104,   84,   82,  104,  104,   65,
-       36,  104,  104,  104,    0,   48,   48,   45,   49,    0,
-       44,   64,    0,    0,   40,   46,   38,   37,   35,   42,
-      104,  104,   41,   39,   43,   32,    0,    0,    0,   34,
-        0,   28,   38,   32,   28,    0,    0,   34,    0,   23,
-        0,   31,   26,    0,   20,    0,    0,    0,  104,   50
+        0,    0,  122,  123,  119,  117,   98,   42,  112,  123,
+      123,  123,  123,  123,  123,  104,  123,   33,  123,  123,
+       95,   94,   93,    0,   72,   75,   77,   24,   35,   81,
+       26,   70,   79,   68,   74,  123,   60,  123,  102,  100,
+      123,   49,  123,   99,  123,   80,   40,  123,  123,  123,
+        0,   61,   62,   58,   63,    0,   57,   79,    0,    0,
+       53,   60,   51,   58,   46,   44,   52,  123,  123,   51,
+       49,   53,   41,    0,    0,    0,   44,    0,   43,   36,
+       48,   42,   39,    0,    0,   44,    0,   31,   31,    0,
+       40,   35,    0,   54,   28,    0,    0,  123,   27,    0,
+
+       58,  123,  123,   88,   57
     } ;
 
-static const flex_int16_t yy_def[91] =
+static const flex_int16_t yy_def[106] =
     {   0,
-       89,    1,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   90,   90,   90,   90,   90,   90,   90,   90,   90,
-       90,   90,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   90,   90,   90,   90,   90,   90,
-       90,   90,   90,   90,   90,   90,   90,   90,   90,   90,
-       89,   89,   90,   90,   90,   90,   90,   90,   90,   90,
-       90,   90,   90,   90,   90,   90,   90,   90,   90,   90,
-       90,   90,   90,   90,   90,   90,   90,   90,    0,   89
+      103,    1,  103,  103,  103,  103,  103,  104,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  105,  105,  105,  105,  105,  105,  105,
+      105,  105,  105,  105,  105,  103,  103,  103,  103,  103,
+      103,  104,  103,  104,  103,  103,  103,  103,  103,  103,
+      105,  105,  105,  105,  105,  105,  105,  105,  105,  105,
+      105,  105,  105,  105,  105,  105,  105,  103,  103,  105,
+      105,  105,  105,  105,  105,  105,  105,  105,  105,  105,
+      105,  105,  105,  105,  105,  105,  105,  105,  105,  105,
+      105,  105,  105,  105,  105,  105,  105,  103,  105,  105,
+
+      105,  103,    0,  103,  103
     } ;
 
-static const flex_int16_t yy_nxt[147] =
+static const flex_int16_t yy_nxt[170] =
     {   0,
         4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
-       14,   15,   16,   16,   16,   17,   18,   19,   20,   21,
-       22,   23,    4,   22,   24,   25,   26,   22,   22,   27,
-       28,   29,   22,   22,   30,   22,   31,   22,   32,   33,
-       34,   35,   41,   41,   41,   49,   52,   56,   41,   41,
-       41,   45,   88,   87,   50,   51,   86,   85,   53,   84,
-       83,   57,   82,   81,   54,   80,   79,   78,   77,   76,
-       75,   74,   73,   72,   71,   70,   69,   68,   67,   66,
-       65,   64,   63,   62,   37,   36,   61,   60,   59,   58,
-       55,   48,   47,   46,   44,   43,   42,   40,   39,   38,
+       14,   15,   16,   17,   18,   18,   18,   19,   20,   21,
+       22,   23,   24,   25,    4,    4,   24,   26,   27,   28,
+       24,   24,   29,   30,   31,   24,   24,   32,   33,   24,
+       34,   24,   35,   36,   37,   38,   43,   47,   47,   47,
+       55,   58,   62,   43,   47,   47,   47,   98,   51,   56,
+       57,  102,  101,  100,   59,   97,   44,   63,   96,   95,
+       60,   94,   93,   44,   92,   91,   90,   89,   88,   87,
+       86,   85,   84,   83,   82,   81,   80,   99,   42,   42,
+       79,   78,   77,   76,   75,   74,   73,   72,   71,   70,
 
-       37,   36,   89,    3,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89
+       69,  103,   40,   39,   68,   67,   66,   65,   64,   61,
+       54,   53,   52,   50,   49,   48,   46,   45,   41,   40,
+       39,  103,    3,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103
     } ;
 
-static const flex_int16_t yy_chk[147] =
+static const flex_int16_t yy_chk[170] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,   16,   16,   16,   26,   27,   29,   41,   41,
-       41,   90,   85,   83,   26,   26,   82,   80,   27,   78,
-       75,   29,   74,   73,   27,   72,   70,   66,   65,   64,
-       63,   60,   59,   58,   57,   56,   55,   52,   51,   49,
-       48,   47,   46,   40,   37,   36,   34,   32,   31,   30,
-       28,   25,   24,   23,   21,   20,   19,   14,    8,    7,
+        1,    1,    1,    1,    1,    1,    8,   18,   18,   18,
+       28,   29,   31,   42,   47,   47,   47,   94,  105,   28,
+       28,  101,   99,   95,   29,   92,    8,   31,   91,   89,
+       29,   88,   86,   42,   83,   82,   81,   80,   79,   77,
+       73,   72,   71,   70,   67,   66,   65,   94,  104,  104,
+       64,   63,   62,   61,   58,   57,   55,   54,   53,   52,
 
-        6,    5,    3,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89,   89,   89,   89,   89,
-       89,   89,   89,   89,   89,   89
+       46,   44,   40,   39,   37,   35,   34,   33,   32,   30,
+       27,   26,   25,   23,   22,   21,   16,    9,    7,    6,
+        5,    3,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103,  103,
+      103,  103,  103,  103,  103,  103,  103,  103,  103
     } ;
 
-static const flex_int16_t yy_rule_linenum[43] =
+static const flex_int16_t yy_rule_linenum[47] =
     {   0,
-       60,   66,   74,   75,   76,   77,   78,   79,   80,   81,
-       82,   83,   84,   85,   88,   89,   90,   91,   92,   93,
-       94,   95,   96,   97,   98,   99,  100,  101,  102,  103,
-      104,  105,  106,  107,  108,  109,  110,  111,  112,  114,
-      115,  121
+       61,   67,   75,   76,   77,   78,   79,   80,   81,   82,
+       83,   84,   85,   86,   89,   90,   91,   92,   93,   94,
+       95,   96,   97,   98,   99,  100,  101,  102,  103,  104,
+      105,  106,  107,  108,  109,  110,  111,  112,  113,  114,
+      115,  116,  118,  119,  120,  126
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -548,7 +561,7 @@ static const flex_int16_t yy_rule_linenum[43] =
     #include <iostream>
     #include "driver.hh"
     #include "parser.hh"
-#line 551 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
+#line 564 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
 #define YY_NO_INPUT 1
 #line 18 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
   // Code definitions at the end of scanner.cpp
@@ -565,12 +578,12 @@ static const flex_int16_t yy_rule_linenum[43] =
     }
     driver.location.columns(yyleng);
   }
-#line 568 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
-#line 39 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 581 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
+#line 40 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
   // Code run each time a pattern is matched.
   #define YY_USER_ACTION UpdateLocation();
-#line 572 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
-#line 573 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
+#line 585 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
+#line 586 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
 
 #define INITIAL 0
 
@@ -762,12 +775,12 @@ YY_DECL
 
 	{
 /* %% [7.0] user's declarations go here */
-#line 43 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 44 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 
 
 
 
-#line 48 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 49 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
   // A handy shortcut to the location held by the driver.
   yy::location& loc = driver.location;
   if (driver.location_debug) {
@@ -780,7 +793,7 @@ YY_DECL
   }
 
 
-#line 783 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
+#line 796 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -809,13 +822,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 90 )
+				if ( yy_current_state >= 104 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 89 );
+		while ( yy_current_state != 103 );
 		yy_cp = (yy_last_accepting_cpos);
 		yy_current_state = (yy_last_accepting_state);
 
@@ -834,12 +847,12 @@ do_action:	/* This label is used only to access EOF actions. */
 			{
 			if ( yy_act == 0 )
 				std::cerr << "--scanner backing up\n";
-			else if ( yy_act < 43 )
+			else if ( yy_act < 47 )
 				std::cerr << "--accepting rule at line " << yy_rule_linenum[yy_act] <<
 				         "(\"" << yytext << "\")\n";
-			else if ( yy_act == 43 )
+			else if ( yy_act == 47 )
 				std::cerr << "--accepting default rule (\"" << yytext << "\")\n";
-			else if ( yy_act == 44 )
+			else if ( yy_act == 48 )
 				std::cerr << "--(end of buffer or a NUL)\n";
 			else
 				std::cerr << "--EOF (start condition " << YY_START << ")\n";
@@ -857,7 +870,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 60 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 61 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 {
     if (driver.location_debug) {
         std::cerr << "Blank matched" << std::endl;
@@ -868,7 +881,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 66 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 67 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 {
     if (driver.location_debug) {
         std::cerr << "EOL called" << std::endl;
@@ -879,199 +892,220 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 74 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 75 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_LET(loc);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 75 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 76 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_MUT(loc);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 76 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 77 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_RETURN(loc);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 77 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 78 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_FN(loc);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 78 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 79 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_MAIN(loc);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 79 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 80 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_COLON(loc);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 80 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 81 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_INT32(loc);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 81 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 82 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_STRING(loc);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 82 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 83 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_BOOL(loc);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 83 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 84 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_TRUE(loc);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 84 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 85 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_FALSE(loc);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 85 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 86 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 {
               return yy::parser::make_MINUS  (loc);
            }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 88 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 89 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_PLUS   (loc);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 89 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 90 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_STAR   (loc);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 90 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 91 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_SLASH  (loc);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 91 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 92 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_LBRACE  (loc);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 92 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 93 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_RBRACE  (loc);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 93 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 94 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_LPAREN (loc);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 94 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 95 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_RPAREN (loc);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 95 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 96 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_NOT   (loc);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 96 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 97 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_ASSIGN (loc);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 97 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 98 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_SEMICOLON(loc);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 98 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_IF(loc);
+#line 99 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_COMMA(loc);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 99 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_ELSE(loc);
+#line 100 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_IF(loc);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 100 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_WHILE(loc);
+#line 101 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_ELSE(loc);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 101 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_FOR(loc);
+#line 102 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_WHILE(loc);
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 102 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_IN(loc);
+#line 103 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_FOR(loc);
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 103 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_RANGE(loc);
+#line 104 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_IN(loc);
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 104 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_RANGEEQ(loc);
+#line 105 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_RANGE(loc);
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 105 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_GREATER(loc);
+#line 106 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_RANGEEQ(loc);
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 106 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_GREQ(loc);
+#line 107 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_GREATER(loc);
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 107 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_EQUAL(loc);
+#line 108 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_GREQ(loc);
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 108 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_NEQUAL(loc);
+#line 109 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_EQUAL(loc);
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 109 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_LEEQ(loc);
+#line 110 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_NEQUAL(loc);
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 110 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_LESS(loc);
+#line 111 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_LEEQ(loc);
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 111 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_AND(loc);
+#line 112 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_LESS(loc);
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 112 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return yy::parser::make_OR(loc);
+#line 113 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_AND(loc);
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 114 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
-return make_NUMBER(yytext, loc);
+return yy::parser::make_OR(loc);
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 115 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_PRINT(loc);
+	YY_BREAK
+case 42:
+YY_RULE_SETUP
+#line 116 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_PRINTLN(loc);
+	YY_BREAK
+case 43:
+/* rule 43 can match eol */
+YY_RULE_SETUP
+#line 118 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return yy::parser::make_STRLITERAL(yytext, loc);
+	YY_BREAK
+case 44:
+YY_RULE_SETUP
+#line 119 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+return make_NUMBER(yytext, loc);
+	YY_BREAK
+case 45:
+YY_RULE_SETUP
+#line 120 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 {
                 if (driver.location_debug) {
                     std::cerr << "ID found " << yytext << std::endl;
@@ -1079,23 +1113,23 @@ YY_RULE_SETUP
                 return yy::parser::make_IDENTIFIER(yytext, loc);
            }
 	YY_BREAK
-case 42:
+case 46:
 YY_RULE_SETUP
-#line 121 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 126 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 {
                 throw yy::parser::syntax_error(loc, "invalid character: " + std::string(yytext));
            }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 124 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 129 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 return yy::parser::make_END (loc);
 	YY_BREAK
-case 43:
+case 47:
 YY_RULE_SETUP
-#line 125 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 130 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 ECHO;
 	YY_BREAK
-#line 1098 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
+#line 1132 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1533,7 +1567,7 @@ int yyFlexLexer::yy_get_next_buffer()
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 90 )
+			if ( yy_current_state >= 104 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1566,11 +1600,11 @@ int yyFlexLexer::yy_get_next_buffer()
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 90 )
+		if ( yy_current_state >= 104 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 89);
+	yy_is_jam = (yy_current_state == 103);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2212,7 +2246,7 @@ void yyfree (void * ptr )
 
 /* %ok-for-header */
 
-#line 125 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
+#line 130 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/scanner.l"
 
 
 yy::parser::symbol_type make_NUMBER(

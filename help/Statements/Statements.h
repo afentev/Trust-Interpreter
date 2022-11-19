@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <vector>
-#include "Statement.h"
+#include "help/Statements/Statement.h"
 
 class Statements: public Statement, public std::enable_shared_from_this<Statements> {
 public:
@@ -12,7 +12,7 @@ public:
 
     const std::vector<std::shared_ptr<Statement>>& get_statements();
 
-    ~Statements() override = default;
+    ~Statements() override;
 
 private:
     std::vector<std::shared_ptr<Statement>> statements;

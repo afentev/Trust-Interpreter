@@ -34,6 +34,7 @@
 id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 blank [ \t\r]
+string_literal \"([^\\\"]|\\.)*\"
 
 %{
   // Code run each time a pattern is matched.
@@ -94,6 +95,7 @@ blank [ \t\r]
 "!"        return yy::parser::make_NOT   (loc);
 "="        return yy::parser::make_ASSIGN (loc);
 ";"        return yy::parser::make_SEMICOLON(loc);
+","        return yy::parser::make_COMMA(loc);
 "if"       return yy::parser::make_IF(loc);
 "else"     return yy::parser::make_ELSE(loc);
 "while"    return yy::parser::make_WHILE(loc);
@@ -109,7 +111,10 @@ blank [ \t\r]
 "<"        return yy::parser::make_LESS(loc);
 "&&"       return yy::parser::make_AND(loc);
 "||"       return yy::parser::make_OR(loc);
+"print!"   return yy::parser::make_PRINT(loc);
+"println!" return yy::parser::make_PRINTLN(loc);
 
+{string_literal} return yy::parser::make_STRLITERAL(yytext, loc);
 {int}      return make_NUMBER(yytext, loc);
 {id}       {
                 if (driver.location_debug) {

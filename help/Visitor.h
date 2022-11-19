@@ -38,6 +38,8 @@ class IfElseStatement;
 class ForStatement;
 class Iterator;
 class AssignmentStatement;
+class ExpressionList;
+class PrintStatement;
 
 class Visitor {
 public:
@@ -73,7 +75,11 @@ public:
     virtual void visit(std::shared_ptr<ForStatement> expression);
     virtual void visit(std::shared_ptr<Iterator> expression);
     virtual void visit(std::shared_ptr<AssignmentStatement> expression);
+    virtual void visit(std::shared_ptr<ExpressionList> expression);
+    virtual void visit(std::shared_ptr<PrintStatement> expression);
     virtual ~Visitor();
+
+    void set_object(std::shared_ptr<Object> new_value);
 
 private:
     std::shared_ptr<Object> object;

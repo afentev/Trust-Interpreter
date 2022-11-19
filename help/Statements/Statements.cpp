@@ -11,3 +11,5 @@ const std::vector<std::shared_ptr<Statement>>& Statements::get_statements() {
 void Statements::add_statement(std::shared_ptr<Statement> statement) {
     statements.push_back(statement);
 }
+
+Statements::~Statements() = default;

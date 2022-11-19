@@ -46,6 +46,8 @@
     class ForStatement;
     class Iterator;
     class AssignmentStatement;
+    class ExpressionList;
+    class PrintStatement;
 }
 
 
@@ -86,6 +88,8 @@
     #include "help/Statements/VariableDeclaration.h"
     #include "help/Statements/VariableDeclInit.h"
     #include "help/Statements/AssignmentStatement.h"
+    #include "help/Statements/ExpressionList.h"
+    #include "help/Statements/PrintStatement.h"
 
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
@@ -136,6 +140,7 @@
     LESS "<"
     LEEQ "<="
     SEMICOLON ";"
+    COMMA ","
     IF "if"
     ELSE "else"
     TRUE "true"
@@ -143,10 +148,13 @@
     INT32 "i32"
     STRING "String"
     BOOL "bool"
+    PRINT "print!"
+    PRINTLN "println!"
 ;
 
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
+%token <std::string> STRLITERAL "string_literal"
 %nterm <std::shared_ptr<Expression>> expression
 %nterm <std::shared_ptr<Program>> program
 %nterm <std::shared_ptr<Statements>> statements;
@@ -156,6 +164,8 @@
 %nterm <std::shared_ptr<Statement>> const_let_statement;
 %nterm <std::shared_ptr<Statement>> if_statement;
 %nterm <std::shared_ptr<Iterator>> iterator;
+%nterm <std::shared_ptr<ExpressionList>> expression_list;
+%nterm <std::shared_ptr<PrintStatement>> print_statement;
 %nterm <std::string> type;
 
 // Prints output in parsing option for debugging location terminal
@@ -177,7 +187,7 @@ statements:
 statement:
     "{" statements "}" {$$ = $2;}
     | ";" {}
-    | "print!"
+    | print_statement {$$ = $1;}
     | let_statement {$$ = $1;}
     | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}
     | expression ";" {$$ = $1;}
@@ -185,6 +195,10 @@ statement:
     | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}
     | "for" "identifier" "in" iterator "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6);}
     | "return" ";" {};
+
+print_statement:
+    "print!" "(" "string_literal" expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $4, false);};
+    | "println!" "(" "string_literal" expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $4, true);};
 
 if_statement:
     "if" expression "{" statements "}" {$$ = std::make_shared<IfStatement>($2, $4);}
@@ -233,6 +247,10 @@ expression:
     | expression "%" expression {$$ = std::make_shared<ModExpression> ($1, $3);}
     | expression "+" expression {$$ = std::make_shared<PlusExpression> ($1, $3);}
     | expression "-" expression {$$ = std::make_shared<MinusExpression> ($1, $3);};
+
+expression_list:
+    %empty {$$ = std::make_shared<ExpressionList>();}
+    | expression_list "," expression {$1->add_expression($3); $$ = $1;};
 
 %left "=";
 %left "||";

@@ -85,6 +85,14 @@ bool Boolean::as_predicate() {
     return value;
 }
 
+std::string Boolean::as_string() {
+    if (value) {
+        return "true";
+    } else {
+        return "false";
+    }
+}
+
 void Boolean::accept(Visitor* visitor) {
     visitor->visit(shared_from_this());
 }
