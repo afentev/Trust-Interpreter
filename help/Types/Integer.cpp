@@ -2,16 +2,20 @@
 
 Integer::Integer(int32_t value): number(value) {};
 
-Object& Integer::operator=(const Boolean& other) {
+int32_t Integer::to_int () {
+    return number;
+}
+
+Integer& Integer::operator=(const Boolean& other) {
     throw "Can not assign bool to i32";
 }
 
-Object& Integer::operator=(const Integer& other) {
+Integer& Integer::operator=(const Integer& other) {
     number = other.number;
     return *this;
 }
 
-Object& Integer::operator=(const String& other) {
+Integer& Integer::operator=(const String& other) {
     throw "Can not assign String to i32";
 }
 
@@ -77,6 +81,10 @@ std::shared_ptr<Boolean> Integer::operator! () {
 
 std::shared_ptr<Object> Integer::operator- () {
     return std::make_shared<Integer>(-number);
+}
+
+std::shared_ptr<String> Integer::operator[](int32_t pos) {
+    throw "Invalid operand type for operator[]. String expected, but i32 found";
 }
 
 bool Integer::as_predicate() {

@@ -38,6 +38,8 @@ public:
     virtual std::shared_ptr<Boolean> operator|| (const Object& other) = 0;
     virtual std::shared_ptr<Boolean> operator! () = 0;
 
+    virtual std::shared_ptr<String> operator[] (int32_t pos) = 0;
+
     virtual bool as_predicate() = 0;
     virtual std::string as_string() = 0;
     virtual std::string get_type() = 0;

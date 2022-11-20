@@ -1,7 +1,9 @@
 #ifndef PARSEREXAMPLE_VISITOR_H
 #define PARSEREXAMPLE_VISITOR_H
 
+#include <iostream>
 #include <memory>
+#include "help/Statements/Interruptions/Interruptions.h"
 #include "help/IDTable.h"
 
 class Object;
@@ -37,7 +39,6 @@ class WhileStatement;
 class IfStatement;
 class IfElseStatement;
 class ForStatement;
-class Iterator;
 class AssignmentStatement;
 class ExpressionList;
 class PrintStatement;
@@ -46,46 +47,45 @@ class ContinueStatement;
 
 class Visitor {
 public:
-    virtual void visit(std::shared_ptr<Program> expression);
+    void visit(std::shared_ptr<Program> expression);
+    void visit(std::shared_ptr<Expression> expression);
 
-//    virtual std::shared_ptr<Object> visit(std::shared_ptr<Object> expression);
-    virtual void visit(std::shared_ptr<Boolean> expression);
-    virtual void visit(std::shared_ptr<Integer> expression);
-    virtual void visit(std::shared_ptr<String> expression);
-    virtual void visit(std::shared_ptr<NotExpression> expression);
-    virtual void visit(std::shared_ptr<AndExpression> expression);
-    virtual void visit(std::shared_ptr<OrExpression> expression);
-    virtual void visit(std::shared_ptr<DivExpression> expression);
-    virtual void visit(std::shared_ptr<MulExpression> expression);
-    virtual void visit(std::shared_ptr<ModExpression> expression);
-    virtual void visit(std::shared_ptr<PlusExpression> expression);
-    virtual void visit(std::shared_ptr<MinusExpression> expression);
-    virtual void visit(std::shared_ptr<UnaryMinusExpression> expression);
-    virtual void visit(std::shared_ptr<GreaterExpression> expression);
-    virtual void visit(std::shared_ptr<GreaterEqExpression> expression);
-    virtual void visit(std::shared_ptr<EqualExpression> expression);
-    virtual void visit(std::shared_ptr<NotEqualExpression> expression);
-    virtual void visit(std::shared_ptr<LessEqExpression> expression);
-    virtual void visit(std::shared_ptr<LessExpression> expression);
-    virtual void visit(std::shared_ptr<IDExpression> expression);
+    void visit(std::shared_ptr<Boolean> expression);
+    void visit(std::shared_ptr<Integer> expression);
+    void visit(std::shared_ptr<String> expression);
+    void visit(std::shared_ptr<NotExpression> expression);
+    void visit(std::shared_ptr<AndExpression> expression);
+    void visit(std::shared_ptr<OrExpression> expression);
+    void visit(std::shared_ptr<DivExpression> expression);
+    void visit(std::shared_ptr<MulExpression> expression);
+    void visit(std::shared_ptr<ModExpression> expression);
+    void visit(std::shared_ptr<PlusExpression> expression);
+    void visit(std::shared_ptr<MinusExpression> expression);
+    void visit(std::shared_ptr<UnaryMinusExpression> expression);
+    void visit(std::shared_ptr<GreaterExpression> expression);
+    void visit(std::shared_ptr<GreaterEqExpression> expression);
+    void visit(std::shared_ptr<EqualExpression> expression);
+    void visit(std::shared_ptr<NotEqualExpression> expression);
+    void visit(std::shared_ptr<LessEqExpression> expression);
+    void visit(std::shared_ptr<LessExpression> expression);
+    void visit(std::shared_ptr<IDExpression> expression);
 
-    virtual void visit(std::shared_ptr<Statements> expression);
-    virtual void visit(std::shared_ptr<VariableDeclaration> expression);
-    virtual void visit(std::shared_ptr<VariableDeclInit> expression);
-    virtual void visit(std::shared_ptr<TypelessVariableDecl> expression);
-    virtual void visit(std::shared_ptr<WhileStatement> expression);
-    virtual void visit(std::shared_ptr<IfStatement> expression);
-    virtual void visit(std::shared_ptr<IfElseStatement> expression);
-    virtual void visit(std::shared_ptr<ForStatement> expression);
-    virtual void visit(std::shared_ptr<Iterator> expression);
-    virtual void visit(std::shared_ptr<AssignmentStatement> expression);
-    virtual void visit(std::shared_ptr<ExpressionList> expression);
-    virtual void visit(std::shared_ptr<PrintStatement> expression);
-    virtual void visit(std::shared_ptr<BreakStatement> expression);
-    virtual void visit(std::shared_ptr<ContinueStatement> expression);
-    virtual ~Visitor();
+    void visit(std::shared_ptr<Statements> expression);
+    void visit(std::shared_ptr<VariableDeclaration> expression);
+    void visit(std::shared_ptr<VariableDeclInit> expression);
+    void visit(std::shared_ptr<TypelessVariableDecl> expression);
+    void visit(std::shared_ptr<WhileStatement> expression);
+    void visit(std::shared_ptr<IfStatement> expression);
+    void visit(std::shared_ptr<IfElseStatement> expression);
+    void visit(std::shared_ptr<ForStatement> expression);
+    void visit(std::shared_ptr<AssignmentStatement> expression);
+    void visit(std::shared_ptr<ExpressionList> expression);
+    void visit(std::shared_ptr<PrintStatement> expression);
+    void visit(std::shared_ptr<BreakStatement> expression);
+    void visit(std::shared_ptr<ContinueStatement> expression);
+    ~Visitor();
 
-    void set_object(std::shared_ptr<Object> new_value);
+    std::shared_ptr<Object> get_object();
 
 private:
     std::shared_ptr<Object> object;

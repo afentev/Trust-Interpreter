@@ -69,10 +69,10 @@ add_executable(
         help/Expressions/PlusExpression.cpp help/Expressions/MinusExpression.cpp
         help/Expressions/IDExpression.cpp help/Statements/ExpressionList.cpp
         help/Statements/PrintStatement.cpp help/Statements/Interruptions/BreakStatement.cpp
-        help/Statements/Interruptions/Interruptions.cpp help/Statements/Interruptions/ContinueStatement.cpp
+        help/Statements/Interruptions/ContinueStatement.cpp help/Statements/Interruptions/Interruptions.cpp
 
         help/Statements/WhileStatement.cpp help/Statements/IfStatement.cpp help/Statements/IfElseStatement.cpp
-        help/Statements/ForStatement.cpp help/Statements/Iterator.cpp help/Statements/AssignmentStatement.cpp
+        help/Statements/AssignmentStatement.cpp
 
         help/Statements/VariableDeclInit.cpp
         help/Visitor.cpp help/Statements/Statements.cpp help/Program.cpp help/Statements/VariableDeclaration.cpp
@@ -82,6 +82,6 @@ add_executable(
     main.cpp
     driver.cpp
     ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp help/Statements/TypelessVariableDecl.h)
+    ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

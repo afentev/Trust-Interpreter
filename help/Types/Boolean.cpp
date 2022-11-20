@@ -4,16 +4,16 @@ Boolean::Boolean(bool value): value(value) {
     ;
 }
 
-Object& Boolean::operator=(const Boolean& other) {
+Boolean& Boolean::operator=(const Boolean& other) {
     value = other.value;
     return *this;
 }
 
-Object& Boolean::operator=(const Integer& other) {
+Boolean& Boolean::operator=(const Integer& other) {
     throw "Can not assign i32 to bool";
 }
 
-Object& Boolean::operator=(const String& other) {
+Boolean& Boolean::operator=(const String& other) {
     throw "Can not assign String to bool";
 }
 
@@ -79,6 +79,10 @@ std::shared_ptr<Boolean> Boolean::operator! () {
 
 std::shared_ptr<Object> Boolean::operator- () {
     throw "Invalid operand type for operator&&. i32 expected, but bool found";
+}
+
+std::shared_ptr<String> Boolean::operator[](int32_t pos) {
+    throw "Invalid operand type for operator[]. String expected, but bool found";
 }
 
 bool Boolean::as_predicate() {

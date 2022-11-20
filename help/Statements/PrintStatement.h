@@ -16,7 +16,6 @@ public:
     size_t subs_number();
     void accept(Visitor *visitor) override;
 
-    static std::string remove_escape_chars(const std::string& string);
     ~PrintStatement();
 private:
     std::string format_string;

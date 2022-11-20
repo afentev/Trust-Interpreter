@@ -9,7 +9,7 @@ class IDTable {
 public:
     void add_scope();
     void left_scope();
-    void add_identifier(const std::string&, const Identifier&);
+    void add_identifier(const std::string&, std::shared_ptr<Object> obj, bool is_const, bool is_init);
     void mut_identifier(const std::string&, std::shared_ptr<Object>);
     std::shared_ptr<Object> get_identifier(const std::string&);
     uint8_t get_scope();

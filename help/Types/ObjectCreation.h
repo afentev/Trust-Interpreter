@@ -11,7 +11,7 @@ static std::shared_ptr<Object> create_object(std::string type) {
     } else if (type == "i32") {
         return std::make_shared<Integer>(0);
     } else if (type == "String") {
-        return std::make_shared<String>("");
+        return std::make_shared<String>(std::string(), false);
     } else {
         throw "Unexpected type name";
     }

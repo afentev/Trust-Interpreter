@@ -1,6 +1,7 @@
 #include "IDTable.h"
 
 #include <utility>
+#include "help/Types/ObjectCreation.h"
 
 void IDTable::add_scope() {
     ++current_scope;
@@ -14,7 +15,9 @@ void IDTable::left_scope() {
     }
 }
 
-void IDTable::add_identifier(const std::string& name, const Identifier& id) {
+void IDTable::add_identifier(const std::string& name, std::shared_ptr<Object> obj, bool is_const, bool is_init) {
+    Identifier id(create_object(obj->get_type()), get_scope(), is_const, is_init);
+    id.set_object(obj);
     stack.push(name);
     identifiers[name].push(id);
 }

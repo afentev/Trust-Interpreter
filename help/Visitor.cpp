@@ -1,6 +1,5 @@
 #include "Visitor.h"
 #include <iostream>
-#include <algorithm>
 
 #include "help/Statements/Statements.h"
 #include "help/Program.h"
@@ -27,18 +26,21 @@
 #include "help/Statements/IfStatement.h"
 #include "help/Statements/IfElseStatement.h"
 #include "help/Statements/ForStatement.h"
-#include "help/Statements/Iterator.h"
 #include "help/Statements/VariableDeclaration.h"
 #include "help/Statements/VariableDeclInit.h"
 #include "help/Statements/TypelessVariableDecl.h"
 #include "help/Statements/AssignmentStatement.h"
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
-#include "help/Statements/Interruptions/BreakStatement.h"
 
 void Visitor::visit(std::shared_ptr<Program> program) {
     program->get_statements()->accept(this);
     std::cout << "Visit program!" << std::endl;
+}
+
+void Visitor::visit(std::shared_ptr<Expression> expression) {
+    expression->accept(this);
+    std::cout << "Visit Expression!" << std::endl;
 }
 
 //std::shared_ptr<Object> Visitor::visit(std::shared_ptr<Object> expression) {
@@ -240,26 +242,19 @@ void Visitor::visit(std::shared_ptr<Statements> expression) {
 }
 
 void Visitor::visit(std::shared_ptr<VariableDeclaration> expression) {
-    Identifier var(create_object(expression->get_type()), variables.get_scope(), false, false);
-    variables.add_identifier(expression->get_name(), var);
+    variables.add_identifier(expression->get_name(), create_object(expression->get_type()), false, false);
     std::cout << "Visit VariableDeclaration!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<VariableDeclInit> expression) {
     expression->get_value()->accept(this);
-    Identifier var(create_object(expression->get_type()), variables.get_scope(),
-                   expression->is_const(), true);
-    object->assign_into(var.get_object());
-    variables.add_identifier(expression->get_name(), var);
+    variables.add_identifier(expression->get_name(), object, expression->is_const(), true);
     std::cout << "Visit VariableDeclInit!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<TypelessVariableDecl> expression) {
     expression->get_value()->accept(this);
-    Identifier var(create_object(object->get_type()), variables.get_scope(),
-                   expression->is_const(), true);
-    object->assign_into(var.get_object());
-    variables.add_identifier(expression->get_name(), var);
+    variables.add_identifier(expression->get_name(), object, expression->is_const(), true);
     std::cout << "Visit TypelessVariableDecl!" << std::endl;
 }
 
@@ -308,14 +303,25 @@ void Visitor::visit(std::shared_ptr<IfElseStatement> expression) {
 }
 
 void Visitor::visit(std::shared_ptr<ForStatement> expression) {
-    variables.add_scope();
+    expression->get_start()->accept(this);
+    int32_t begin = std::dynamic_pointer_cast<Integer>(object)->to_int();
 
-    variables.left_scope();
+    expression->get_end()->accept(this);
+    int32_t end = std::dynamic_pointer_cast<Integer>(object)->to_int();
+
+    // TODO: negative numbers?
+    for (int32_t current = begin; expression->get_inclusivity()? current <= end: current < end; ++current) {
+        variables.add_scope();
+        variables.add_identifier(expression->get_variable(), std::make_shared<Integer>(current), expression->is_var_const(), true);
+        try {
+            expression->get_statement()->accept(this);
+        } catch (BreakInterruption&) {
+            variables.left_scope();
+            break;
+        } catch (ContinueInterruption&) {}
+        variables.left_scope();
+    }
     std::cout << "Visit ForStatement!" << std::endl;
-}
-
-void Visitor::visit(std::shared_ptr<Iterator> expression) {
-    std::cout << "Visit Iterator!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<AssignmentStatement> expression) {
@@ -331,7 +337,7 @@ void Visitor::visit(std::shared_ptr<ExpressionList> expression) {
 void Visitor::visit(std::shared_ptr<PrintStatement> expression) {
     size_t prev = 1;
     size_t index;
-    std::string string = PrintStatement::remove_escape_chars(expression->get_string());
+    std::string string = String::remove_escape_chars(expression->get_string());
     size_t sub_number = 0;
     while ((index = string.find("{}", prev)) != std::string::npos) {
         std::cout << string.substr(prev, index - prev);
@@ -362,6 +368,10 @@ void Visitor::visit(std::shared_ptr<BreakStatement> expression) {
 
 void Visitor::visit(std::shared_ptr<ContinueStatement> expression) {
     throw ContinueInterruption();
+}
+
+std::shared_ptr<Object> Visitor::get_object() {
+    return object;
 }
 
 Visitor::~Visitor() = default;

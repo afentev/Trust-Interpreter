@@ -45,7 +45,6 @@
     class IfStatement;
     class IfElseStatement;
     class ForStatement;
-    class Iterator;
     class AssignmentStatement;
     class ExpressionList;
     class PrintStatement;
@@ -87,7 +86,6 @@
     #include "help/Statements/IfStatement.h"
     #include "help/Statements/IfElseStatement.h"
     #include "help/Statements/ForStatement.h"
-    #include "help/Statements/Iterator.h"
     #include "help/Statements/VariableDeclaration.h"
     #include "help/Statements/VariableDeclInit.h"
     #include "help/Statements/TypelessVariableDecl.h"
@@ -131,6 +129,7 @@
     ASSIGN "="
     MINUS "-"
     PLUS "+"
+    PLUSASSIGN "+="
     STAR "*"
     SLASH "/"
     PERCENT "%"
@@ -171,7 +170,7 @@
 %nterm <std::shared_ptr<Statement>> mut_let_statement;
 %nterm <std::shared_ptr<Statement>> const_let_statement;
 %nterm <std::shared_ptr<Statement>> if_statement;
-%nterm <std::shared_ptr<Iterator>> iterator;
+%nterm <std::shared_ptr<ForStatement>> for_loop;
 %nterm <std::shared_ptr<ExpressionList>> expression_list;
 %nterm <std::shared_ptr<PrintStatement>> print_statement;
 %nterm <std::string> type;
@@ -200,10 +199,11 @@ statement:
     | print_statement {$$ = $1;}
     | let_statement {$$ = $1;}
     | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}
+    | "identifier" "+=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<PlusExpression>(std::make_shared<IDExpression>($1), $3));}
     | expression ";" {$$ = $1;}
     | if_statement {$$ = $1;}
     | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}
-    | "for" "identifier" "in" iterator "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6);}
+    | for_loop {$$ = $1;}
     | "return" ";" {};
 
 print_statement:
@@ -228,10 +228,11 @@ const_let_statement:
     "let" "identifier" ":" type "=" expression ";" {$$ = std::make_shared<VariableDeclInit>($2, $4, true, $6);}
     | "let" "identifier" "=" expression ";" {$$ = std::make_shared<TypelessVariableDecl>($2, true, $4);};
 
-iterator:
-    expression ".." expression {}
-    | expression "..=" expression {}
-    | expression {};  // iterate through string
+for_loop:
+    "for" "identifier" "in" expression ".." expression "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6, $8, false, true);}
+    | "for" "mut" "identifier" "in" expression ".." expression "{" statements "}" {$$ = std::make_shared<ForStatement>($3, $5, $7, $9, false, false);}
+    | "for" "identifier" "in" expression "..=" expression "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6, $8, true, true);}
+    | "for" "mut" "identifier" "in" expression "..=" expression "{" statements "}" {$$ = std::make_shared<ForStatement>($3, $5, $7, $9, true, false);};
 
 type:
     "i32" {$$ = "i32";}
@@ -242,6 +243,7 @@ expression:
     "number" {$$ = std::make_shared<Integer> ($1);}
     | "false" {$$ = std::make_shared<Boolean> (false);}
     | "true" {$$ = std::make_shared<Boolean> (true);}
+    | "string_literal" {$$ = std::make_shared<String> ($1);}
     | "identifier" {$$ = std::make_shared<IDExpression> ($1);}
     | "!" expression {$$ = std::make_shared<NotExpression> ($2);}
     | "(" expression ")" {$$ = $2;}

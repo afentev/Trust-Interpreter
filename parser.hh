@@ -85,14 +85,13 @@
     class IfStatement;
     class IfElseStatement;
     class ForStatement;
-    class Iterator;
     class AssignmentStatement;
     class ExpressionList;
     class PrintStatement;
     class BreakStatement;
     class ContinueStatement;
 
-#line 96 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 95 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -232,7 +231,7 @@
 #endif
 
 namespace yy {
-#line 236 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 235 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
@@ -460,8 +459,8 @@ namespace yy {
       // expression_list
       char dummy3[sizeof (std::shared_ptr<ExpressionList>)];
 
-      // iterator
-      char dummy4[sizeof (std::shared_ptr<Iterator>)];
+      // for_loop
+      char dummy4[sizeof (std::shared_ptr<ForStatement>)];
 
       // print_statement
       char dummy5[sizeof (std::shared_ptr<PrintStatement>)];
@@ -552,36 +551,37 @@ namespace yy {
     TOK_ASSIGN = 272,              // "="
     TOK_MINUS = 273,               // "-"
     TOK_PLUS = 274,                // "+"
-    TOK_STAR = 275,                // "*"
-    TOK_SLASH = 276,               // "/"
-    TOK_PERCENT = 277,             // "%"
-    TOK_LBRACE = 278,              // "{"
-    TOK_RBRACE = 279,              // "}"
-    TOK_LPAREN = 280,              // "("
-    TOK_RPAREN = 281,              // ")"
-    TOK_NOT = 282,                 // "!"
-    TOK_AND = 283,                 // "&&"
-    TOK_OR = 284,                  // "||"
-    TOK_EQUAL = 285,               // "=="
-    TOK_NEQUAL = 286,              // "!="
-    TOK_GREATER = 287,             // ">"
-    TOK_GREQ = 288,                // ">="
-    TOK_LESS = 289,                // "<"
-    TOK_LEEQ = 290,                // "<="
-    TOK_SEMICOLON = 291,           // ";"
-    TOK_COMMA = 292,               // ","
-    TOK_IF = 293,                  // "if"
-    TOK_ELSE = 294,                // "else"
-    TOK_TRUE = 295,                // "true"
-    TOK_FALSE = 296,               // "false"
-    TOK_INT32 = 297,               // "i32"
-    TOK_STRING = 298,              // "String"
-    TOK_BOOL = 299,                // "bool"
-    TOK_PRINT = 300,               // "print!"
-    TOK_PRINTLN = 301,             // "println!"
-    TOK_IDENTIFIER = 302,          // "identifier"
-    TOK_NUMBER = 303,              // "number"
-    TOK_STRLITERAL = 304           // "string_literal"
+    TOK_PLUSASSIGN = 275,          // "+="
+    TOK_STAR = 276,                // "*"
+    TOK_SLASH = 277,               // "/"
+    TOK_PERCENT = 278,             // "%"
+    TOK_LBRACE = 279,              // "{"
+    TOK_RBRACE = 280,              // "}"
+    TOK_LPAREN = 281,              // "("
+    TOK_RPAREN = 282,              // ")"
+    TOK_NOT = 283,                 // "!"
+    TOK_AND = 284,                 // "&&"
+    TOK_OR = 285,                  // "||"
+    TOK_EQUAL = 286,               // "=="
+    TOK_NEQUAL = 287,              // "!="
+    TOK_GREATER = 288,             // ">"
+    TOK_GREQ = 289,                // ">="
+    TOK_LESS = 290,                // "<"
+    TOK_LEEQ = 291,                // "<="
+    TOK_SEMICOLON = 292,           // ";"
+    TOK_COMMA = 293,               // ","
+    TOK_IF = 294,                  // "if"
+    TOK_ELSE = 295,                // "else"
+    TOK_TRUE = 296,                // "true"
+    TOK_FALSE = 297,               // "false"
+    TOK_INT32 = 298,               // "i32"
+    TOK_STRING = 299,              // "String"
+    TOK_BOOL = 300,                // "bool"
+    TOK_PRINT = 301,               // "print!"
+    TOK_PRINTLN = 302,             // "println!"
+    TOK_IDENTIFIER = 303,          // "identifier"
+    TOK_NUMBER = 304,              // "number"
+    TOK_STRLITERAL = 305           // "string_literal"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -598,7 +598,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 50, ///< Number of tokens.
+        YYNTOKENS = 51, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -620,49 +620,50 @@ namespace yy {
         S_ASSIGN = 17,                           // "="
         S_MINUS = 18,                            // "-"
         S_PLUS = 19,                             // "+"
-        S_STAR = 20,                             // "*"
-        S_SLASH = 21,                            // "/"
-        S_PERCENT = 22,                          // "%"
-        S_LBRACE = 23,                           // "{"
-        S_RBRACE = 24,                           // "}"
-        S_LPAREN = 25,                           // "("
-        S_RPAREN = 26,                           // ")"
-        S_NOT = 27,                              // "!"
-        S_AND = 28,                              // "&&"
-        S_OR = 29,                               // "||"
-        S_EQUAL = 30,                            // "=="
-        S_NEQUAL = 31,                           // "!="
-        S_GREATER = 32,                          // ">"
-        S_GREQ = 33,                             // ">="
-        S_LESS = 34,                             // "<"
-        S_LEEQ = 35,                             // "<="
-        S_SEMICOLON = 36,                        // ";"
-        S_COMMA = 37,                            // ","
-        S_IF = 38,                               // "if"
-        S_ELSE = 39,                             // "else"
-        S_TRUE = 40,                             // "true"
-        S_FALSE = 41,                            // "false"
-        S_INT32 = 42,                            // "i32"
-        S_STRING = 43,                           // "String"
-        S_BOOL = 44,                             // "bool"
-        S_PRINT = 45,                            // "print!"
-        S_PRINTLN = 46,                          // "println!"
-        S_IDENTIFIER = 47,                       // "identifier"
-        S_NUMBER = 48,                           // "number"
-        S_STRLITERAL = 49,                       // "string_literal"
-        S_YYACCEPT = 50,                         // $accept
-        S_program = 51,                          // program
-        S_statements = 52,                       // statements
-        S_statement = 53,                        // statement
-        S_print_statement = 54,                  // print_statement
-        S_if_statement = 55,                     // if_statement
-        S_let_statement = 56,                    // let_statement
-        S_mut_let_statement = 57,                // mut_let_statement
-        S_const_let_statement = 58,              // const_let_statement
-        S_iterator = 59,                         // iterator
-        S_type = 60,                             // type
-        S_expression = 61,                       // expression
-        S_expression_list = 62                   // expression_list
+        S_PLUSASSIGN = 20,                       // "+="
+        S_STAR = 21,                             // "*"
+        S_SLASH = 22,                            // "/"
+        S_PERCENT = 23,                          // "%"
+        S_LBRACE = 24,                           // "{"
+        S_RBRACE = 25,                           // "}"
+        S_LPAREN = 26,                           // "("
+        S_RPAREN = 27,                           // ")"
+        S_NOT = 28,                              // "!"
+        S_AND = 29,                              // "&&"
+        S_OR = 30,                               // "||"
+        S_EQUAL = 31,                            // "=="
+        S_NEQUAL = 32,                           // "!="
+        S_GREATER = 33,                          // ">"
+        S_GREQ = 34,                             // ">="
+        S_LESS = 35,                             // "<"
+        S_LEEQ = 36,                             // "<="
+        S_SEMICOLON = 37,                        // ";"
+        S_COMMA = 38,                            // ","
+        S_IF = 39,                               // "if"
+        S_ELSE = 40,                             // "else"
+        S_TRUE = 41,                             // "true"
+        S_FALSE = 42,                            // "false"
+        S_INT32 = 43,                            // "i32"
+        S_STRING = 44,                           // "String"
+        S_BOOL = 45,                             // "bool"
+        S_PRINT = 46,                            // "print!"
+        S_PRINTLN = 47,                          // "println!"
+        S_IDENTIFIER = 48,                       // "identifier"
+        S_NUMBER = 49,                           // "number"
+        S_STRLITERAL = 50,                       // "string_literal"
+        S_YYACCEPT = 51,                         // $accept
+        S_program = 52,                          // program
+        S_statements = 53,                       // statements
+        S_statement = 54,                        // statement
+        S_print_statement = 55,                  // print_statement
+        S_if_statement = 56,                     // if_statement
+        S_let_statement = 57,                    // let_statement
+        S_mut_let_statement = 58,                // mut_let_statement
+        S_const_let_statement = 59,              // const_let_statement
+        S_for_loop = 60,                         // for_loop
+        S_type = 61,                             // type
+        S_expression = 62,                       // expression
+        S_expression_list = 63                   // expression_list
       };
     };
 
@@ -711,8 +712,8 @@ namespace yy {
         value.move< std::shared_ptr<ExpressionList> > (std::move (that.value));
         break;
 
-      case symbol_kind::S_iterator: // iterator
-        value.move< std::shared_ptr<Iterator> > (std::move (that.value));
+      case symbol_kind::S_for_loop: // for_loop
+        value.move< std::shared_ptr<ForStatement> > (std::move (that.value));
         break;
 
       case symbol_kind::S_print_statement: // print_statement
@@ -807,13 +808,13 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<Iterator>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ForStatement>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<Iterator>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ForStatement>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -926,8 +927,8 @@ switch (yykind)
         value.template destroy< std::shared_ptr<ExpressionList> > ();
         break;
 
-      case symbol_kind::S_iterator: // iterator
-        value.template destroy< std::shared_ptr<Iterator> > ();
+      case symbol_kind::S_for_loop: // for_loop
+        value.template destroy< std::shared_ptr<ForStatement> > ();
         break;
 
       case symbol_kind::S_print_statement: // print_statement
@@ -1428,6 +1429,21 @@ switch (yykind)
       make_PLUS (const location_type& l)
       {
         return symbol_type (token::TOK_PLUS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PLUSASSIGN (location_type l)
+      {
+        return symbol_type (token::TOK_PLUSASSIGN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PLUSASSIGN (const location_type& l)
+      {
+        return symbol_type (token::TOK_PLUSASSIGN, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1968,7 +1984,7 @@ switch (yykind)
     // number is the opposite.  If YYTABLE_NINF, syntax error.
     static const unsigned char yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
     // state STATE-NUM.
@@ -2210,7 +2226,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 533,     ///< Last index in yytable_.
+      yylast_ = 771,     ///< Last index in yytable_.
       yynnts_ = 13,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
@@ -2262,10 +2278,10 @@ switch (yykind)
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49
+      45,    46,    47,    48,    49,    50
     };
     // Last valid token kind.
-    const int code_max = 304;
+    const int code_max = 305;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2296,8 +2312,8 @@ switch (yykind)
         value.copy< std::shared_ptr<ExpressionList> > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_iterator: // iterator
-        value.copy< std::shared_ptr<Iterator> > (YY_MOVE (that.value));
+      case symbol_kind::S_for_loop: // for_loop
+        value.copy< std::shared_ptr<ForStatement> > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_print_statement: // print_statement
@@ -2369,8 +2385,8 @@ switch (yykind)
         value.move< std::shared_ptr<ExpressionList> > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_iterator: // iterator
-        value.move< std::shared_ptr<Iterator> > (YY_MOVE (s.value));
+      case symbol_kind::S_for_loop: // for_loop
+        value.move< std::shared_ptr<ForStatement> > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_print_statement: // print_statement
@@ -2465,7 +2481,7 @@ switch (yykind)
 
 
 } // yy
-#line 2469 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 2485 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
