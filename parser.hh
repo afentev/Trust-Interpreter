@@ -552,36 +552,40 @@ namespace yy {
     TOK_MINUS = 273,               // "-"
     TOK_PLUS = 274,                // "+"
     TOK_PLUSASSIGN = 275,          // "+="
-    TOK_STAR = 276,                // "*"
-    TOK_SLASH = 277,               // "/"
-    TOK_PERCENT = 278,             // "%"
-    TOK_LBRACE = 279,              // "{"
-    TOK_RBRACE = 280,              // "}"
-    TOK_LPAREN = 281,              // "("
-    TOK_RPAREN = 282,              // ")"
-    TOK_NOT = 283,                 // "!"
-    TOK_AND = 284,                 // "&&"
-    TOK_OR = 285,                  // "||"
-    TOK_EQUAL = 286,               // "=="
-    TOK_NEQUAL = 287,              // "!="
-    TOK_GREATER = 288,             // ">"
-    TOK_GREQ = 289,                // ">="
-    TOK_LESS = 290,                // "<"
-    TOK_LEEQ = 291,                // "<="
-    TOK_SEMICOLON = 292,           // ";"
-    TOK_COMMA = 293,               // ","
-    TOK_IF = 294,                  // "if"
-    TOK_ELSE = 295,                // "else"
-    TOK_TRUE = 296,                // "true"
-    TOK_FALSE = 297,               // "false"
-    TOK_INT32 = 298,               // "i32"
-    TOK_STRING = 299,              // "String"
-    TOK_BOOL = 300,                // "bool"
-    TOK_PRINT = 301,               // "print!"
-    TOK_PRINTLN = 302,             // "println!"
-    TOK_IDENTIFIER = 303,          // "identifier"
-    TOK_NUMBER = 304,              // "number"
-    TOK_STRLITERAL = 305           // "string_literal"
+    TOK_MINUSASSIGN = 276,         // "-="
+    TOK_STARASSIGN = 277,          // "*="
+    TOK_PERCENTASSIGN = 278,       // "%="
+    TOK_SLASHASSIGN = 279,         // "/="
+    TOK_STAR = 280,                // "*"
+    TOK_SLASH = 281,               // "/"
+    TOK_PERCENT = 282,             // "%"
+    TOK_LBRACE = 283,              // "{"
+    TOK_RBRACE = 284,              // "}"
+    TOK_LPAREN = 285,              // "("
+    TOK_RPAREN = 286,              // ")"
+    TOK_NOT = 287,                 // "!"
+    TOK_AND = 288,                 // "&&"
+    TOK_OR = 289,                  // "||"
+    TOK_EQUAL = 290,               // "=="
+    TOK_NEQUAL = 291,              // "!="
+    TOK_GREATER = 292,             // ">"
+    TOK_GREQ = 293,                // ">="
+    TOK_LESS = 294,                // "<"
+    TOK_LEEQ = 295,                // "<="
+    TOK_SEMICOLON = 296,           // ";"
+    TOK_COMMA = 297,               // ","
+    TOK_IF = 298,                  // "if"
+    TOK_ELSE = 299,                // "else"
+    TOK_TRUE = 300,                // "true"
+    TOK_FALSE = 301,               // "false"
+    TOK_INT32 = 302,               // "i32"
+    TOK_STRING = 303,              // "String"
+    TOK_BOOL = 304,                // "bool"
+    TOK_PRINT = 305,               // "print!"
+    TOK_PRINTLN = 306,             // "println!"
+    TOK_IDENTIFIER = 307,          // "identifier"
+    TOK_NUMBER = 308,              // "number"
+    TOK_STRLITERAL = 309           // "string_literal"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -598,7 +602,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 51, ///< Number of tokens.
+        YYNTOKENS = 55, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -621,49 +625,53 @@ namespace yy {
         S_MINUS = 18,                            // "-"
         S_PLUS = 19,                             // "+"
         S_PLUSASSIGN = 20,                       // "+="
-        S_STAR = 21,                             // "*"
-        S_SLASH = 22,                            // "/"
-        S_PERCENT = 23,                          // "%"
-        S_LBRACE = 24,                           // "{"
-        S_RBRACE = 25,                           // "}"
-        S_LPAREN = 26,                           // "("
-        S_RPAREN = 27,                           // ")"
-        S_NOT = 28,                              // "!"
-        S_AND = 29,                              // "&&"
-        S_OR = 30,                               // "||"
-        S_EQUAL = 31,                            // "=="
-        S_NEQUAL = 32,                           // "!="
-        S_GREATER = 33,                          // ">"
-        S_GREQ = 34,                             // ">="
-        S_LESS = 35,                             // "<"
-        S_LEEQ = 36,                             // "<="
-        S_SEMICOLON = 37,                        // ";"
-        S_COMMA = 38,                            // ","
-        S_IF = 39,                               // "if"
-        S_ELSE = 40,                             // "else"
-        S_TRUE = 41,                             // "true"
-        S_FALSE = 42,                            // "false"
-        S_INT32 = 43,                            // "i32"
-        S_STRING = 44,                           // "String"
-        S_BOOL = 45,                             // "bool"
-        S_PRINT = 46,                            // "print!"
-        S_PRINTLN = 47,                          // "println!"
-        S_IDENTIFIER = 48,                       // "identifier"
-        S_NUMBER = 49,                           // "number"
-        S_STRLITERAL = 50,                       // "string_literal"
-        S_YYACCEPT = 51,                         // $accept
-        S_program = 52,                          // program
-        S_statements = 53,                       // statements
-        S_statement = 54,                        // statement
-        S_print_statement = 55,                  // print_statement
-        S_if_statement = 56,                     // if_statement
-        S_let_statement = 57,                    // let_statement
-        S_mut_let_statement = 58,                // mut_let_statement
-        S_const_let_statement = 59,              // const_let_statement
-        S_for_loop = 60,                         // for_loop
-        S_type = 61,                             // type
-        S_expression = 62,                       // expression
-        S_expression_list = 63                   // expression_list
+        S_MINUSASSIGN = 21,                      // "-="
+        S_STARASSIGN = 22,                       // "*="
+        S_PERCENTASSIGN = 23,                    // "%="
+        S_SLASHASSIGN = 24,                      // "/="
+        S_STAR = 25,                             // "*"
+        S_SLASH = 26,                            // "/"
+        S_PERCENT = 27,                          // "%"
+        S_LBRACE = 28,                           // "{"
+        S_RBRACE = 29,                           // "}"
+        S_LPAREN = 30,                           // "("
+        S_RPAREN = 31,                           // ")"
+        S_NOT = 32,                              // "!"
+        S_AND = 33,                              // "&&"
+        S_OR = 34,                               // "||"
+        S_EQUAL = 35,                            // "=="
+        S_NEQUAL = 36,                           // "!="
+        S_GREATER = 37,                          // ">"
+        S_GREQ = 38,                             // ">="
+        S_LESS = 39,                             // "<"
+        S_LEEQ = 40,                             // "<="
+        S_SEMICOLON = 41,                        // ";"
+        S_COMMA = 42,                            // ","
+        S_IF = 43,                               // "if"
+        S_ELSE = 44,                             // "else"
+        S_TRUE = 45,                             // "true"
+        S_FALSE = 46,                            // "false"
+        S_INT32 = 47,                            // "i32"
+        S_STRING = 48,                           // "String"
+        S_BOOL = 49,                             // "bool"
+        S_PRINT = 50,                            // "print!"
+        S_PRINTLN = 51,                          // "println!"
+        S_IDENTIFIER = 52,                       // "identifier"
+        S_NUMBER = 53,                           // "number"
+        S_STRLITERAL = 54,                       // "string_literal"
+        S_YYACCEPT = 55,                         // $accept
+        S_program = 56,                          // program
+        S_statements = 57,                       // statements
+        S_statement = 58,                        // statement
+        S_print_statement = 59,                  // print_statement
+        S_if_statement = 60,                     // if_statement
+        S_let_statement = 61,                    // let_statement
+        S_mut_let_statement = 62,                // mut_let_statement
+        S_const_let_statement = 63,              // const_let_statement
+        S_for_loop = 64,                         // for_loop
+        S_type = 65,                             // type
+        S_expression = 66,                       // expression
+        S_expression_list = 67                   // expression_list
       };
     };
 
@@ -1449,6 +1457,66 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_MINUSASSIGN (location_type l)
+      {
+        return symbol_type (token::TOK_MINUSASSIGN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MINUSASSIGN (const location_type& l)
+      {
+        return symbol_type (token::TOK_MINUSASSIGN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STARASSIGN (location_type l)
+      {
+        return symbol_type (token::TOK_STARASSIGN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_STARASSIGN (const location_type& l)
+      {
+        return symbol_type (token::TOK_STARASSIGN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PERCENTASSIGN (location_type l)
+      {
+        return symbol_type (token::TOK_PERCENTASSIGN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PERCENTASSIGN (const location_type& l)
+      {
+        return symbol_type (token::TOK_PERCENTASSIGN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SLASHASSIGN (location_type l)
+      {
+        return symbol_type (token::TOK_SLASHASSIGN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_SLASHASSIGN (const location_type& l)
+      {
+        return symbol_type (token::TOK_SLASHASSIGN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_STAR (location_type l)
       {
         return symbol_type (token::TOK_STAR, std::move (l));
@@ -2226,7 +2294,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 771,     ///< Last index in yytable_.
+      yylast_ = 965,     ///< Last index in yytable_.
       yynnts_ = 13,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
@@ -2278,10 +2346,10 @@ switch (yykind)
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49,    50
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54
     };
     // Last valid token kind.
-    const int code_max = 305;
+    const int code_max = 309;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2481,7 +2549,7 @@ switch (yykind)
 
 
 } // yy
-#line 2485 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 2553 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 

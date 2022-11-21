@@ -35,40 +35,27 @@
 
 void Visitor::visit(std::shared_ptr<Program> program) {
     program->get_statements()->accept(this);
-    std::cout << "Visit program!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<Expression> expression) {
     expression->accept(this);
-    std::cout << "Visit Expression!" << std::endl;
 }
 
-//std::shared_ptr<Object> Visitor::visit(std::shared_ptr<Object> expression) {
-//    std::cout << "Visit Object!" << std::endl;
-//    return expression;
-//}
-
 void Visitor::visit(std::shared_ptr<Boolean> expression) {
-    std::cout << "Visit Boolean!" << std::endl;
     object = expression;
 }
 
 void Visitor::visit(std::shared_ptr<Integer> expression) {
-    std::cout << "Visit Integer!" << std::endl;
     object = expression;
 }
 
 void Visitor::visit(std::shared_ptr<String> expression) {
-    std::cout << "Visit String!" << std::endl;
     object = expression;
 }
-
-///////
 
 void Visitor::visit(std::shared_ptr<NotExpression> expression) {
     expression->get_expression()->accept(this);
     object = !*object;
-    std::cout << "Visit NotExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<AndExpression> expression) {
@@ -79,7 +66,6 @@ void Visitor::visit(std::shared_ptr<AndExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left && *right;
-    std::cout << "Visit AndExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<OrExpression> expression) {
@@ -90,7 +76,6 @@ void Visitor::visit(std::shared_ptr<OrExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left || *right;
-    std::cout << "Visit OrExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<DivExpression> expression) {
@@ -101,7 +86,6 @@ void Visitor::visit(std::shared_ptr<DivExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left / *right;
-    std::cout << "Visit DivExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<MulExpression> expression) {
@@ -112,7 +96,6 @@ void Visitor::visit(std::shared_ptr<MulExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left * *right;
-    std::cout << "Visit MulExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<ModExpression> expression) {
@@ -123,7 +106,6 @@ void Visitor::visit(std::shared_ptr<ModExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left % *right;
-    std::cout << "Visit ModExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<PlusExpression> expression) {
@@ -134,7 +116,6 @@ void Visitor::visit(std::shared_ptr<PlusExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left + *right;
-    std::cout << "Visit PlusExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<MinusExpression> expression) {
@@ -145,16 +126,12 @@ void Visitor::visit(std::shared_ptr<MinusExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left - *right;
-    std::cout << "Visit MinusExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<UnaryMinusExpression> expression) {
     expression->get_expression()->accept(this);
     object = -*object;
-    std::cout << "Visit UnaryMinusExpression!" << std::endl;
 }
-
-///
 
 void Visitor::visit(std::shared_ptr<GreaterExpression> expression) {
     expression->get_left_exp()->accept(this);
@@ -164,7 +141,6 @@ void Visitor::visit(std::shared_ptr<GreaterExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left > *right;
-    std::cout << "Visit GreaterExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<GreaterEqExpression> expression) {
@@ -175,7 +151,6 @@ void Visitor::visit(std::shared_ptr<GreaterEqExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left >= *right;
-    std::cout << "Visit GreaterEqExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<EqualExpression> expression) {
@@ -186,7 +161,6 @@ void Visitor::visit(std::shared_ptr<EqualExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left == *right;
-    std::cout << "Visit EqualExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<NotEqualExpression> expression) {
@@ -197,7 +171,6 @@ void Visitor::visit(std::shared_ptr<NotEqualExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left != *right;
-    std::cout << "Visit NotEqualExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<LessEqExpression> expression) {
@@ -208,7 +181,6 @@ void Visitor::visit(std::shared_ptr<LessEqExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left <= *right;
-    std::cout << "Visit LessEqExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<LessExpression> expression) {
@@ -219,15 +191,11 @@ void Visitor::visit(std::shared_ptr<LessExpression> expression) {
     std::shared_ptr<Object> right = object;
 
     object = *left < *right;
-    std::cout << "Visit LessExpression!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<IDExpression> expression) {
     object = variables.get_identifier(expression->get_id());
-    //std::cout << "Visit IDExpression!" << std::endl;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Visitor::visit(std::shared_ptr<Statements> expression) {
     variables.add_scope();
@@ -238,42 +206,38 @@ void Visitor::visit(std::shared_ptr<Statements> expression) {
     }
 
     variables.left_scope();
-    std::cout << "Visit Statements!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<VariableDeclaration> expression) {
     variables.add_identifier(expression->get_name(), create_object(expression->get_type()), false, false);
-    std::cout << "Visit VariableDeclaration!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<VariableDeclInit> expression) {
     expression->get_value()->accept(this);
     variables.add_identifier(expression->get_name(), object, expression->is_const(), true);
-    std::cout << "Visit VariableDeclInit!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<TypelessVariableDecl> expression) {
     expression->get_value()->accept(this);
     variables.add_identifier(expression->get_name(), object, expression->is_const(), true);
-    std::cout << "Visit TypelessVariableDecl!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<WhileStatement> expression) {
     expression->get_condition()->accept(this);
     while (object->as_predicate()) {
+        uint16_t restore_scope = variables.get_scope();
         variables.add_scope();
 
         try {
             expression->get_statement()->accept(this);
         } catch (BreakInterruption&) {
-            variables.left_scope();
+            variables.reduce_scope(restore_scope);
             break;
         } catch (ContinueInterruption&) {}
 
         variables.left_scope();
         expression->get_condition()->accept(this);
     }
-    std::cout << "Visit WhileStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<IfStatement> expression) {
@@ -285,7 +249,6 @@ void Visitor::visit(std::shared_ptr<IfStatement> expression) {
     }
 
     variables.left_scope();
-    std::cout << "Visit IfStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<IfElseStatement> expression) {
@@ -299,7 +262,6 @@ void Visitor::visit(std::shared_ptr<IfElseStatement> expression) {
     }
 
     variables.left_scope();
-    std::cout << "Visit IfElseStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<ForStatement> expression) {
@@ -309,30 +271,27 @@ void Visitor::visit(std::shared_ptr<ForStatement> expression) {
     expression->get_end()->accept(this);
     int32_t end = std::dynamic_pointer_cast<Integer>(object)->to_int();
 
-    // TODO: negative numbers?
     for (int32_t current = begin; expression->get_inclusivity()? current <= end: current < end; ++current) {
+        uint16_t restore_scope = variables.get_scope();
+
         variables.add_scope();
         variables.add_identifier(expression->get_variable(), std::make_shared<Integer>(current), expression->is_var_const(), true);
         try {
             expression->get_statement()->accept(this);
         } catch (BreakInterruption&) {
-            variables.left_scope();
+            variables.reduce_scope(restore_scope);
             break;
         } catch (ContinueInterruption&) {}
         variables.left_scope();
     }
-    std::cout << "Visit ForStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<AssignmentStatement> expression) {
     expression->get_expression()->accept(this);
     variables.mut_identifier(expression->get_identifier(), object);
-    std::cout << "Visit AssignmentStatement!" << std::endl;
 }
 
-void Visitor::visit(std::shared_ptr<ExpressionList> expression) {
-    std::cout << "Visit ExpressionList!" << std::endl;
-}
+void Visitor::visit(std::shared_ptr<ExpressionList> expression) {}
 
 void Visitor::visit(std::shared_ptr<PrintStatement> expression) {
     size_t prev = 1;
@@ -358,8 +317,6 @@ void Visitor::visit(std::shared_ptr<PrintStatement> expression) {
     if (sub_number != expression->subs_number()) {
         throw "More values than slots were provided";
     }
-
-    std::cout << "Visit PrintStatement!" << std::endl;
 }
 
 void Visitor::visit(std::shared_ptr<BreakStatement> expression) {

@@ -130,6 +130,10 @@
     MINUS "-"
     PLUS "+"
     PLUSASSIGN "+="
+    MINUSASSIGN "-="
+    STARASSIGN "*="
+    PERCENTASSIGN "%="
+    SLASHASSIGN "/="
     STAR "*"
     SLASH "/"
     PERCENT "%"
@@ -200,6 +204,10 @@ statement:
     | let_statement {$$ = $1;}
     | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}
     | "identifier" "+=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<PlusExpression>(std::make_shared<IDExpression>($1), $3));}
+    | "identifier" "-=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<MinusExpression>(std::make_shared<IDExpression>($1), $3));}
+    | "identifier" "*=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<MulExpression>(std::make_shared<IDExpression>($1), $3));}
+    | "identifier" "%=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<ModExpression>(std::make_shared<IDExpression>($1), $3));}
+    | "identifier" "/=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<DivExpression>(std::make_shared<IDExpression>($1), $3));}
     | expression ";" {$$ = $1;}
     | if_statement {$$ = $1;}
     | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}

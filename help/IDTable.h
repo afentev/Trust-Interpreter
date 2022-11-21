@@ -12,12 +12,14 @@ public:
     void add_identifier(const std::string&, std::shared_ptr<Object> obj, bool is_const, bool is_init);
     void mut_identifier(const std::string&, std::shared_ptr<Object>);
     std::shared_ptr<Object> get_identifier(const std::string&);
-    uint8_t get_scope();
+    uint16_t get_scope();
+    void reduce_scope(uint16_t new_scope);  // used when break or continue happens
     ~IDTable();
 private:
+    void unwind_stack();
     std::unordered_map<std::string, std::stack<Identifier>> identifiers;
     std::stack<std::string> stack;
-    uint8_t current_scope;
+    uint16_t current_scope = 0;
 };
 
 

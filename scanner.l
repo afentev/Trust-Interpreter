@@ -89,8 +89,13 @@ string_literal \"([^\\\"]|\\.)*\"
            }
 "+"        return yy::parser::make_PLUS   (loc);
 "+="       return yy::parser::make_PLUSASSIGN(loc);
+"-="       return yy::parser::make_MINUSASSIGN(loc);
+"*="       return yy::parser::make_STARASSIGN(loc);
+"%="       return yy::parser::make_PERCENTASSIGN(loc);
+"/="       return yy::parser::make_SLASHASSIGN(loc);
 "*"        return yy::parser::make_STAR   (loc);
 "/"        return yy::parser::make_SLASH  (loc);
+"%"        return yy::parser::make_PERCENT  (loc);
 "{"        return yy::parser::make_LBRACE  (loc);
 "}"        return yy::parser::make_RBRACE  (loc);
 "("        return yy::parser::make_LPAREN (loc);
