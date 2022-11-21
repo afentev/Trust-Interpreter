@@ -9,11 +9,9 @@ class AsExpression : public Expression, public std::enable_shared_from_this<AsEx
   AsExpression (std::shared_ptr<Expression> expression, std::string type);
 
   std::shared_ptr<Expression> get_expression ();
-
   std::string get_type ();
 
   void accept (Visitor* visitor) override;
-
   ~AsExpression () override;
 
  private:

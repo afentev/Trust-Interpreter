@@ -8,10 +8,9 @@ class UnaryMinusExpression : public Expression, public std::enable_shared_from_t
  public:
   UnaryMinusExpression (std::shared_ptr<Expression> expression);
 
-  void accept (Visitor* visitor) override;
-
   std::shared_ptr<Expression> get_expression ();
 
+  void accept (Visitor* visitor) override;
   ~UnaryMinusExpression () override;
 
  private:

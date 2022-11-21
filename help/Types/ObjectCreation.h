@@ -6,7 +6,7 @@
 #include "help/Types/Integer.h"
 #include "help/Types/Float.h"
 
-static std::shared_ptr<Object> create_object (std::string type) {
+static std::shared_ptr<Object> create_object (const std::string& type) {
   if (type == "bool") {
     return std::make_shared<Boolean>(false);
   } else if (type == "i32") {

@@ -10,9 +10,10 @@ class IDExpression : public Expression, public std::enable_shared_from_this<IDEx
  public:
   explicit IDExpression (std::string id);
 
-  void accept (Visitor* visitor) override;
-
   std::string get_id ();
+
+  void accept (Visitor* visitor) override;
+  ~IDExpression() override;
 
  private:
   std::string identifier;

@@ -3,14 +3,13 @@
 #include "String.h"
 #include "Float.h"
 
-
 String::String (const std::string& value, bool strip) : string() {
   if (strip) {
     string = remove_escape_chars(value.substr(1, value.size() - 2));
   } else {
     string = value;
   }
-};
+}
 
 String& String::operator= (const Boolean& other) {
   throw InterpretationException("Can not assign bool to String");
@@ -27,10 +26,6 @@ String& String::operator= (const Float& other) {
 String& String::operator= (const String& other) {
   string = other.string;
   return *this;
-}
-
-void String::assign_into (std::shared_ptr<Object> lhs) {
-  lhs->operator=(*this);
 }
 
 std::shared_ptr<Object> String::operator+ (const Object& other) {
@@ -64,7 +59,7 @@ std::shared_ptr<Boolean> String::operator<= (const Object& other) {
   return std::make_shared<Boolean>(string <= dynamic_cast<const String&>(other).string);
 }
 
-std::shared_ptr<Boolean> String::operator== (const Object& other) {
+std::shared_ptr<Boolean> String::operator== (const Object& other) const {
   check_type("==", this, other);
   return std::make_shared<Boolean>(string == dynamic_cast<const String&>(other).string);
 }
@@ -107,16 +102,16 @@ std::shared_ptr<String> String::operator[] (int32_t pos) {
   return std::make_shared<String>(std::string(1, string[pos]), false);
 }
 
+std::shared_ptr<Boolean> String::as_bool () {
+  throw InterpretationException("Can not cast String to bool");
+}
+
 std::shared_ptr<Integer> String::as_i32 () {
   throw InterpretationException("Can not cast String to i32");
 }
 
 std::shared_ptr<Float> String::as_f64 () {
   throw InterpretationException("Can not cast String to f64");
-}
-
-std::shared_ptr<Boolean> String::as_bool () {
-  throw InterpretationException("Can not cast String to bool");
 }
 
 std::shared_ptr<String> String::as_String () {
@@ -133,6 +128,10 @@ std::string String::as_string () {
 
 std::string String::get_type () const {
   return "String";
+}
+
+void String::assign_into (std::shared_ptr<Object> lhs) {
+  lhs->operator=(*this);
 }
 
 std::string String::remove_escape_chars (const std::string& string) {

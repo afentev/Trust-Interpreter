@@ -5,9 +5,8 @@
 
 class Statement {
  public:
-  virtual ~Statement () = default;
-
   virtual void accept (Visitor* visitor) = 0;
+  virtual ~Statement () = default;
 };
 
 #endif //PARSEREXAMPLE_STATEMENT_H

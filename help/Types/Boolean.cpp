@@ -3,9 +3,7 @@
 #include "String.h"
 #include "Float.h"
 
-Boolean::Boolean (bool value) : value(value) {
-  ;
-}
+Boolean::Boolean (bool value) : value(value) {}
 
 Boolean& Boolean::operator= (const Boolean& other) {
   value = other.value;
@@ -22,10 +20,6 @@ Boolean& Boolean::operator= (const Float& other) {
 
 Boolean& Boolean::operator= (const String& other) {
   throw InterpretationException("Can not assign String to bool");
-}
-
-void Boolean::assign_into (std::shared_ptr<Object> lhs) {
-  lhs->operator=(*this);
 }
 
 std::shared_ptr<Object> Boolean::operator+ (const Object& other) {
@@ -58,7 +52,7 @@ std::shared_ptr<Boolean> Boolean::operator<= (const Object& other) {
   return std::make_shared<Boolean>(value <= dynamic_cast<const Boolean&>(other).value);
 }
 
-std::shared_ptr<Boolean> Boolean::operator== (const Object& other) {
+std::shared_ptr<Boolean> Boolean::operator== (const Object& other) const {
   check_type("==", this, other);
   return std::make_shared<Boolean>(value == dynamic_cast<const Boolean&>(other).value);
 }
@@ -100,16 +94,16 @@ std::shared_ptr<String> Boolean::operator[] (int32_t pos) {
   throw InterpretationException("Invalid operand type for operator[]. String expected, but bool found");
 }
 
+std::shared_ptr<Boolean> Boolean::as_bool () {
+  return std::make_shared<Boolean>(value);
+}
+
 std::shared_ptr<Integer> Boolean::as_i32 () {
   return std::make_shared<Integer>(value);
 }
 
 std::shared_ptr<Float> Boolean::as_f64 () {
   throw InterpretationException("Can not cast bool to f64. Cast through an i32 first");
-}
-
-std::shared_ptr<Boolean> Boolean::as_bool () {
-  return std::make_shared<Boolean>(value);
 }
 
 std::shared_ptr<String> Boolean::as_String () {
@@ -130,6 +124,10 @@ std::string Boolean::as_string () {
 
 std::string Boolean::get_type () const {
   return "bool";
+}
+
+void Boolean::assign_into (std::shared_ptr<Object> lhs) {
+  lhs->operator=(*this);
 }
 
 void Boolean::accept (Visitor* visitor) {

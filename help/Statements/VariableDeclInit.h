@@ -1,24 +1,19 @@
 #ifndef PARSEREXAMPLE_VARIABLEDECLINIT_H
 #define PARSEREXAMPLE_VARIABLEDECLINIT_H
 
-#include <string>
-#include <utility>
 #include "Statement.h"
 
 class VariableDeclInit : public Statement, public std::enable_shared_from_this<VariableDeclInit> {
  public:
-  explicit VariableDeclInit (std::string, std::string, bool, std::shared_ptr<Expression>);
-
-  void accept (Visitor* visitor) override;
-
-  std::string get_name ();
-
-  std::string get_type ();
-
-  bool is_const ();
+  explicit VariableDeclInit (std::string var_name, std::string var_type, bool constantness,
+                             std::shared_ptr<Expression> expr);
 
   std::shared_ptr<Expression> get_value ();
+  std::string get_name ();
+  std::string get_type ();
+  bool is_const ();
 
+  void accept (Visitor* visitor) override;
   ~VariableDeclInit () override;
 
  private:

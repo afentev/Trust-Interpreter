@@ -1,7 +1,8 @@
 #include "IDTable.h"
 
-#include <utility>
 #include "help/Types/ObjectCreation.h"
+
+IDTable::IDTable () = default;
 
 void IDTable::add_scope () {
   ++current_scope;
@@ -10,13 +11,6 @@ void IDTable::add_scope () {
 void IDTable::left_scope () {
   --current_scope;
   unwind_stack();
-}
-
-void IDTable::unwind_stack () {
-  while (!stack.empty() && identifiers.at(stack.top()).top().get_scope() > current_scope) {
-    identifiers.at(stack.top()).pop();
-    stack.pop();
-  }
 }
 
 void IDTable::add_identifier (const std::string& name, std::shared_ptr<Object> obj, bool is_const, bool is_init) {
@@ -55,13 +49,20 @@ std::shared_ptr<Object> IDTable::get_identifier (const std::string& name) {
   return object.get_object();
 }
 
+uint16_t IDTable::get_scope () {
+  return current_scope;
+}
+
 void IDTable::reduce_scope (uint16_t new_scope) {
   current_scope = new_scope;
   unwind_stack();
 }
 
-uint16_t IDTable::get_scope () {
-  return current_scope;
+void IDTable::unwind_stack () {
+  while (!stack.empty() && identifiers.at(stack.top()).top().get_scope() > current_scope) {
+    identifiers.at(stack.top()).pop();
+    stack.pop();
+  }
 }
 
 IDTable::~IDTable () = default;

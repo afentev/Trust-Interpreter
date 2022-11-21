@@ -1,30 +1,36 @@
 #include "ForStatement.h"
 
-template<typename IteratorType>
-ForStatement<IteratorType>::ForStatement ():
-    variable(), iterator(nullptr), statement(nullptr) {
+ForStatement::ForStatement (std::string var, std::shared_ptr<Expression> start, std::shared_ptr<Expression> end,
+                            std::shared_ptr<Statement> statement, bool inclusivity, bool constantness) :
+    variable(std::move(var)), start(std::move(start)), end(std::move(end)), statement(std::move(statement)),
+    inclusivity(inclusivity), is_const(constantness) {}
 
+std::shared_ptr<Expression> ForStatement::get_start () {
+  return start;
 }
 
-template<typename IteratorType>
-void ForStatement<IteratorType>::accept (Visitor* visitor) {
-  visitor->visit(this->shared_from_this());
+std::shared_ptr<Expression> ForStatement::get_end () {
+  return end;
 }
 
-template<typename IteratorType>
-std::string ForStatement<IteratorType>::get_variable () {
-  return variable;
-}
-
-template<typename IteratorType>
-std::shared_ptr<IteratorType> ForStatement<IteratorType>::get_iterator () {
-  return iterator;
-}
-
-template<typename IteratorType>
-std::shared_ptr<Statement> ForStatement<IteratorType>::get_statement () {
+std::shared_ptr<Statement> ForStatement::get_statement () {
   return statement;
 }
 
-template<typename IteratorType>
-ForStatement<IteratorType>::~ForStatement () = default;
+std::string ForStatement::get_variable () {
+  return variable;
+}
+
+bool ForStatement::get_inclusivity () {
+  return inclusivity;
+}
+
+bool ForStatement::is_var_const () {
+  return is_const;
+}
+
+void ForStatement::accept (Visitor* visitor) {
+  visitor->visit(this->shared_from_this());
+}
+
+ForStatement::~ForStatement () = default;

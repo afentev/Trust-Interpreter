@@ -4,6 +4,9 @@ void Object::check_type (const std::string& operator_symbol, const Object* expec
   std::string given_type = got.get_type();
   std::string expected_type = expected->get_type();
   if (given_type != expected_type) {
-    throw InterpretationException("Invalid operands for operator" + operator_symbol + ": \"" + expected_type + "\" and \"" + given_type + "\"");
+    throw InterpretationException(
+        "Invalid operands for operator" + operator_symbol + ": \"" + expected_type + "\" and \"" + given_type + "\"");
   }
 }
+
+Object::~Object () = default;

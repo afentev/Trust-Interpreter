@@ -15,3 +15,11 @@ const char* ContinueInterruption::what () const noexcept {
 const char* ReturnInterruption::what () const noexcept {
   return "INTERNAL ERROR: RETURN RAISE WAS NOT CAUGHT";
 }
+
+Interruption::~Interruption () = default;
+
+BreakInterruption::~BreakInterruption () = default;
+
+ContinueInterruption::~ContinueInterruption () = default;
+
+ReturnInterruption::~ReturnInterruption () = default;

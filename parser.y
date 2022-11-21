@@ -13,46 +13,50 @@
     class Scanner;
     class Driver;
 
-    class Visitor;
-    class Expression;
     class Program;
+    class Visitor;
     class Statement;
-    class Statements;
-    class VariableDeclaration;
-    class VariableDeclInit;
-    class TypelessVariableDecl;
+    class Expression;
+
+    class Object;
     class Boolean;
     class String;
     class Integer;
     class Float;
-    class NotExpression;
-    class AndExpression;
-    class OrExpression;
-    class EqualExpression;
-    class NotEqualExpression;
-    class LessEqExpression;
-    class LessExpression;
-    class GreaterEqExpression;
-    class GreaterExpression;
-    class PlusExpression;
-    class MinusExpression;
-    class UnaryMinusExpression;
-    class MulExpression;
-    class DivExpression;
-    class ModExpression;
-    class IDExpression;
-    class AsExpression;
 
-    class WhileStatement;
-    class IfStatement;
-    class IfElseStatement;
-    class ForStatement;
-    class AssignmentStatement;
-    class ExpressionList;
-    class PrintStatement;
     class BreakStatement;
     class ContinueStatement;
     class ReturnStatement;
+    class InterpretationException;
+    class AssignmentStatement;
+    class ExpressionList;
+    class ForStatement;
+    class IfElseStatement;
+    class IfStatement;
+    class PrintStatement;
+    class Statements;
+    class TypelessVariableDecl;
+    class VariableDeclaration;
+    class VariableDeclInit;
+    class WhileStatement;
+
+    class AndExpression;
+    class AsExpression;
+    class DivExpression;
+    class EqualExpression;
+    class GreaterEqExpression;
+    class GreaterExpression;
+    class IDExpression;
+    class LessEqExpression;
+    class LessExpression;
+    class MinusExpression;
+    class ModExpression;
+    class MulExpression;
+    class NotEqualExpression;
+    class NotExpression;
+    class OrExpression;
+    class PlusExpression;
+    class UnaryMinusExpression;
 }
 
 
