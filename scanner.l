@@ -23,6 +23,11 @@
     const yy::parser::location_type& loc
   );
 
+  yy::parser::symbol_type make_REAL(
+      const std::string &s,
+      const yy::parser::location_type& loc
+    );
+
   void Scanner::UpdateLocation() {
     if (driver.location_debug) {
         std::cerr << "Action called " << driver.location << std::endl;
@@ -33,6 +38,7 @@
 
 id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
+float [0-9]+\.[0-9]+
 blank [ \t\r]
 string_literal \"([^\\\"]|\\.)*\"
 comment_line "//".*"\n"
@@ -76,10 +82,12 @@ comment_line "//".*"\n"
 "return"   return yy::parser::make_RETURN(loc);
 "break"    return yy::parser::make_BREAK(loc);
 "continue" return yy::parser::make_CONTINUE(loc);
+"as"       return yy::parser::make_AS(loc);
 "fn"       return yy::parser::make_FN(loc);
 "main"     return yy::parser::make_MAIN(loc);
 ":"        return yy::parser::make_COLON(loc);
 "i32"      return yy::parser::make_INT32(loc);
+"f64"      return yy::parser::make_FLOAT64(loc);
 "String"   return yy::parser::make_STRING(loc);
 "bool"     return yy::parser::make_BOOL(loc);
 "true"     return yy::parser::make_TRUE(loc);
@@ -124,6 +132,7 @@ comment_line "//".*"\n"
 
 {comment_line} return yy::parser::make_COMMENTLINE(yytext, loc);
 {string_literal} return yy::parser::make_STRLITERAL(yytext, loc);
+{float}    return make_REAL(yytext, loc);
 {int}      return make_NUMBER(yytext, loc);
 {id}       {
                 if (driver.location_debug) {
@@ -146,4 +155,13 @@ yy::parser::symbol_type make_NUMBER(
   if (! (INT_MIN <= n && n <= INT_MAX && errno != ERANGE))
     throw yy::parser::syntax_error(loc, "integer is out of range: " + s);
   return yy::parser::make_NUMBER((int) n, loc);
+}
+
+yy::parser::symbol_type make_REAL(
+  const std::string &s,
+  const yy::parser::location_type& loc
+) {
+  errno = 0;
+  double n = strtod(s.c_str(), NULL);
+  return yy::parser::make_REAL(n, loc);
 }

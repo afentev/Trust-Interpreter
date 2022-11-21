@@ -1,4 +1,7 @@
+#include "Boolean.h"
+#include "Integer.h"
 #include "String.h"
+#include "Float.h"
 
 
 String::String (const std::string& value, bool strip) : string() {
@@ -17,6 +20,10 @@ String& String::operator= (const Integer& other) {
   throw InterpretationException("Can not assign i32 to String");
 }
 
+String& String::operator= (const Float& other) {
+  throw InterpretationException("Can not assign f64 to String");
+}
+
 String& String::operator= (const String& other) {
   string = other.string;
   return *this;
@@ -27,46 +34,53 @@ void String::assign_into (std::shared_ptr<Object> lhs) {
 }
 
 std::shared_ptr<Object> String::operator+ (const Object& other) {
+  check_type("+", this, other);
   return std::make_shared<String>(string + dynamic_cast<const String&>(other).string);
 }
 
 std::shared_ptr<Object> String::operator- (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
+  throw InterpretationException("Invalid operand type for operator-. i32 or f64 expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator* (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
+  throw InterpretationException("Invalid operand type for operator*. i32 or f64 expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator/ (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
+  throw InterpretationException("Invalid operand type for operator/. i32 or f64 expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator% (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
+  throw InterpretationException("Invalid operand type for operator%. i32 expected, but String found");
 }
 
 std::shared_ptr<Boolean> String::operator< (const Object& other) {
+  check_type("<", this, other);
   return std::make_shared<Boolean>(string < dynamic_cast<const String&>(other).string);
 }
 
 std::shared_ptr<Boolean> String::operator<= (const Object& other) {
+  check_type("<=", this, other);
   return std::make_shared<Boolean>(string <= dynamic_cast<const String&>(other).string);
 }
 
 std::shared_ptr<Boolean> String::operator== (const Object& other) {
+  check_type("==", this, other);
   return std::make_shared<Boolean>(string == dynamic_cast<const String&>(other).string);
 }
 
 std::shared_ptr<Boolean> String::operator!= (const Object& other) {
+  check_type("!=", this, other);
   return std::make_shared<Boolean>(string != dynamic_cast<const String&>(other).string);
 }
 
 std::shared_ptr<Boolean> String::operator>= (const Object& other) {
+  check_type(">=", this, other);
   return std::make_shared<Boolean>(string >= dynamic_cast<const String&>(other).string);
 }
 
 std::shared_ptr<Boolean> String::operator> (const Object& other) {
+  check_type(">", this, other);
   return std::make_shared<Boolean>(string > dynamic_cast<const String&>(other).string);
 }
 
@@ -93,15 +107,31 @@ std::shared_ptr<String> String::operator[] (int32_t pos) {
   return std::make_shared<String>(std::string(1, string[pos]), false);
 }
 
+std::shared_ptr<Integer> String::as_i32 () {
+  throw InterpretationException("Can not cast String to i32");
+}
+
+std::shared_ptr<Float> String::as_f64 () {
+  throw InterpretationException("Can not cast String to f64");
+}
+
+std::shared_ptr<Boolean> String::as_bool () {
+  throw InterpretationException("Can not cast String to bool");
+}
+
+std::shared_ptr<String> String::as_String () {
+  return std::make_shared<String>(string);
+}
+
 bool String::as_predicate () {
-  throw InterpretationException("Invalid usage of type string in condition");
+  throw InterpretationException("Invalid usage of type String in condition");
 }
 
 std::string String::as_string () {
   return string;
 }
 
-std::string String::get_type () {
+std::string String::get_type () const {
   return "String";
 }
 

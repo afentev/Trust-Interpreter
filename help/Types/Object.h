@@ -10,11 +10,15 @@ class Integer;
 
 class String;
 
+class Float;
+
 class Object : public Expression {
  public:
   virtual Object& operator= (const Boolean&) = 0;
 
   virtual Object& operator= (const Integer&) = 0;
+
+  virtual Object& operator= (const Float&) = 0;
 
   virtual Object& operator= (const String&) = 0;
 
@@ -59,11 +63,21 @@ class Object : public Expression {
 
   virtual std::shared_ptr<String> operator[] (int32_t pos) = 0;
 
+  virtual std::shared_ptr<Boolean> as_bool () = 0;
+
+  virtual std::shared_ptr<Integer> as_i32 () = 0;
+
+  virtual std::shared_ptr<Float> as_f64 () = 0;
+
+  virtual std::shared_ptr<String> as_String () = 0;
+
   virtual bool as_predicate () = 0;
 
   virtual std::string as_string () = 0;
 
-  virtual std::string get_type () = 0;
+  virtual std::string get_type () const = 0;
+
+  static void check_type(const std::string& operator_symbol, const Object* expected, const Object& got);
 
   ~Object () override = default;
 };

@@ -30,6 +30,8 @@ class String;
 
 class Integer;
 
+class Float;
+
 class NotExpression;
 
 class AndExpression;
@@ -62,6 +64,8 @@ class ModExpression;
 
 class IDExpression;
 
+class AsExpression;
+
 class WhileStatement;
 
 class IfStatement;
@@ -93,6 +97,8 @@ class Visitor {
   void visit (std::shared_ptr<Boolean> expression);
 
   void visit (std::shared_ptr<Integer> expression);
+
+  void visit (std::shared_ptr<Float> expression);
 
   void visit (std::shared_ptr<String> expression);
 
@@ -127,6 +133,8 @@ class Visitor {
   void visit (std::shared_ptr<LessExpression> expression);
 
   void visit (std::shared_ptr<IDExpression> expression);
+
+  void visit (std::shared_ptr<AsExpression> expression);
 
   void visit (std::shared_ptr<Statements> expression);
 

@@ -21,6 +21,7 @@
 #include "help/Expressions/ModExpression.h"
 #include "help/Expressions/DivExpression.h"
 #include "help/Expressions/IDExpression.h"
+#include "help/Expressions/AsExpression.h"
 
 #include "help/Statements/WhileStatement.h"
 #include "help/Statements/IfStatement.h"
@@ -58,6 +59,10 @@ void Visitor::visit (std::shared_ptr<Boolean> expression) {
 }
 
 void Visitor::visit (std::shared_ptr<Integer> expression) {
+  object = expression;
+}
+
+void Visitor::visit (std::shared_ptr<Float> expression) {
   object = expression;
 }
 
@@ -209,6 +214,22 @@ void Visitor::visit (std::shared_ptr<IDExpression> expression) {
   object = variables.get_identifier(expression->get_id());
 }
 
+void Visitor::visit (std::shared_ptr<AsExpression> expression) {
+  expression->get_expression()->accept(this);
+  std::string type = expression->get_type();
+  if (type == "bool") {
+    object = object->as_bool();
+  } else if (type == "i32") {
+    object = object->as_i32();
+  } else if (type == "f64") {
+    object = object->as_f64();
+  } else if (type == "String") {
+    object = object->as_String();
+  } else {
+    throw std::runtime_error("INTERNAL ERROR: UNEXPECTED TYPE NAME");
+  }
+}
+
 void Visitor::visit (std::shared_ptr<Statements> expression) {
   variables.add_scope();
 
@@ -278,9 +299,15 @@ void Visitor::visit (std::shared_ptr<IfElseStatement> expression) {
 
 void Visitor::visit (std::shared_ptr<ForStatement> expression) {
   expression->get_start()->accept(this);
+  if (object->get_type() != "i32") {
+    throw InterpretationException("Can not use type \"" + object->get_type() + "\" as range bound");
+  }
   int32_t begin = std::dynamic_pointer_cast<Integer>(object)->to_int();
 
   expression->get_end()->accept(this);
+  if (object->get_type() != "i32") {
+    throw InterpretationException("Can not use type \"" + object->get_type() + "\" as range bound");
+  }
   int32_t end = std::dynamic_pointer_cast<Integer>(object)->to_int();
 
   for (int32_t current = begin; expression->get_inclusivity() ? current <= end : current < end; ++current) {

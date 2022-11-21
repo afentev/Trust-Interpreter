@@ -82,6 +82,6 @@ add_executable(
         main.cpp
         driver.cpp
         ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp help/Statements/Interruptions/ReturnStatement.cpp help/Statements/Interruptions/ReturnStatement.h help/InterpretationExceptions/InterpretationExceptions.cpp help/InterpretationExceptions/InterpretationExceptions.h)
+        ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp help/Statements/Interruptions/ReturnStatement.cpp help/InterpretationExceptions/InterpretationExceptions.cpp help/Types/Float.cpp help/Types/Object.cpp help/Expressions/AsExpression.cpp)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

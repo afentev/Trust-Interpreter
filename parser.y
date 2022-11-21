@@ -24,6 +24,7 @@
     class Boolean;
     class String;
     class Integer;
+    class Float;
     class NotExpression;
     class AndExpression;
     class OrExpression;
@@ -40,6 +41,7 @@
     class DivExpression;
     class ModExpression;
     class IDExpression;
+    class AsExpression;
 
     class WhileStatement;
     class IfStatement;
@@ -65,6 +67,7 @@
     #include "help/Program.h"
     #include "help/Types/Boolean.h"
     #include "help/Types/Integer.h"
+    #include "help/Types/Float.h"
     #include "help/Types/String.h"
     #include "help/Expressions/NotExpression.h"
     #include "help/Expressions/AndExpression.h"
@@ -82,6 +85,7 @@
     #include "help/Expressions/ModExpression.h"
     #include "help/Expressions/DivExpression.h"
     #include "help/Expressions/IDExpression.h"
+    #include "help/Expressions/AsExpression.h"
 
     #include "help/Statements/WhileStatement.h"
     #include "help/Statements/IfStatement.h"
@@ -127,6 +131,7 @@
     RETURN "return"
     BREAK "break"
     CONTINUE "continue"
+    AS "as"
     COLON ":"
     ASSIGN "="
     MINUS "-"
@@ -159,6 +164,7 @@
     TRUE "true"
     FALSE "false"
     INT32 "i32"
+    FLOAT64 "f64"
     STRING "String"
     BOOL "bool"
     PRINT "print!"
@@ -166,7 +172,8 @@
 ;
 
 %token <std::string> IDENTIFIER "identifier"
-%token <int> NUMBER "number"
+%token <int> NUMBER "integer_number"
+%token <double> REAL "real_number"
 %token <std::string> STRLITERAL "string_literal"
 %token <std::string> COMMENTLINE "comment_line"
 %nterm <std::shared_ptr<Expression>> expression
@@ -248,11 +255,13 @@ for_loop:
 
 type:
     "i32" {$$ = "i32";}
+    | "f64" {$$ = "f64";}
     | "String" {$$ = "String";}
     | "bool" {$$ = "bool";};
 
 expression:
-    "number" {$$ = std::make_shared<Integer> ($1);}
+    "integer_number" {$$ = std::make_shared<Integer> ($1);}
+    | "real_number" {$$ = std::make_shared<Float> ($1);}
     | "false" {$$ = std::make_shared<Boolean> (false);}
     | "true" {$$ = std::make_shared<Boolean> (true);}
     | "string_literal" {$$ = std::make_shared<String> ($1);}
@@ -272,7 +281,8 @@ expression:
     | expression "/" expression {$$ = std::make_shared<DivExpression> ($1, $3);}
     | expression "%" expression {$$ = std::make_shared<ModExpression> ($1, $3);}
     | expression "+" expression {$$ = std::make_shared<PlusExpression> ($1, $3);}
-    | expression "-" expression {$$ = std::make_shared<MinusExpression> ($1, $3);};
+    | expression "-" expression {$$ = std::make_shared<MinusExpression> ($1, $3);}
+    | expression "as" type {$$ = std::make_shared<AsExpression>($1, $3);};
 
 expression_list:
     %empty {$$ = std::make_shared<ExpressionList>();}

@@ -1,19 +1,21 @@
-#ifndef PARSEREXAMPLE_BOOLEAN_H
-#define PARSEREXAMPLE_BOOLEAN_H
+#ifndef PARSEREXAMPLE_FLOAT_H
+#define PARSEREXAMPLE_FLOAT_H
 
+#include "help/Types/String.h"
+#include "help/Types/Boolean.h"
 #include "help/Types/Object.h"
 
-class Boolean : public Object, public std::enable_shared_from_this<Boolean> {
+class Float : public Object, public std::enable_shared_from_this<Float> {
  public:
-  explicit Boolean (bool);
+  explicit Float (double);
 
-  Boolean& operator= (const Boolean&) override;
+  Float& operator= (const Boolean&) override;
 
-  Boolean& operator= (const Integer&) override;
+  Float& operator= (const Integer&) override;
 
-  Boolean& operator= (const Float&) override;
+  Float& operator= (const Float&) override;
 
-  Boolean& operator= (const String&) override;
+  Float& operator= (const String&) override;
 
   void assign_into (std::shared_ptr<Object>) override;
 
@@ -65,11 +67,11 @@ class Boolean : public Object, public std::enable_shared_from_this<Boolean> {
 
   void accept (Visitor* visitor) override;
 
-  ~Boolean () override;
+  ~Float () override;
 
  private:
-  bool value;
+  double number;
 };
 
 
-#endif //PARSEREXAMPLE_BOOLEAN_H
+#endif //PARSEREXAMPLE_FLOAT_H

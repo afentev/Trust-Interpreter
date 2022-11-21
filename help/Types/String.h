@@ -13,6 +13,8 @@ class String : public Object, public std::enable_shared_from_this<String> {
 
   String& operator= (const Integer&) override;
 
+  String& operator= (const Float&) override;
+
   String& operator= (const String&) override;
 
   void assign_into (std::shared_ptr<Object>) override;
@@ -49,11 +51,19 @@ class String : public Object, public std::enable_shared_from_this<String> {
 
   std::shared_ptr<String> operator[] (int32_t pos) override;
 
+  std::shared_ptr<Boolean> as_bool () override;
+
+  std::shared_ptr<Integer> as_i32 () override;
+
+  std::shared_ptr<Float> as_f64 () override;
+
+  std::shared_ptr<String> as_String () override;
+
   bool as_predicate () override;
 
   std::string as_string () override;
 
-  std::string get_type () override;
+  std::string get_type () const override;
 
   static std::string remove_escape_chars (const std::string& string);
 
