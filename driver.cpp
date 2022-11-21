@@ -4,8 +4,7 @@
 #include <help/Visitor.h>
 
 
-
-Driver::Driver() :
+Driver::Driver () :
     trace_parsing(false),
     trace_scanning(false),
     location_debug(false),
@@ -15,20 +14,20 @@ Driver::Driver() :
 }
 
 
-int Driver::parse(const std::string& f) {
-    file = f;
-    // initialize location positions
-    location.initialize(&file);
-    scan_begin();
-    parser.set_debug_level(trace_parsing);
-    int res = parser();
-    scan_end();
-    return res;
+int Driver::parse (const std::string& f) {
+  file = f;
+  // initialize location positions
+  location.initialize(&file);
+  scan_begin();
+  parser.set_debug_level(trace_parsing);
+  int res = parser();
+  scan_end();
+  return res;
 }
 
-void Driver::scan_begin() {
-    scanner.set_debug(trace_scanning);
-  if (file.empty () || file == "-") {
+void Driver::scan_begin () {
+  scanner.set_debug(trace_scanning);
+  if (file.empty() || file == "-") {
   } else {
     stream.open(file);
     std::cerr << "File name is " << file << std::endl;
@@ -38,14 +37,13 @@ void Driver::scan_begin() {
   }
 }
 
-void Driver::scan_end()
-{
-    stream.close();
+void Driver::scan_end () {
+  stream.close();
 }
 
-void Driver::execute() {
-    Visitor visitor;
-    visitor.visit(program);
+void Driver::execute () {
+  Visitor visitor;
+  visitor.visit(program);
 
 //    call_visitor.Visit(class_tree.GetNode("main")->GetFunction("main"));
 }

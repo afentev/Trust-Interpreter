@@ -5,12 +5,13 @@
 #include "help/Statements/Statements.h"
 
 class Program {
-public:
-    Program(std::shared_ptr<Statements> statements);
-    std::shared_ptr<Statements> get_statements();
+ public:
+  Program (std::shared_ptr<Statements> statements);
 
-private:
-    std::shared_ptr<Statements> statements;
+  std::shared_ptr<Statements> get_statements ();
+
+ private:
+  std::shared_ptr<Statements> statements;
 };
 
 

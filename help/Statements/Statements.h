@@ -5,17 +5,18 @@
 #include <vector>
 #include "help/Statements/Statement.h"
 
-class Statements: public Statement, public std::enable_shared_from_this<Statements> {
-public:
-    void add_statement(std::shared_ptr<Statement> statement);
-    void accept(Visitor* visitor) override;
+class Statements : public Statement, public std::enable_shared_from_this<Statements> {
+ public:
+  void add_statement (std::shared_ptr<Statement> statement);
 
-    const std::vector<std::shared_ptr<Statement>>& get_statements();
+  void accept (Visitor* visitor) override;
 
-    ~Statements() override;
+  const std::vector<std::shared_ptr<Statement>>& get_statements ();
 
-private:
-    std::vector<std::shared_ptr<Statement>> statements;
+  ~Statements () override;
+
+ private:
+  std::vector<std::shared_ptr<Statement>> statements;
 };
 
 

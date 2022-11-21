@@ -6,25 +6,32 @@
 class Object;  // from "help/Types/Object.h"
 
 class Identifier {
-public:
-    Identifier() = delete;
-    Identifier(std::shared_ptr<Object> obj, uint8_t layer, bool is_const, bool is_init);
+ public:
+  Identifier () = delete;
 
-    std::shared_ptr<Object> get_object();
-    void set_object(std::shared_ptr<Object>);
+  Identifier (std::shared_ptr<Object> obj, uint8_t layer, bool is_const, bool is_init);
 
-    std::string get_identifier();
-    uint8_t get_scope();
-    bool get_constantness();
+  std::shared_ptr<Object> get_object ();
 
-    bool is_initialised();
-    void set_initialised(bool);
-    ~Identifier();
-private:
-    std::shared_ptr<Object> object;
-    const uint8_t scope_layer;
-    const bool is_constant;
-    bool _is_initialised;
+  void set_object (std::shared_ptr<Object>);
+
+  std::string get_identifier ();
+
+  uint8_t get_scope ();
+
+  bool get_constantness ();
+
+  bool is_initialised ();
+
+  void set_initialised (bool);
+
+  ~Identifier ();
+
+ private:
+  std::shared_ptr<Object> object;
+  const uint8_t scope_layer;
+  const bool is_constant;
+  bool _is_initialised;
 };
 
 

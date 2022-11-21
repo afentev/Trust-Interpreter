@@ -3,6 +3,7 @@
 
 #include "help/Statements/Statement.h"
 
-class Expression: public Statement {};
+class Expression : public Statement {
+};
 
 #endif //PARSEREXAMPLE_EXPRESSION_H
