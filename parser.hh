@@ -90,8 +90,9 @@
     class PrintStatement;
     class BreakStatement;
     class ContinueStatement;
+    class ReturnStatement;
 
-#line 95 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 96 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -231,7 +232,7 @@
 #endif
 
 namespace yy {
-#line 235 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 236 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
@@ -480,6 +481,7 @@ namespace yy {
 
       // "identifier"
       // "string_literal"
+      // "comment_line"
       // type
       char dummy9[sizeof (std::string)];
     };
@@ -585,7 +587,8 @@ namespace yy {
     TOK_PRINTLN = 306,             // "println!"
     TOK_IDENTIFIER = 307,          // "identifier"
     TOK_NUMBER = 308,              // "number"
-    TOK_STRLITERAL = 309           // "string_literal"
+    TOK_STRLITERAL = 309,          // "string_literal"
+    TOK_COMMENTLINE = 310          // "comment_line"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -602,7 +605,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 55, ///< Number of tokens.
+        YYNTOKENS = 56, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -659,19 +662,20 @@ namespace yy {
         S_IDENTIFIER = 52,                       // "identifier"
         S_NUMBER = 53,                           // "number"
         S_STRLITERAL = 54,                       // "string_literal"
-        S_YYACCEPT = 55,                         // $accept
-        S_program = 56,                          // program
-        S_statements = 57,                       // statements
-        S_statement = 58,                        // statement
-        S_print_statement = 59,                  // print_statement
-        S_if_statement = 60,                     // if_statement
-        S_let_statement = 61,                    // let_statement
-        S_mut_let_statement = 62,                // mut_let_statement
-        S_const_let_statement = 63,              // const_let_statement
-        S_for_loop = 64,                         // for_loop
-        S_type = 65,                             // type
-        S_expression = 66,                       // expression
-        S_expression_list = 67                   // expression_list
+        S_COMMENTLINE = 55,                      // "comment_line"
+        S_YYACCEPT = 56,                         // $accept
+        S_program = 57,                          // program
+        S_statements = 58,                       // statements
+        S_statement = 59,                        // statement
+        S_print_statement = 60,                  // print_statement
+        S_if_statement = 61,                     // if_statement
+        S_let_statement = 62,                    // let_statement
+        S_mut_let_statement = 63,                // mut_let_statement
+        S_const_let_statement = 64,              // const_let_statement
+        S_for_loop = 65,                         // for_loop
+        S_type = 66,                             // type
+        S_expression = 67,                       // expression
+        S_expression_list = 68                   // expression_list
       };
     };
 
@@ -746,6 +750,7 @@ namespace yy {
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_STRLITERAL: // "string_literal"
+      case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
         value.move< std::string > (std::move (that.value));
         break;
@@ -961,6 +966,7 @@ switch (yykind)
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_STRLITERAL: // "string_literal"
+      case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
         value.template destroy< std::string > ();
         break;
@@ -1088,7 +1094,7 @@ switch (yykind)
       {
 #if !defined _MSC_VER || defined __clang__
         YY_ASSERT (tok == token::TOK_IDENTIFIER
-                   || tok == token::TOK_STRLITERAL);
+                   || (token::TOK_STRLITERAL <= tok && tok <= token::TOK_COMMENTLINE));
 #endif
       }
     };
@@ -1964,6 +1970,21 @@ switch (yykind)
         return symbol_type (token::TOK_STRLITERAL, v, l);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COMMENTLINE (std::string v, location_type l)
+      {
+        return symbol_type (token::TOK_COMMENTLINE, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_COMMENTLINE (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::TOK_COMMENTLINE, v, l);
+      }
+#endif
 
 
     class context
@@ -2294,7 +2315,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 965,     ///< Last index in yytable_.
+      yylast_ = 1032,     ///< Last index in yytable_.
       yynnts_ = 13,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
@@ -2346,10 +2367,11 @@ switch (yykind)
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49,    50,    51,    52,    53,    54
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      55
     };
     // Last valid token kind.
-    const int code_max = 309;
+    const int code_max = 310;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2406,6 +2428,7 @@ switch (yykind)
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_STRLITERAL: // "string_literal"
+      case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
         value.copy< std::string > (YY_MOVE (that.value));
         break;
@@ -2479,6 +2502,7 @@ switch (yykind)
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_STRLITERAL: // "string_literal"
+      case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
         value.move< std::string > (YY_MOVE (s.value));
         break;
@@ -2549,7 +2573,7 @@ switch (yykind)
 
 
 } // yy
-#line 2553 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 2577 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 

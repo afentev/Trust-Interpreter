@@ -27,18 +27,30 @@ void IDTable::add_identifier (const std::string& name, std::shared_ptr<Object> o
 }
 
 void IDTable::mut_identifier (const std::string& name, std::shared_ptr<Object> value) {
-  Identifier& object = identifiers.at(name).top();
+  auto var_stack = identifiers.find(name);
+  if (var_stack == identifiers.end()) {
+    throw InterpretationException("Use of undeclared variable \"" + name + "\"");
+  } else if (var_stack->second.empty()) {
+    throw InterpretationException("Use of undeclared variable \"" + name + "\". It probably went out of scope");
+  }
+  Identifier& object = var_stack->second.top();
   if (object.get_constantness()) {
-    throw "Attempt of modifying non-mut identifier";
+    throw InterpretationException("Attempt of modifying non-mut identifier");
   }
   object.set_object(std::move(value));
   object.set_initialised(true);
 }
 
 std::shared_ptr<Object> IDTable::get_identifier (const std::string& name) {
-  Identifier& object = identifiers.at(name).top();
+  auto var_stack = identifiers.find(name);
+  if (var_stack == identifiers.end()) {
+    throw InterpretationException("Use of undeclared variable \"" + name + "\"");
+  } else if (var_stack->second.empty()) {
+    throw InterpretationException("Use of undeclared variable \"" + name + "\". It probably went out of scope");
+  }
+  Identifier& object = var_stack->second.top();
   if (!object.is_initialised()) {
-    throw "Use of uninitialised variable \"" + name + "\"";
+    throw InterpretationException("Use of uninitialised variable \"" + name + "\"");
   }
   return object.get_object();
 }

@@ -10,7 +10,7 @@ void ExpressionList::add_expression (std::shared_ptr<Expression> expression) {
 
 std::shared_ptr<Expression> ExpressionList::get_expression (size_t index) {
   if (index >= expressions.size()) {
-    throw "Attempt to extract more values than were passed";
+    throw InterpretationException("Attempt to extract more values than were passed");
   }
   return expressions[index];
 }

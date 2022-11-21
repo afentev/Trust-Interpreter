@@ -5,6 +5,7 @@
 #include <vector>
 #include "help/Expressions/Expression.h"
 #include "help/Statements/Statements.h"
+#include "help/InterpretationExceptions/InterpretationExceptions.h"
 
 class ExpressionList : public Statement, public std::enable_shared_from_this<ExpressionList> {
  public:

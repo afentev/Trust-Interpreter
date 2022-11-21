@@ -11,3 +11,7 @@ const char* BreakInterruption::what () const noexcept {
 const char* ContinueInterruption::what () const noexcept {
   return "continue was used outside of the loop";
 }
+
+const char* ReturnInterruption::what () const noexcept {
+  return "INTERNAL ERROR: RETURN RAISE WAS NOT CAUGHT";
+}

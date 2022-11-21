@@ -10,11 +10,11 @@ Boolean& Boolean::operator= (const Boolean& other) {
 }
 
 Boolean& Boolean::operator= (const Integer& other) {
-  throw "Can not assign i32 to bool";
+  throw InterpretationException("Can not assign i32 to bool");
 }
 
 Boolean& Boolean::operator= (const String& other) {
-  throw "Can not assign String to bool";
+  throw InterpretationException("Can not assign String to bool");
 }
 
 void Boolean::assign_into (std::shared_ptr<Object> lhs) {
@@ -22,23 +22,23 @@ void Boolean::assign_into (std::shared_ptr<Object> lhs) {
 }
 
 std::shared_ptr<Object> Boolean::operator+ (const Object& other) {
-  throw "Invalid operand type for operator&&. String or i32 expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator&&. String or i32 expected, but bool found");
 }
 
 std::shared_ptr<Object> Boolean::operator- (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but bool found");
 }
 
 std::shared_ptr<Object> Boolean::operator* (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but bool found");
 }
 
 std::shared_ptr<Object> Boolean::operator/ (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but bool found");
 }
 
 std::shared_ptr<Object> Boolean::operator% (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but bool found");
 }
 
 std::shared_ptr<Boolean> Boolean::operator< (const Object& other) {
@@ -78,11 +78,11 @@ std::shared_ptr<Boolean> Boolean::operator! () {
 }
 
 std::shared_ptr<Object> Boolean::operator- () {
-  throw "Invalid operand type for operator&&. i32 expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but bool found");
 }
 
 std::shared_ptr<String> Boolean::operator[] (int32_t pos) {
-  throw "Invalid operand type for operator[]. String expected, but bool found";
+  throw InterpretationException("Invalid operand type for operator[]. String expected, but bool found");
 }
 
 bool Boolean::as_predicate () {

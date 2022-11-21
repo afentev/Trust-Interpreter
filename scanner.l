@@ -35,7 +35,7 @@ id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 blank [ \t\r]
 string_literal \"([^\\\"]|\\.)*\"
-
+comment_line "//".*"\n"
 %{
   // Code run each time a pattern is matched.
   #define YY_USER_ACTION UpdateLocation();
@@ -122,6 +122,7 @@ string_literal \"([^\\\"]|\\.)*\"
 "print!"   return yy::parser::make_PRINT(loc);
 "println!" return yy::parser::make_PRINTLN(loc);
 
+{comment_line} return yy::parser::make_COMMENTLINE(yytext, loc);
 {string_literal} return yy::parser::make_STRLITERAL(yytext, loc);
 {int}      return make_NUMBER(yytext, loc);
 {id}       {

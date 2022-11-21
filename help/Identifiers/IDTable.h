@@ -3,7 +3,8 @@
 
 #include <stack>
 #include <unordered_map>
-#include "help/Identifier.h"
+#include "Identifier.h"
+#include "help/InterpretationExceptions/InterpretationExceptions.h"
 
 class IDTable {
  public:

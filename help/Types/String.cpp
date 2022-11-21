@@ -10,11 +10,11 @@ String::String (const std::string& value, bool strip) : string() {
 };
 
 String& String::operator= (const Boolean& other) {
-  throw "Can not assign bool to String";
+  throw InterpretationException("Can not assign bool to String");
 }
 
 String& String::operator= (const Integer& other) {
-  throw "Can not assign i32 to String";
+  throw InterpretationException("Can not assign i32 to String");
 }
 
 String& String::operator= (const String& other) {
@@ -31,19 +31,19 @@ std::shared_ptr<Object> String::operator+ (const Object& other) {
 }
 
 std::shared_ptr<Object> String::operator- (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but String found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator* (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but String found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator/ (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but String found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator% (const Object& other) {
-  throw "Invalid operand type for operator&&. i32 expected, but String found";
+  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but String found");
 }
 
 std::shared_ptr<Boolean> String::operator< (const Object& other) {
@@ -71,30 +71,30 @@ std::shared_ptr<Boolean> String::operator> (const Object& other) {
 }
 
 std::shared_ptr<Boolean> String::operator&& (const Object& other) {
-  throw "Invalid operand type for operator&&. bool expected, but String found";
+  throw InterpretationException("Invalid operand type for operator&&. bool expected, but String found");
 }
 
 std::shared_ptr<Boolean> String::operator|| (const Object& other) {
-  throw "Invalid operand type for operator||. bool expected, but String found";
+  throw InterpretationException("Invalid operand type for operator||. bool expected, but String found");
 }
 
 std::shared_ptr<Boolean> String::operator! () {
-  throw "Invalid operand type for operator!. bool expected, but i32 found";
+  throw InterpretationException("Invalid operand type for operator!. bool expected, but i32 found");
 }
 
 std::shared_ptr<Object> String::operator- () {
-  throw "Invalid operand type for operator!. i32 expected, but i32 found";
+  throw InterpretationException("Invalid operand type for operator!. i32 expected, but i32 found");
 }
 
 std::shared_ptr<String> String::operator[] (int32_t pos) {
   if (pos < 0 || pos >= string.size()) {
-    throw "Subscription index is out of bounds";
+    throw InterpretationException("Subscription index is out of bounds");
   }
   return std::make_shared<String>(std::string(1, string[pos]), false);
 }
 
 bool String::as_predicate () {
-  throw "Invalid usage of type string in condition";
+  throw InterpretationException("Invalid usage of type string in condition");
 }
 
 std::string String::as_string () {

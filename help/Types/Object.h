@@ -2,6 +2,7 @@
 #define PARSEREXAMPLE_OBJECT_H
 
 #include "help/Expressions/Expression.h"
+#include "help/InterpretationExceptions/InterpretationExceptions.h"
 
 class Boolean;
 

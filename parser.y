@@ -50,6 +50,7 @@
     class PrintStatement;
     class BreakStatement;
     class ContinueStatement;
+    class ReturnStatement;
 }
 
 
@@ -94,6 +95,7 @@
     #include "help/Statements/PrintStatement.h"
     #include "help/Statements/Interruptions/BreakStatement.h"
     #include "help/Statements/Interruptions/ContinueStatement.h"
+    #include "help/Statements/Interruptions/ReturnStatement.h"
 
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
@@ -166,6 +168,7 @@
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
 %token <std::string> STRLITERAL "string_literal"
+%token <std::string> COMMENTLINE "comment_line"
 %nterm <std::shared_ptr<Expression>> expression
 %nterm <std::shared_ptr<Program>> program
 %nterm <std::shared_ptr<Statements>> statements;
@@ -197,7 +200,8 @@ statements:
 
 statement:
     "{" statements "}" {$$ = $2;}
-    | ";" {}
+    | ";" {$$ = std::make_shared<ExpressionList>();}
+    | "comment_line" {$$ = std::make_shared<ExpressionList>();}
     | "break" {$$ = std::make_shared<BreakStatement>();}
     | "continue" {$$ = std::make_shared<ContinueStatement>();}
     | print_statement {$$ = $1;}
@@ -212,7 +216,7 @@ statement:
     | if_statement {$$ = $1;}
     | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}
     | for_loop {$$ = $1;}
-    | "return" ";" {};
+    | "return" ";" {$$ = std::make_shared<ReturnStatement>();};
 
 print_statement:
     "print!" "(" "string_literal" expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $4, false);};

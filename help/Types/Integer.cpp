@@ -7,7 +7,7 @@ int32_t Integer::to_int () {
 }
 
 Integer& Integer::operator= (const Boolean& other) {
-  throw "Can not assign bool to i32";
+  throw InterpretationException("Can not assign bool to i32");
 }
 
 Integer& Integer::operator= (const Integer& other) {
@@ -16,7 +16,7 @@ Integer& Integer::operator= (const Integer& other) {
 }
 
 Integer& Integer::operator= (const String& other) {
-  throw "Can not assign String to i32";
+  throw InterpretationException("Can not assign String to i32");
 }
 
 void Integer::assign_into (std::shared_ptr<Object> lhs) {
@@ -68,15 +68,15 @@ std::shared_ptr<Boolean> Integer::operator> (const Object& other) {
 }
 
 std::shared_ptr<Boolean> Integer::operator&& (const Object& other) {
-  throw "Invalid operand type for operator&&. bool expected, but i32 found";
+  throw InterpretationException("Invalid operand type for operator&&. bool expected, but i32 found");
 }
 
 std::shared_ptr<Boolean> Integer::operator|| (const Object& other) {
-  throw "Invalid operand type for operator||. bool expected, but i32 found";
+  throw InterpretationException("Invalid operand type for operator||. bool expected, but i32 found");
 }
 
 std::shared_ptr<Boolean> Integer::operator! () {
-  throw "Invalid operand type for operator!. bool expected, but i32 found";
+  throw InterpretationException("Invalid operand type for operator!. bool expected, but i32 found");
 }
 
 std::shared_ptr<Object> Integer::operator- () {
@@ -84,11 +84,11 @@ std::shared_ptr<Object> Integer::operator- () {
 }
 
 std::shared_ptr<String> Integer::operator[] (int32_t pos) {
-  throw "Invalid operand type for operator[]. String expected, but i32 found";
+  throw InterpretationException("Invalid operand type for operator[]. String expected, but i32 found");
 }
 
 bool Integer::as_predicate () {
-  throw "Invalid usage of type integer in condition";
+  throw InterpretationException("Invalid usage of type integer in condition");
 }
 
 std::string Integer::as_string () {

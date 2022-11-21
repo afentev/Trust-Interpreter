@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 #include "help/Statements/Interruptions/Interruptions.h"
-#include "help/IDTable.h"
+#include "help/Identifiers/IDTable.h"
 
 class Object;
 
@@ -80,6 +80,10 @@ class BreakStatement;
 
 class ContinueStatement;
 
+class ReturnStatement;
+
+class InterpretationException;
+
 class Visitor {
  public:
   void visit (std::shared_ptr<Program> expression);
@@ -149,6 +153,8 @@ class Visitor {
   void visit (std::shared_ptr<BreakStatement> expression);
 
   void visit (std::shared_ptr<ContinueStatement> expression);
+
+  void visit (std::shared_ptr<ReturnStatement> expression);
 
   ~Visitor ();
 

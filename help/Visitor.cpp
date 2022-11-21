@@ -33,8 +33,20 @@
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
 
+#include "help/InterpretationExceptions/InterpretationExceptions.h"
+
 void Visitor::visit (std::shared_ptr<Program> program) {
-  program->get_statements()->accept(this);
+  int16_t exit_code = 0;
+
+  try {
+    program->get_statements()->accept(this);
+  } catch (ReturnInterruption&) {
+    ;
+  } catch (InterpretationException& error) {
+    exit_code = 1;
+    std::cerr << "InterpretationError: " << error.what() << std::endl;
+  }
+  std::cerr << "\n" << "Program finished with exit code " << exit_code << std::endl;
 }
 
 void Visitor::visit (std::shared_ptr<Expression> expression) {
@@ -316,7 +328,7 @@ void Visitor::visit (std::shared_ptr<PrintStatement> expression) {
   std::cout.flush();
 
   if (sub_number != expression->subs_number()) {
-    throw "More values than slots were provided";
+    throw InterpretationException("More values than slots were provided");
   }
 }
 
@@ -326,6 +338,10 @@ void Visitor::visit (std::shared_ptr<BreakStatement> expression) {
 
 void Visitor::visit (std::shared_ptr<ContinueStatement> expression) {
   throw ContinueInterruption();
+}
+
+void Visitor::visit (std::shared_ptr<ReturnStatement> expression) {
+  throw ReturnInterruption();
 }
 
 std::shared_ptr<Object> Visitor::get_object () {

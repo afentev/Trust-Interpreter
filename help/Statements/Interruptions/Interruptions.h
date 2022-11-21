@@ -18,4 +18,9 @@ class ContinueInterruption : public Interruption {
   const char* what () const noexcept override;
 };
 
+class ReturnInterruption : public Interruption {
+ public:
+  const char* what () const noexcept override;
+};
+
 #endif //PARSEREXAMPLE_INTERRUPTIONS_H

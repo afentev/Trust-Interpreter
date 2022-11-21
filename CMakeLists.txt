@@ -78,10 +78,10 @@ add_executable(
         help/Visitor.cpp help/Statements/Statements.cpp help/Program.cpp help/Statements/VariableDeclaration.cpp
         help/Types/Boolean.cpp help/Types/Integer.cpp help/Types/String.cpp
 
-        help/IDTable.cpp help/Identifier.cpp
+        help/Identifiers/IDTable.cpp help/Identifiers/Identifier.cpp
         main.cpp
         driver.cpp
         ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp)
+        ${FLEX_MyScanner_OUTPUTS} help/Statements/TypelessVariableDecl.cpp help/Statements/Interruptions/ReturnStatement.cpp help/Statements/Interruptions/ReturnStatement.h help/InterpretationExceptions/InterpretationExceptions.cpp help/InterpretationExceptions/InterpretationExceptions.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

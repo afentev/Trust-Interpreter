@@ -9,8 +9,6 @@ Driver::Driver () :
     trace_scanning(false),
     location_debug(false),
     scanner(*this), parser(scanner, *this) {
-//    variables["one"] = 1;
-//    variables["two"] = 2;
 }
 
 
