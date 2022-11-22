@@ -22,6 +22,7 @@
 #include "help/Expressions/DivExpression.h"
 #include "help/Expressions/IDExpression.h"
 #include "help/Expressions/AsExpression.h"
+#include "help/Expressions/SubscriptionExpression.h"
 
 #include "help/Statements/WhileStatement.h"
 #include "help/Statements/IfStatement.h"

@@ -2,6 +2,7 @@
 #include "Integer.h"
 #include "String.h"
 #include "Float.h"
+#include "Usize.h"
 
 String::String (const std::string& value, bool strip) : string() {
   if (strip) {
@@ -26,6 +27,10 @@ String& String::operator= (const Float& other) {
 String& String::operator= (const String& other) {
   string = other.string;
   return *this;
+}
+
+String& String::operator= (const Usize& other) {
+  throw InterpretationException("Can not assign usize to String");
 }
 
 std::shared_ptr<Object> String::operator+ (const Object& other) {
@@ -88,11 +93,11 @@ std::shared_ptr<Boolean> String::operator|| (const Object& other) {
 }
 
 std::shared_ptr<Boolean> String::operator! () {
-  throw InterpretationException("Invalid operand type for operator!. bool expected, but i32 found");
+  throw InterpretationException("Invalid operand type for operator!. bool expected, but String found");
 }
 
 std::shared_ptr<Object> String::operator- () {
-  throw InterpretationException("Invalid operand type for operator!. i32 expected, but i32 found");
+  throw InterpretationException("Invalid operand type for operator-. i32 expected, but String found");
 }
 
 std::shared_ptr<String> String::operator[] (int32_t pos) {
@@ -116,6 +121,10 @@ std::shared_ptr<Float> String::as_f64 () {
 
 std::shared_ptr<String> String::as_String () {
   return std::make_shared<String>(string);
+}
+
+std::shared_ptr<Usize> String::as_usize () {
+  throw InterpretationException("Can not cast String to usize");
 }
 
 bool String::as_predicate () {

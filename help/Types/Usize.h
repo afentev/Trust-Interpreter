@@ -1,17 +1,17 @@
-#ifndef PARSEREXAMPLE_FLOAT_H
-#define PARSEREXAMPLE_FLOAT_H
+#ifndef PARSEREXAMPLE_USIZE_H
+#define PARSEREXAMPLE_USIZE_H
 
 #include "help/Types/Object.h"
 
-class Float : public Object, public std::enable_shared_from_this<Float> {
+class Usize : public Object, public std::enable_shared_from_this<Usize> {
  public:
-  explicit Float (double);
+  explicit Usize (size_t value);
 
-  Float& operator= (const Boolean& other) override;
-  Float& operator= (const Integer& other) override;
-  Float& operator= (const Float& other) override;
-  Float& operator= (const String& other) override;
-  Float& operator= (const Usize& other) override;
+  Usize& operator= (const Boolean& other) override;
+  Usize& operator= (const Integer& other) override;
+  Usize& operator= (const Float& other) override;
+  Usize& operator= (const String& other) override;
+  Usize& operator= (const Usize& other) override;
 
   std::shared_ptr<Object> operator+ (const Object& other) override;
   std::shared_ptr<Object> operator- (const Object& other) override;
@@ -41,16 +41,17 @@ class Float : public Object, public std::enable_shared_from_this<Float> {
 
   bool as_predicate () override;
   std::string as_string () override;
+  int32_t to_int ();
 
   std::string get_type () const override;
   void assign_into (std::shared_ptr<Object> lhs) override;
 
   void accept (Visitor* visitor) override;
-  ~Float () override;
+  ~Usize () override;
 
  private:
-  double number;
+  size_t number;
 };
 
 
-#endif //PARSEREXAMPLE_FLOAT_H
+#endif //PARSEREXAMPLE_USIZE_H

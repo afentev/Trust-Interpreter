@@ -2,6 +2,7 @@
 #include "Integer.h"
 #include "String.h"
 #include "Float.h"
+#include "Usize.h"
 
 Boolean::Boolean (bool value) : value(value) {}
 
@@ -20,6 +21,10 @@ Boolean& Boolean::operator= (const Float& other) {
 
 Boolean& Boolean::operator= (const String& other) {
   throw InterpretationException("Can not assign String to bool");
+}
+
+Boolean& Boolean::operator= (const Usize& other) {
+  throw InterpretationException("Can not assign usize to bool");
 }
 
 std::shared_ptr<Object> Boolean::operator+ (const Object& other) {
@@ -87,7 +92,7 @@ std::shared_ptr<Boolean> Boolean::operator! () {
 }
 
 std::shared_ptr<Object> Boolean::operator- () {
-  throw InterpretationException("Invalid operand type for operator&&. i32 expected, but bool found");
+  throw InterpretationException("Invalid operand type for operator-. i32 expected, but bool found");
 }
 
 std::shared_ptr<String> Boolean::operator[] (int32_t pos) {
@@ -108,6 +113,10 @@ std::shared_ptr<Float> Boolean::as_f64 () {
 
 std::shared_ptr<String> Boolean::as_String () {
   throw InterpretationException("Can not cast bool to String");
+}
+
+std::shared_ptr<Usize> Boolean::as_usize () {
+  return std::make_shared<Usize>(value);
 }
 
 bool Boolean::as_predicate () {

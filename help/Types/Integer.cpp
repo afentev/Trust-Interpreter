@@ -2,6 +2,7 @@
 #include "Integer.h"
 #include "String.h"
 #include "Float.h"
+#include "Usize.h"
 
 Integer::Integer (int32_t value) : number(value) {}
 
@@ -20,6 +21,10 @@ Integer& Integer::operator= (const Float& other) {
 
 Integer& Integer::operator= (const String& other) {
   throw InterpretationException("Can not assign String to i32");
+}
+
+Integer& Integer::operator= (const Usize& other) {
+  throw InterpretationException("Can not assign usize to i32");
 }
 
 std::shared_ptr<Object> Integer::operator+ (const Object& other) {
@@ -111,6 +116,10 @@ std::shared_ptr<Float> Integer::as_f64 () {
 
 std::shared_ptr<String> Integer::as_String () {
   throw InterpretationException("Can not cast i32 to String");
+}
+
+std::shared_ptr<Usize> Integer::as_usize () {
+  return std::make_shared<Usize>(static_cast<size_t>(number));
 }
 
 bool Integer::as_predicate () {

@@ -7,6 +7,7 @@ class Boolean;
 class Integer;
 class String;
 class Float;
+class Usize;
 
 class Object : public Expression {
  public:
@@ -14,6 +15,7 @@ class Object : public Expression {
   virtual Object& operator= (const Integer& other) = 0;
   virtual Object& operator= (const Float& other) = 0;
   virtual Object& operator= (const String& other) = 0;
+  virtual Object& operator= (const Usize& other) = 0;
 
   virtual std::shared_ptr<Object> operator+ (const Object& other) = 0;
   virtual std::shared_ptr<Object> operator- (const Object& other) = 0;
@@ -39,6 +41,7 @@ class Object : public Expression {
   virtual std::shared_ptr<Integer> as_i32 () = 0;
   virtual std::shared_ptr<Float> as_f64 () = 0;
   virtual std::shared_ptr<String> as_String () = 0;
+  virtual std::shared_ptr<Usize> as_usize () = 0;
 
   virtual bool as_predicate () = 0;
   virtual std::string as_string () = 0;

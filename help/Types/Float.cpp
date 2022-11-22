@@ -2,6 +2,7 @@
 #include "Integer.h"
 #include "String.h"
 #include "Float.h"
+#include "Usize.h"
 
 Float::Float (double value) : number(value) {}
 
@@ -20,6 +21,10 @@ Float& Float::operator= (const Float& other) {
 
 Float& Float::operator= (const String& other) {
   throw InterpretationException("Can not assign String to f64");
+}
+
+Float& Float::operator= (const Usize& other) {
+  throw InterpretationException("Can not assign usize to f64");
 }
 
 std::shared_ptr<Object> Float::operator+ (const Object& other) {
@@ -110,6 +115,13 @@ std::shared_ptr<Float> Float::as_f64 () {
 
 std::shared_ptr<String> Float::as_String () {
   throw InterpretationException("Can not cast f64 to String");
+}
+
+std::shared_ptr<Usize> Float::as_usize () {
+  if (number <= 0) {
+    return std::make_shared<Usize>(0);
+  }
+  return std::make_shared<Usize>(static_cast<size_t>(number));
 }
 
 bool Float::as_predicate () {

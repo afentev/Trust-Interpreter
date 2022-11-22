@@ -16,6 +16,7 @@ class Boolean;
 class String;
 class Integer;
 class Float;
+class Usize;
 
 class BreakStatement;
 class ContinueStatement;
@@ -51,5 +52,6 @@ class NotExpression;
 class OrExpression;
 class PlusExpression;
 class UnaryMinusExpression;
+class SubscriptionExpression;
 
 #endif //PARSEREXAMPLE_FORWARDDECLARATIONS_H

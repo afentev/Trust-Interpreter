@@ -23,6 +23,7 @@
     class String;
     class Integer;
     class Float;
+    class Usize;
 
     class BreakStatement;
     class ContinueStatement;
@@ -58,6 +59,7 @@
     class OrExpression;
     class PlusExpression;
     class UnaryMinusExpression;
+    class SubscriptionExpression;
 
     class FunctionDeclarationList;
     class FunctionDeclaration;
@@ -79,6 +81,7 @@
     #include "help/Types/Integer.h"
     #include "help/Types/Float.h"
     #include "help/Types/String.h"
+    #include "help/Types/Usize.h"
     #include "help/Expressions/NotExpression.h"
     #include "help/Expressions/AndExpression.h"
     #include "help/Expressions/OrExpression.h"
@@ -97,6 +100,7 @@
     #include "help/Expressions/DivExpression.h"
     #include "help/Expressions/IDExpression.h"
     #include "help/Expressions/AsExpression.h"
+    #include "help/Expressions/SubscriptionExpression.h"
 
     #include "help/Statements/WhileStatement.h"
     #include "help/Statements/IfStatement.h"
@@ -163,6 +167,8 @@
     RBRACE "}"
     LPAREN "("
     RPAREN ")"
+    LSUBSCR "["
+    RSUBSCR "]"
     NOT "!"
     AND "&&"
     OR "||"
@@ -181,6 +187,7 @@
     INT32 "i32"
     FLOAT64 "f64"
     STRING "String"
+    USIZE "usize"
     BOOL "bool"
     PRINT "print!"
     PRINTLN "println!"
@@ -189,6 +196,7 @@
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "integer_number"
 %token <double> REAL "real_number"
+%token <size_t> SIZE_T "size_t"
 %token <std::string> STRLITERAL "string_literal"
 %token <std::string> COMMENTLINE "comment_line"
 %nterm <std::shared_ptr<Expression>> expression
@@ -297,12 +305,14 @@ for_loop:
 
 type:
     "i32" {$$ = "i32";}
+    | "usize" {$$ = "usize";}
     | "f64" {$$ = "f64";}
     | "String" {$$ = "String";}
     | "bool" {$$ = "bool";};
 
 expression:
     "integer_number" {$$ = std::make_shared<Integer> ($1);}
+    | "size_t" {$$ = std::make_shared<Usize> ($1);}
     | "real_number" {$$ = std::make_shared<Float> ($1);}
     | "false" {$$ = std::make_shared<Boolean> (false);}
     | "true" {$$ = std::make_shared<Boolean> (true);}
@@ -312,6 +322,7 @@ expression:
     | "!" expression {$$ = std::make_shared<NotExpression> ($2);}
     | "(" expression ")" {$$ = $2;}
     | "-" expression {$$ = std::make_shared<UnaryMinusExpression> ($2);}
+    | expression "[" expression "]" {$$ = std::make_shared<SubscriptionExpression>();}
     | expression "<" expression {$$ = std::make_shared<LessExpression> ($1, $3);}
     | expression "<=" expression {$$ = std::make_shared<LessEqExpression> ($1, $3);}
     | expression "==" expression {$$ = std::make_shared<EqualExpression> ($1, $3);}

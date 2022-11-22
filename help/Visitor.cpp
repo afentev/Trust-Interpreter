@@ -67,6 +67,10 @@ void Visitor::visit (std::shared_ptr<String> expression) {
   object = expression;
 }
 
+void Visitor::visit (std::shared_ptr<Usize> expression) {
+  object = expression;
+}
+
 void Visitor::visit (std::shared_ptr<NotExpression> expression) {
   object = !*evaluate(expression->get_expression());
 }
@@ -177,6 +181,8 @@ void Visitor::visit (std::shared_ptr<AsExpression> expression) {
     object = object->as_f64();
   } else if (type == "String") {
     object = object->as_String();
+  } else if (type == "usize") {
+    object = object->as_usize();
   } else {
     throw std::runtime_error("INTERNAL ERROR: UNEXPECTED TYPE NAME");
   }
@@ -306,6 +312,10 @@ void Visitor::visit (std::shared_ptr<PrintStatement> statement) {
   if (sub_number != statement->subs_number()) {
     throw InterpretationException("More values than slots were provided");
   }
+}
+
+void Visitor::visit(std::shared_ptr<FunctionCall> expression) {
+  throw InterpretationException("Unimplemented subscription in visitor");
 }
 
 void Visitor::visit (std::shared_ptr<BreakStatement> statement) {

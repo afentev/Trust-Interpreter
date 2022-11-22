@@ -28,6 +28,11 @@
       const yy::parser::location_type& loc
     );
 
+  yy::parser::symbol_type make_SIZE_T(
+        const std::string &s,
+        const yy::parser::location_type& loc
+      );
+
   void Scanner::UpdateLocation() {
     if (driver.location_debug) {
         std::cerr << "Action called " << driver.location << std::endl;
@@ -39,6 +44,7 @@
 id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 float [0-9]+\.[0-9]+
+size_t [0-9]+usize
 blank [ \t\r]
 string_literal \"([^\\\"]|\\.)*\"
 comment_line "//".*"\n"
@@ -87,6 +93,7 @@ comment_line "//".*"\n"
 "->"       return yy::parser::make_ARROW(loc);
 ":"        return yy::parser::make_COLON(loc);
 "i32"      return yy::parser::make_INT32(loc);
+"usize"    return yy::parser::make_USIZE(loc);
 "f64"      return yy::parser::make_FLOAT64(loc);
 "String"   return yy::parser::make_STRING(loc);
 "bool"     return yy::parser::make_BOOL(loc);
@@ -108,6 +115,8 @@ comment_line "//".*"\n"
 "}"        return yy::parser::make_RBRACE  (loc);
 "("        return yy::parser::make_LPAREN (loc);
 ")"        return yy::parser::make_RPAREN (loc);
+"["        return yy::parser::make_LSUBSCR (loc);
+"]"        return yy::parser::make_RSUBSCR (loc);
 "!"        return yy::parser::make_NOT   (loc);
 "="        return yy::parser::make_ASSIGN (loc);
 ";"        return yy::parser::make_SEMICOLON(loc);
@@ -133,6 +142,7 @@ comment_line "//".*"\n"
 {comment_line} return yy::parser::make_COMMENTLINE(yytext, loc);
 {string_literal} return yy::parser::make_STRLITERAL(yytext, loc);
 {float}    return make_REAL(yytext, loc);
+{size_t}   return make_SIZE_T(yytext, loc);
 {int}      return make_NUMBER(yytext, loc);
 {id}       {
                 if (driver.location_debug) {
@@ -164,4 +174,15 @@ yy::parser::symbol_type make_REAL(
   errno = 0;
   double n = strtod(s.c_str(), NULL);
   return yy::parser::make_REAL(n, loc);
+}
+
+yy::parser::symbol_type make_SIZE_T(
+  const std::string &s,
+  const yy::parser::location_type& loc
+) {
+  errno = 0;
+  size_t n;
+  std::string stripped = s.substr(0, s.find("usize"));
+  sscanf(stripped.c_str(), "%zu", &n);
+  return yy::parser::make_SIZE_T(n, loc);
 }

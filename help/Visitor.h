@@ -23,6 +23,7 @@ class Visitor {
   void visit (std::shared_ptr<Integer> expression);
   void visit (std::shared_ptr<Float> expression);
   void visit (std::shared_ptr<String> expression);
+  void visit (std::shared_ptr<Usize> expression);
 
   void visit (std::shared_ptr<NotExpression> expression);
   void visit (std::shared_ptr<AndExpression> expression);
@@ -41,6 +42,7 @@ class Visitor {
   void visit (std::shared_ptr<LessExpression> expression);
   void visit (std::shared_ptr<IDExpression> expression);
   void visit (std::shared_ptr<AsExpression> expression);
+  void visit (std::shared_ptr<SubscriptionExpression> expression);
   void visit (std::shared_ptr<FunctionCall> expression);
 
   void visit (std::shared_ptr<Statements> statement);
