@@ -44,6 +44,7 @@
     class AsExpression;
     class DivExpression;
     class EqualExpression;
+    class FunctionCall;
     class GreaterEqExpression;
     class GreaterExpression;
     class IDExpression;
@@ -57,6 +58,11 @@
     class OrExpression;
     class PlusExpression;
     class UnaryMinusExpression;
+
+    class FunctionDeclarationList;
+    class FunctionDeclaration;
+    class ParamList;
+    class Argument;
 }
 
 
@@ -77,6 +83,7 @@
     #include "help/Expressions/AndExpression.h"
     #include "help/Expressions/OrExpression.h"
     #include "help/Expressions/EqualExpression.h"
+    #include "help/Expressions/FunctionCall.h"
     #include "help/Expressions/NotEqualExpression.h"
     #include "help/Expressions/GreaterExpression.h"
     #include "help/Expressions/GreaterEqExpression.h"
@@ -105,6 +112,10 @@
     #include "help/Statements/Interruptions/ContinueStatement.h"
     #include "help/Statements/Interruptions/ReturnStatement.h"
 
+    #include "help/Functions/FunctionDeclarationList.h"
+    #include "help/Functions/FunctionDeclaration.h"
+    #include "help/Functions/ParamList.h"
+
     /* Redefine parser to use our function from scanner */
     static yy::parser::symbol_type yylex(Scanner &scanner) {
         return scanner.ScanToken();
@@ -123,13 +134,13 @@
 %token
     END 0 "end of file"
     FN "fn"
+    ARROW "->"
     WHILE "while"
     FOR "for"
     IN "in"
     RANGE ".."
     RANGEEQ "..="
     QUOTE "\""
-    MAIN "main"
     LET "let"
     MUT "mut"
     RETURN "return"
@@ -193,6 +204,11 @@
 %nterm <std::shared_ptr<PrintStatement>> print_statement;
 %nterm <std::string> type;
 
+%nterm <std::shared_ptr<FunctionDeclarationList>> function_declaration_list;
+%nterm <std::shared_ptr<FunctionDeclaration>> function_declaration;
+%nterm <std::shared_ptr<ParamList>> param_list;
+%nterm <std::shared_ptr<Argument>> argument;
+
 // Prints output in parsing option for debugging location terminal
 %printer { yyo << $$; } <*>;
 
@@ -200,10 +216,31 @@
 
 %start program;
 program:
-    "fn" "main" "(" ")" "{" statements "}" {
-    $$ = std::make_shared<Program>($6);
-    driver.program = $$;
-    };
+    function_declaration_list {$$ = std::make_shared<Program>($1);
+                               driver.program = $$;};
+    //"fn" "main" "(" ")" "{" statements "}" {
+    //                                  $$ = std::make_shared<Program>($6);
+    //                                  driver.program = $$;
+    //                          };
+
+function_declaration_list:
+    %empty {$$ = std::make_shared<FunctionDeclarationList>();}
+    | "comment_line" {$$ = std::make_shared<FunctionDeclarationList>();}
+    | function_declaration_list function_declaration {$1->add_declaration($2); $$ = $1;};
+
+function_declaration:
+    "fn" "identifier" "(" param_list ")" "{" statements "}" {$$ = std::make_shared<FunctionDeclaration>($2, "void", $4, $7, nullptr);}
+    | "fn" "identifier" "(" param_list ")" "->" type "{" statements "}" {$$ = std::make_shared<FunctionDeclaration>($2, $7, $4, $9, nullptr);}
+    | "fn" "identifier" "(" param_list ")" "->" type "{" statements expression "}" {$$ = std::make_shared<FunctionDeclaration>($2, $7, $4, $9, std::make_shared<ReturnStatement>($10));};
+
+param_list:
+    %empty {$$ = std::make_shared<ParamList>();}
+    | argument {$$ = std::make_shared<ParamList>(); $$->add_param($1);}
+    | param_list "," argument {$1->add_param($3); $$ = $1;};
+
+argument:
+    "identifier" ":" type {$$ = std::make_shared<Argument>($1, $3, true);}
+    | "mut" "identifier" ":" type {$$ = std::make_shared<Argument>($2, $4, false);};
 
 statements:
     %empty {$$ = std::make_shared<Statements>();}
@@ -227,7 +264,8 @@ statement:
     | if_statement {$$ = $1;}
     | "while" expression "{" statements "}" {$$ = std::make_shared<WhileStatement>($2, $4);}
     | for_loop {$$ = $1;}
-    | "return" ";" {$$ = std::make_shared<ReturnStatement>();};
+    | "return" ";" {$$ = std::make_shared<ReturnStatement>(nullptr);}
+    | "return" expression ";" {$$ = std::make_shared<ReturnStatement>($2);};
 
 print_statement:
     "print!" "(" "string_literal" expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $4, false);};
@@ -270,6 +308,7 @@ expression:
     | "true" {$$ = std::make_shared<Boolean> (true);}
     | "string_literal" {$$ = std::make_shared<String> ($1);}
     | "identifier" {$$ = std::make_shared<IDExpression> ($1);}
+    | "identifier" "(" expression_list ")" {$$ = std::make_shared<FunctionCall>($1, $3);}
     | "!" expression {$$ = std::make_shared<NotExpression> ($2);}
     | "(" expression ")" {$$ = $2;}
     | "-" expression {$$ = std::make_shared<UnaryMinusExpression> ($2);}
@@ -290,6 +329,7 @@ expression:
 
 expression_list:
     %empty {$$ = std::make_shared<ExpressionList>();}
+    | expression {$$ = std::make_shared<ExpressionList>(); $$->add_expression($1);}
     | expression_list "," expression {$1->add_expression($3); $$ = $1;};
 
 %left "=";

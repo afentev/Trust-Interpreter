@@ -33,7 +33,13 @@
 #include "help/Statements/AssignmentStatement.h"
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
+#include "help/Statements/Interruptions/ReturnStatement.h"
+#include "help/Statements/Interruptions/BreakStatement.h"
+#include "help/Statements/Interruptions/ContinueStatement.h"
 
 #include "help/InterpretationExceptions/InterpretationExceptions.h"
+
+#include "help/Functions/FunctionDeclarationList.h"
+#include "help/Expressions/FunctionCall.h"
 
 #endif //PARSEREXAMPLE_VISITORDEPENDENCIES_H

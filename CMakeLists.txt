@@ -82,9 +82,13 @@ add_executable(
 
         help/Identifiers/IDTable.cpp help/Identifiers/Identifier.cpp
 
+        help/Functions/FunctionDeclarationList.cpp help/Functions/FunctionDeclarationList.h
+        help/Functions/FunctionDeclaration.cpp help/Functions/FunctionDeclaration.h help/Functions/ParamList.cpp
+        help/Functions/ParamList.h
+
         main.cpp
         driver.cpp
         ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS})
+        ${FLEX_MyScanner_OUTPUTS} help/Expressions/FunctionCall.cpp help/Expressions/FunctionCall.h help/Functions/FunctionsTable.cpp help/Functions/FunctionsTable.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

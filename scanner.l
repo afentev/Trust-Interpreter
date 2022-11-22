@@ -84,7 +84,7 @@ comment_line "//".*"\n"
 "continue" return yy::parser::make_CONTINUE(loc);
 "as"       return yy::parser::make_AS(loc);
 "fn"       return yy::parser::make_FN(loc);
-"main"     return yy::parser::make_MAIN(loc);
+"->"       return yy::parser::make_ARROW(loc);
 ":"        return yy::parser::make_COLON(loc);
 "i32"      return yy::parser::make_INT32(loc);
 "f64"      return yy::parser::make_FLOAT64(loc);

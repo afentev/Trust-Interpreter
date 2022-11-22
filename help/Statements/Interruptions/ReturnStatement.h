@@ -5,10 +5,15 @@
 
 class ReturnStatement : public Statement, public std::enable_shared_from_this<ReturnStatement> {
  public:
-  ReturnStatement ();
+  ReturnStatement (std::shared_ptr<Expression> value);
+
+  std::shared_ptr<Expression> get_value();
 
   void accept (Visitor* visitor) override;
   ~ReturnStatement () override;
+
+ private:
+  std::shared_ptr<Expression> value;
 };
 
 

@@ -2,16 +2,16 @@
 #define PARSEREXAMPLE_PROGRAM_H
 
 #include <utility>
-#include "help/Statements/Statements.h"
+#include "help/Functions/FunctionDeclarationList.h"
 
 class Program {
  public:
-  Program (std::shared_ptr<Statements> statements);
+  Program (std::shared_ptr<FunctionDeclarationList> functions);
 
-  std::shared_ptr<Statements> get_statements ();
+  std::shared_ptr<FunctionDeclarationList> get_functions ();
 
  private:
-  std::shared_ptr<Statements> statements;
+  std::shared_ptr<FunctionDeclarationList> functions;
 };
 
 

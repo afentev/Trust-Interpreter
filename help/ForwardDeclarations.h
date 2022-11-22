@@ -6,6 +6,11 @@ class Visitor;
 class Statement;
 class Expression;
 
+class FunctionDeclarationList;
+class FunctionDeclaration;
+class ParamList;
+class Argument;
+
 class Object;
 class Boolean;
 class String;
@@ -32,6 +37,7 @@ class AndExpression;
 class AsExpression;
 class DivExpression;
 class EqualExpression;
+class FunctionCall;
 class GreaterEqExpression;
 class GreaterExpression;
 class IDExpression;
