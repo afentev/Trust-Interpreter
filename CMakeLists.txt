@@ -89,6 +89,6 @@ add_executable(
         main.cpp
         driver.cpp
         ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS} help/Expressions/FunctionCall.cpp help/Expressions/FunctionCall.h help/Functions/FunctionsTable.cpp help/Functions/FunctionsTable.h help/Types/Usize.cpp help/Types/Usize.h help/Expressions/SubscriptionExpression.cpp help/Expressions/SubscriptionExpression.h)
+        ${FLEX_MyScanner_OUTPUTS} help/Expressions/FunctionCall.cpp help/Expressions/FunctionCall.h help/Functions/FunctionsTable.cpp help/Functions/FunctionsTable.h help/Types/Usize.cpp help/Types/Usize.h help/Expressions/SubscriptionExpression.cpp help/Expressions/SubscriptionExpression.h help/Statements/SubscriptionAssignment.cpp help/Statements/SubscriptionAssignment.h help/Types/Char.cpp help/Types/Char.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

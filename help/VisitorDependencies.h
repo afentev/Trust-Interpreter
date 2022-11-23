@@ -32,6 +32,7 @@
 #include "help/Statements/VariableDeclInit.h"
 #include "help/Statements/TypelessVariableDecl.h"
 #include "help/Statements/AssignmentStatement.h"
+#include "help/Statements/SubscriptionAssignment.h"
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
 #include "help/Statements/Interruptions/ReturnStatement.h"

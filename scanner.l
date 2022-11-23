@@ -28,6 +28,11 @@
       const yy::parser::location_type& loc
     );
 
+  yy::parser::symbol_type make_CHARLITERAL(
+        const std::string &s,
+        const yy::parser::location_type& loc
+      );
+
   yy::parser::symbol_type make_SIZE_T(
         const std::string &s,
         const yy::parser::location_type& loc
@@ -47,6 +52,8 @@ float [0-9]+\.[0-9]+
 size_t [0-9]+usize
 blank [ \t\r]
 string_literal \"([^\\\"]|\\.)*\"
+char_literal '[^'\\\n]'
+
 comment_line "//".*"\n"
 %{
   // Code run each time a pattern is matched.
@@ -97,6 +104,8 @@ comment_line "//".*"\n"
 "f64"      return yy::parser::make_FLOAT64(loc);
 "String"   return yy::parser::make_STRING(loc);
 "bool"     return yy::parser::make_BOOL(loc);
+"char"     return yy::parser::make_CHAR(loc);
+
 "true"     return yy::parser::make_TRUE(loc);
 "false"     return yy::parser::make_FALSE(loc);
 "-"        {
@@ -141,6 +150,8 @@ comment_line "//".*"\n"
 
 {comment_line} return yy::parser::make_COMMENTLINE(yytext, loc);
 {string_literal} return yy::parser::make_STRLITERAL(yytext, loc);
+
+{char_literal} return make_CHARLITERAL(yytext, loc);
 {float}    return make_REAL(yytext, loc);
 {size_t}   return make_SIZE_T(yytext, loc);
 {int}      return make_NUMBER(yytext, loc);
@@ -174,6 +185,14 @@ yy::parser::symbol_type make_REAL(
   errno = 0;
   double n = strtod(s.c_str(), NULL);
   return yy::parser::make_REAL(n, loc);
+}
+
+yy::parser::symbol_type make_CHARLITERAL(
+  const std::string &s,
+  const yy::parser::location_type& loc
+) {
+  errno = 0;
+  return yy::parser::make_CHARLITERAL(s[1], loc);
 }
 
 yy::parser::symbol_type make_SIZE_T(

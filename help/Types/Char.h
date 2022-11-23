@@ -1,15 +1,13 @@
-#ifndef PARSEREXAMPLE_STRING_H
-#define PARSEREXAMPLE_STRING_H
+#ifndef PARSEREXAMPLE_CHAR_H
+#define PARSEREXAMPLE_CHAR_H
 
 #include "help/Types/Object.h"
 
-class String : public Object, public std::enable_shared_from_this<String> {
+class Char : public Object, public std::enable_shared_from_this<Char> {
  public:
-  explicit String (const std::string& value, bool strip = true);
+  explicit Char (unsigned char symbol);
 
-  String& operator= (const String& other) override;
-
-  std::shared_ptr<Object> operator+ (const Object& other) override;
+  Char& operator= (const Char& other) override;
 
   std::shared_ptr<Boolean> operator< (const Object& other) override;
   std::shared_ptr<Boolean> operator<= (const Object& other) override;
@@ -18,25 +16,23 @@ class String : public Object, public std::enable_shared_from_this<String> {
   std::shared_ptr<Boolean> operator>= (const Object& other) override;
   std::shared_ptr<Boolean> operator> (const Object& other) override;
 
-  std::shared_ptr<Object> operator[] (const Object& pos) override;
-
-  std::shared_ptr<String> as_String () override;
+  std::shared_ptr<Integer> as_i32 () override;
+  std::shared_ptr<Usize> as_usize () override;
+  std::shared_ptr<Char> as_char () override;
 
   std::string as_string () override;
 
-  void subscript_assign (const Object& pos, const Object& rhs) override;
+  char get_char() const;
 
   std::string get_type () const override;
   void assign_into (std::shared_ptr<Object> lhs) override;
 
-  static std::string remove_escape_chars (const std::string& string);
-
   void accept (Visitor* visitor) override;
-  ~String () override;
+  ~Char () override;
 
  private:
-  std::string string;
+  unsigned char symbol;
 };
 
 
-#endif //PARSEREXAMPLE_STRING_H
+#endif //PARSEREXAMPLE_CHAR_H

@@ -3,6 +3,7 @@
 #include "String.h"
 #include "Float.h"
 #include "Usize.h"
+#include "Char.h"
 
 String::String (const std::string& value, bool strip) : string() {
   if (strip) {
@@ -12,46 +13,14 @@ String::String (const std::string& value, bool strip) : string() {
   }
 }
 
-String& String::operator= (const Boolean& other) {
-  throw InterpretationException("Can not assign bool to String");
-}
-
-String& String::operator= (const Integer& other) {
-  throw InterpretationException("Can not assign i32 to String");
-}
-
-String& String::operator= (const Float& other) {
-  throw InterpretationException("Can not assign f64 to String");
-}
-
 String& String::operator= (const String& other) {
   string = other.string;
   return *this;
 }
 
-String& String::operator= (const Usize& other) {
-  throw InterpretationException("Can not assign usize to String");
-}
-
 std::shared_ptr<Object> String::operator+ (const Object& other) {
   check_type("+", this, other);
   return std::make_shared<String>(string + dynamic_cast<const String&>(other).string);
-}
-
-std::shared_ptr<Object> String::operator- (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator-. i32 or f64 expected, but String found");
-}
-
-std::shared_ptr<Object> String::operator* (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator*. i32 or f64 expected, but String found");
-}
-
-std::shared_ptr<Object> String::operator/ (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator/. i32 or f64 expected, but String found");
-}
-
-std::shared_ptr<Object> String::operator% (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator%. i32 expected, but String found");
 }
 
 std::shared_ptr<Boolean> String::operator< (const Object& other) {
@@ -84,55 +53,37 @@ std::shared_ptr<Boolean> String::operator> (const Object& other) {
   return std::make_shared<Boolean>(string > dynamic_cast<const String&>(other).string);
 }
 
-std::shared_ptr<Boolean> String::operator&& (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator&&. bool expected, but String found");
-}
-
-std::shared_ptr<Boolean> String::operator|| (const Object& other) {
-  throw InterpretationException("Invalid operand type for operator||. bool expected, but String found");
-}
-
-std::shared_ptr<Boolean> String::operator! () {
-  throw InterpretationException("Invalid operand type for operator!. bool expected, but String found");
-}
-
-std::shared_ptr<Object> String::operator- () {
-  throw InterpretationException("Invalid operand type for operator-. i32 expected, but String found");
-}
-
-std::shared_ptr<String> String::operator[] (int32_t pos) {
-  if (pos < 0 || pos >= string.size()) {
+std::shared_ptr<Object> String::operator[] (const Object& pos) {
+  std::string pos_type = pos.get_type();
+  if (pos_type != "usize") {
+    throw InterpretationException("Subscription index must be usize type, not " + pos_type);
+  }
+  size_t index = dynamic_cast<const Usize&>(pos).to_usize();
+  if (index >= string.size()) {
     throw InterpretationException("Subscription index is out of bounds");
   }
-  return std::make_shared<String>(std::string(1, string[pos]), false);
-}
-
-std::shared_ptr<Boolean> String::as_bool () {
-  throw InterpretationException("Can not cast String to bool");
-}
-
-std::shared_ptr<Integer> String::as_i32 () {
-  throw InterpretationException("Can not cast String to i32");
-}
-
-std::shared_ptr<Float> String::as_f64 () {
-  throw InterpretationException("Can not cast String to f64");
+  return std::make_shared<Char>(string[index]);
 }
 
 std::shared_ptr<String> String::as_String () {
   return std::make_shared<String>(string);
 }
 
-std::shared_ptr<Usize> String::as_usize () {
-  throw InterpretationException("Can not cast String to usize");
-}
-
-bool String::as_predicate () {
-  throw InterpretationException("Invalid usage of type String in condition");
-}
-
 std::string String::as_string () {
   return string;
+}
+
+void String::subscript_assign (const Object& pos, const Object& rhs) {
+  check_type("[]", operator[](pos).get(), rhs);
+  std::string pos_type = pos.get_type();
+  if (pos_type != "usize") {
+    throw InterpretationException("Subscription index must be usize type, not " + pos_type);
+  }
+  size_t index = dynamic_cast<const Usize&>(pos).to_usize();
+  if (index >= string.size()) {
+    throw InterpretationException("Subscription index is out of bounds");
+  }
+  string[index] = dynamic_cast<const Char&>(rhs).get_char();
 }
 
 std::string String::get_type () const {

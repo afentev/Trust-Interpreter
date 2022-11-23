@@ -71,6 +71,10 @@ void Visitor::visit (std::shared_ptr<Usize> expression) {
   object = expression;
 }
 
+void Visitor::visit (std::shared_ptr<Char> expression) {
+  object = expression;
+}
+
 void Visitor::visit (std::shared_ptr<NotExpression> expression) {
   object = !*evaluate(expression->get_expression());
 }
@@ -204,8 +208,10 @@ void Visitor::visit (std::shared_ptr<VariableDeclaration> statement) {
 }
 
 void Visitor::visit (std::shared_ptr<VariableDeclInit> statement) {
-  evaluate(statement->get_value());
-  variables.add_identifier(statement->get_name(), object, statement->is_const(), true);
+  std::shared_ptr<Object> value = evaluate(statement->get_value());
+  std::shared_ptr<Object> required = create_object(statement->get_type());
+  value->assign_into(required);  // this will throw an exception if required and given type are incompatible
+  variables.add_identifier(statement->get_name(), required, statement->is_const(), true);
 }
 
 void Visitor::visit (std::shared_ptr<TypelessVariableDecl> statement) {
@@ -287,6 +293,14 @@ void Visitor::visit (std::shared_ptr<AssignmentStatement> statement) {
   variables.mut_identifier(statement->get_identifier(), object);
 }
 
+void Visitor::visit (std::shared_ptr<SubscriptionAssignment> statement) {
+  evaluate(statement->get_rhs());
+  std::shared_ptr<Object> rhs = object;
+
+  std::shared_ptr<Object> index = evaluate(statement->get_index());
+  variables.get_identifier(statement->get_lhs())->subscript_assign(*index, *rhs);
+}
+
 void Visitor::visit (std::shared_ptr<ExpressionList> statement) {}
 
 void Visitor::visit (std::shared_ptr<PrintStatement> statement) {
@@ -314,8 +328,9 @@ void Visitor::visit (std::shared_ptr<PrintStatement> statement) {
   }
 }
 
-void Visitor::visit(std::shared_ptr<FunctionCall> expression) {
-  throw InterpretationException("Unimplemented subscription in visitor");
+void Visitor::visit(std::shared_ptr<SubscriptionExpression> expression) {
+  object = (*evaluate(expression->get_lhs()))[*evaluate(expression->get_index())];
+
 }
 
 void Visitor::visit (std::shared_ptr<BreakStatement> statement) {

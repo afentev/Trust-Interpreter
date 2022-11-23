@@ -24,6 +24,7 @@
     class Integer;
     class Float;
     class Usize;
+    class Char;
 
     class BreakStatement;
     class ContinueStatement;
@@ -60,6 +61,7 @@
     class PlusExpression;
     class UnaryMinusExpression;
     class SubscriptionExpression;
+    class SubscriptionAssignment;
 
     class FunctionDeclarationList;
     class FunctionDeclaration;
@@ -82,6 +84,8 @@
     #include "help/Types/Float.h"
     #include "help/Types/String.h"
     #include "help/Types/Usize.h"
+    #include "help/Types/Char.h"
+
     #include "help/Expressions/NotExpression.h"
     #include "help/Expressions/AndExpression.h"
     #include "help/Expressions/OrExpression.h"
@@ -115,6 +119,7 @@
     #include "help/Statements/Interruptions/BreakStatement.h"
     #include "help/Statements/Interruptions/ContinueStatement.h"
     #include "help/Statements/Interruptions/ReturnStatement.h"
+    #include "help/Statements/SubscriptionAssignment.h"
 
     #include "help/Functions/FunctionDeclarationList.h"
     #include "help/Functions/FunctionDeclaration.h"
@@ -189,6 +194,7 @@
     STRING "String"
     USIZE "usize"
     BOOL "bool"
+    CHAR "char"
     PRINT "print!"
     PRINTLN "println!"
 ;
@@ -197,6 +203,8 @@
 %token <int> NUMBER "integer_number"
 %token <double> REAL "real_number"
 %token <size_t> SIZE_T "size_t"
+%token <char> CHARLITERAL "char_literal"
+
 %token <std::string> STRLITERAL "string_literal"
 %token <std::string> COMMENTLINE "comment_line"
 %nterm <std::shared_ptr<Expression>> expression
@@ -262,6 +270,12 @@ statement:
     | "continue" {$$ = std::make_shared<ContinueStatement>();}
     | print_statement {$$ = $1;}
     | let_statement {$$ = $1;}
+    | "identifier" "[" expression "]" "=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, $6);}
+    | "identifier" "[" expression "]" "+=" expression ";" {}
+    | "identifier" "[" expression "]" "-=" expression ";" {}
+    | "identifier" "[" expression "]" "*=" expression ";" {}
+    | "identifier" "[" expression "]" "%=" expression ";" {}
+    | "identifier" "[" expression "]" "/=" expression ";" {}
     | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}
     | "identifier" "+=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<PlusExpression>(std::make_shared<IDExpression>($1), $3));}
     | "identifier" "-=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<MinusExpression>(std::make_shared<IDExpression>($1), $3));}
@@ -308,7 +322,8 @@ type:
     | "usize" {$$ = "usize";}
     | "f64" {$$ = "f64";}
     | "String" {$$ = "String";}
-    | "bool" {$$ = "bool";};
+    | "bool" {$$ = "bool";}
+    | "char" {$$ = "char";};
 
 expression:
     "integer_number" {$$ = std::make_shared<Integer> ($1);}
@@ -317,12 +332,13 @@ expression:
     | "false" {$$ = std::make_shared<Boolean> (false);}
     | "true" {$$ = std::make_shared<Boolean> (true);}
     | "string_literal" {$$ = std::make_shared<String> ($1);}
+    | "char_literal" {$$ = std::make_shared<Char> ($1);}
     | "identifier" {$$ = std::make_shared<IDExpression> ($1);}
     | "identifier" "(" expression_list ")" {$$ = std::make_shared<FunctionCall>($1, $3);}
     | "!" expression {$$ = std::make_shared<NotExpression> ($2);}
     | "(" expression ")" {$$ = $2;}
     | "-" expression {$$ = std::make_shared<UnaryMinusExpression> ($2);}
-    | expression "[" expression "]" {$$ = std::make_shared<SubscriptionExpression>();}
+    | "identifier" "[" expression "]" {$$ = std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3);}
     | expression "<" expression {$$ = std::make_shared<LessExpression> ($1, $3);}
     | expression "<=" expression {$$ = std::make_shared<LessEqExpression> ($1, $3);}
     | expression "==" expression {$$ = std::make_shared<EqualExpression> ($1, $3);}

@@ -24,6 +24,7 @@ class Visitor {
   void visit (std::shared_ptr<Float> expression);
   void visit (std::shared_ptr<String> expression);
   void visit (std::shared_ptr<Usize> expression);
+  void visit (std::shared_ptr<Char> expression);
 
   void visit (std::shared_ptr<NotExpression> expression);
   void visit (std::shared_ptr<AndExpression> expression);
@@ -54,6 +55,7 @@ class Visitor {
   void visit (std::shared_ptr<IfElseStatement> statement);
   void visit (std::shared_ptr<ForStatement> statement);
   void visit (std::shared_ptr<AssignmentStatement> statement);
+  void visit (std::shared_ptr<SubscriptionAssignment> statement);
   void visit (std::shared_ptr<ExpressionList> statement);
   void visit (std::shared_ptr<PrintStatement> statement);
   void visit (std::shared_ptr<BreakStatement> statement);

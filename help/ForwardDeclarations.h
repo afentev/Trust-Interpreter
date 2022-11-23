@@ -17,6 +17,7 @@ class String;
 class Integer;
 class Float;
 class Usize;
+class Char;
 
 class BreakStatement;
 class ContinueStatement;
@@ -33,6 +34,7 @@ class TypelessVariableDecl;
 class VariableDeclaration;
 class VariableDeclInit;
 class WhileStatement;
+class SubscriptionAssignment;
 
 class AndExpression;
 class AsExpression;

@@ -8,20 +8,22 @@ class Integer;
 class String;
 class Float;
 class Usize;
+class Char;
 
 class Object : public Expression {
  public:
-  virtual Object& operator= (const Boolean& other) = 0;
-  virtual Object& operator= (const Integer& other) = 0;
-  virtual Object& operator= (const Float& other) = 0;
-  virtual Object& operator= (const String& other) = 0;
-  virtual Object& operator= (const Usize& other) = 0;
+  virtual Object& operator= (const Boolean& other);
+  virtual Object& operator= (const Integer& other);
+  virtual Object& operator= (const Float& other);
+  virtual Object& operator= (const String& other);
+  virtual Object& operator= (const Usize& other);
+  virtual Object& operator= (const Char& other);
 
-  virtual std::shared_ptr<Object> operator+ (const Object& other) = 0;
-  virtual std::shared_ptr<Object> operator- (const Object& other) = 0;
-  virtual std::shared_ptr<Object> operator* (const Object& other) = 0;
-  virtual std::shared_ptr<Object> operator/ (const Object& other) = 0;
-  virtual std::shared_ptr<Object> operator% (const Object& other) = 0;
+  virtual std::shared_ptr<Object> operator+ (const Object& other);
+  virtual std::shared_ptr<Object> operator- (const Object& other);
+  virtual std::shared_ptr<Object> operator* (const Object& other);
+  virtual std::shared_ptr<Object> operator/ (const Object& other);
+  virtual std::shared_ptr<Object> operator% (const Object& other);
 
   virtual std::shared_ptr<Boolean> operator< (const Object& other) = 0;
   virtual std::shared_ptr<Boolean> operator<= (const Object& other) = 0;
@@ -30,21 +32,24 @@ class Object : public Expression {
   virtual std::shared_ptr<Boolean> operator>= (const Object& other) = 0;
   virtual std::shared_ptr<Boolean> operator> (const Object& other) = 0;
 
-  virtual std::shared_ptr<Boolean> operator&& (const Object& other) = 0;
-  virtual std::shared_ptr<Boolean> operator|| (const Object& other) = 0;
-  virtual std::shared_ptr<Boolean> operator! () = 0;
+  virtual std::shared_ptr<Boolean> operator&& (const Object& other);
+  virtual std::shared_ptr<Boolean> operator|| (const Object& other);
+  virtual std::shared_ptr<Boolean> operator! ();
 
-  virtual std::shared_ptr<Object> operator- () = 0;
-  virtual std::shared_ptr<String> operator[] (int32_t pos) = 0;
+  virtual std::shared_ptr<Object> operator- ();
+  virtual std::shared_ptr<Object> operator[] (const Object& pos);
 
-  virtual std::shared_ptr<Boolean> as_bool () = 0;
-  virtual std::shared_ptr<Integer> as_i32 () = 0;
-  virtual std::shared_ptr<Float> as_f64 () = 0;
-  virtual std::shared_ptr<String> as_String () = 0;
-  virtual std::shared_ptr<Usize> as_usize () = 0;
+  virtual std::shared_ptr<Boolean> as_bool ();
+  virtual std::shared_ptr<Integer> as_i32 ();
+  virtual std::shared_ptr<Float> as_f64 ();
+  virtual std::shared_ptr<String> as_String ();
+  virtual std::shared_ptr<Usize> as_usize ();
+  virtual std::shared_ptr<Char> as_char ();
 
-  virtual bool as_predicate () = 0;
+  virtual bool as_predicate ();
   virtual std::string as_string () = 0;
+
+  virtual void subscript_assign (const Object& pos, const Object& rhs);
 
   virtual std::string get_type () const = 0;
   virtual void assign_into (std::shared_ptr<Object> lhs) = 0;
