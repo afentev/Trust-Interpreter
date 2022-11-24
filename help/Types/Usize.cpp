@@ -35,12 +35,12 @@ std::shared_ptr<Object> Usize::operator% (const Object& other) {
   return std::make_shared<Usize>(number % dynamic_cast<const Usize&>(other).number);
 }
 
-std::shared_ptr<Boolean> Usize::operator< (const Object& other) {
+std::shared_ptr<Boolean> Usize::operator< (const Object& other) const {
   check_type("<", this, other);
   return std::make_shared<Boolean>(number < dynamic_cast<const Usize&>(other).number);
 }
 
-std::shared_ptr<Boolean> Usize::operator<= (const Object& other) {
+std::shared_ptr<Boolean> Usize::operator<= (const Object& other) const {
   check_type("<=", this, other);
   return std::make_shared<Boolean>(number <= dynamic_cast<const Usize&>(other).number);
 }
@@ -50,17 +50,17 @@ std::shared_ptr<Boolean> Usize::operator== (const Object& other) const {
   return std::make_shared<Boolean>(number == dynamic_cast<const Usize&>(other).number);
 }
 
-std::shared_ptr<Boolean> Usize::operator!= (const Object& other) {
+std::shared_ptr<Boolean> Usize::operator!= (const Object& other) const {
   check_type("!=", this, other);
   return std::make_shared<Boolean>(number != dynamic_cast<const Usize&>(other).number);
 }
 
-std::shared_ptr<Boolean> Usize::operator>= (const Object& other) {
+std::shared_ptr<Boolean> Usize::operator>= (const Object& other) const {
   check_type(">=", this, other);
   return std::make_shared<Boolean>(number >= dynamic_cast<const Usize&>(other).number);
 }
 
-std::shared_ptr<Boolean> Usize::operator> (const Object& other) {
+std::shared_ptr<Boolean> Usize::operator> (const Object& other) const {
   check_type(">", this, other);
   return std::make_shared<Boolean>(number > dynamic_cast<const Usize&>(other).number);
 }
@@ -91,6 +91,11 @@ size_t Usize::to_usize () const {
 
 std::string Usize::get_type () const {
   return "usize";
+}
+
+Object& Usize::operator++ () {
+  ++number;
+  return *this;
 }
 
 void Usize::assign_into (std::shared_ptr<Object> lhs) {

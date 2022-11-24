@@ -29,6 +29,11 @@ void IDTable::mut_identifier (const std::string& name, std::shared_ptr<Object> v
   object.set_initialised(true);
 }
 
+void IDTable::set_mutability (const std::string& name, bool new_value) {
+  Identifier& object = safe_get_identifier(name);
+  object.set_constantness(!new_value);
+}
+
 bool IDTable::is_mutable (const std::string& name) {
   Identifier& object = safe_get_identifier(name);
   return !object.get_constantness();

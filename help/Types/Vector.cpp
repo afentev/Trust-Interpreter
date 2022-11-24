@@ -28,11 +28,11 @@ Vector& Vector::operator= (const Vector& other) {
   return *this;
 }
 
-std::shared_ptr<Boolean> Vector::operator< (const Object& other) {
+std::shared_ptr<Boolean> Vector::operator< (const Object& other) const {
   throw InterpretationException("Invalid operand type for operator<: " + get_type());
 }
 
-std::shared_ptr<Boolean> Vector::operator<= (const Object& other) {
+std::shared_ptr<Boolean> Vector::operator<= (const Object& other) const {
   throw InterpretationException("Invalid operand type for operator<=: " + get_type());
 }
 
@@ -41,16 +41,16 @@ std::shared_ptr<Boolean> Vector::operator== (const Object& other) const {
   return std::make_shared<Boolean>(array == dynamic_cast<const Vector&>(other).array);
 }
 
-std::shared_ptr<Boolean> Vector::operator!= (const Object& other) {
+std::shared_ptr<Boolean> Vector::operator!= (const Object& other) const {
   check_type("!=", this, other);
   return std::make_shared<Boolean>(array != dynamic_cast<const Vector&>(other).array);
 }
 
-std::shared_ptr<Boolean> Vector::operator>= (const Object& other) {
+std::shared_ptr<Boolean> Vector::operator>= (const Object& other) const {
   throw InterpretationException("Invalid operand type for operator>=: " + get_type());
 }
 
-std::shared_ptr<Boolean> Vector::operator> (const Object& other) {
+std::shared_ptr<Boolean> Vector::operator> (const Object& other) const {
   throw InterpretationException("Invalid operand type for operator>: " + get_type());
 }
 
@@ -78,6 +78,10 @@ void Vector::pop () {
     throw InterpretationException("Pop from an empty vec");
   }
   array.pop_back();
+}
+
+const std::vector<std::shared_ptr<Object>>& Vector::iter () {
+  return array;
 }
 
 std::string Vector::as_string () {

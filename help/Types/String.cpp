@@ -5,9 +5,14 @@
 
 String::String (const std::string& value, bool strip) : string() {
   if (strip) {
-    string = remove_escape_chars(value.substr(1, value.size() - 2));
+    std::string stripped = remove_escape_chars(value.substr(1, value.size() - 2));
+    for (char chr: stripped) {
+      string.push_back(std::make_shared<Char>(chr));
+    }
   } else {
-    string = value;
+    for (char chr: value) {
+      string.push_back(std::make_shared<Char>(chr));
+    }
   }
 }
 
@@ -18,37 +23,62 @@ String& String::operator= (const String& other) {
 
 std::shared_ptr<Object> String::operator+ (const Object& other) {
   check_type("+", this, other);
-  return std::make_shared<String>(string + dynamic_cast<const String&>(other).string);
+  String copy = *this;
+  for (std::shared_ptr<Object> chr: dynamic_cast<const String&>(other).string) {
+    copy.string.push_back(chr);
+  }
+  return std::make_shared<String>(copy);
 }
 
-std::shared_ptr<Boolean> String::operator< (const Object& other) {
+std::shared_ptr<Boolean> String::operator< (const Object& other) const {
   check_type("<", this, other);
-  return std::make_shared<Boolean>(string < dynamic_cast<const String&>(other).string);
+  auto other_cast = dynamic_cast<const String&>(other);
+  size_t minima = std::min(string.size(), other_cast.string.size());
+  for (size_t index = 0; index < minima; ++index) {
+    if (string[index] < other_cast.string[index]) {
+      return std::make_shared<Boolean>(true);
+    } else if (string[index] > other_cast.string[index]) {
+      return std::make_shared<Boolean>(false);
+    }
+  }
+  if (string.size() < other_cast.string.size()) {
+    return std::make_shared<Boolean>(true);
+  }
+  return std::make_shared<Boolean>(false);
 }
 
-std::shared_ptr<Boolean> String::operator<= (const Object& other) {
+std::shared_ptr<Boolean> String::operator<= (const Object& other) const {
   check_type("<=", this, other);
-  return std::make_shared<Boolean>(string <= dynamic_cast<const String&>(other).string);
+  return !*(other > *this)->as_bool();
 }
 
 std::shared_ptr<Boolean> String::operator== (const Object& other) const {
   check_type("==", this, other);
-  return std::make_shared<Boolean>(string == dynamic_cast<const String&>(other).string);
+  auto other_cast = dynamic_cast<const String&>(other);
+  if (string.size() != other_cast.string.size()) {
+    return std::make_shared<Boolean>(false);
+  }
+  for (int index = 0; index < string.size(); ++index) {
+    if (string[index] != other_cast.string[index]) {
+      return std::make_shared<Boolean>(false);
+    }
+  }
+  return std::make_shared<Boolean>(true);
 }
 
-std::shared_ptr<Boolean> String::operator!= (const Object& other) {
+std::shared_ptr<Boolean> String::operator!= (const Object& other) const {
   check_type("!=", this, other);
-  return std::make_shared<Boolean>(string != dynamic_cast<const String&>(other).string);
+  return !*(*this == other)->as_bool();
 }
 
-std::shared_ptr<Boolean> String::operator>= (const Object& other) {
+std::shared_ptr<Boolean> String::operator>= (const Object& other) const {
   check_type(">=", this, other);
-  return std::make_shared<Boolean>(string >= dynamic_cast<const String&>(other).string);
+  return !*(*this < other)->as_bool();
 }
 
-std::shared_ptr<Boolean> String::operator> (const Object& other) {
+std::shared_ptr<Boolean> String::operator> (const Object& other) const {
   check_type(">", this, other);
-  return std::make_shared<Boolean>(string > dynamic_cast<const String&>(other).string);
+  return dynamic_cast<const String&>(other) < *this;
 }
 
 std::shared_ptr<Object> String::operator[] (const Object& pos) {
@@ -60,15 +90,27 @@ std::shared_ptr<Object> String::operator[] (const Object& pos) {
   if (index >= string.size()) {
     throw InterpretationException("Subscription index is out of bounds");
   }
-  return std::make_shared<Char>(string[index]);
+  return string[index];
 }
 
 std::shared_ptr<String> String::as_String () {
-  return std::make_shared<String>(string);
+  std::string result;
+  for (std::shared_ptr<Object> chr: string) {
+    result.push_back(std::dynamic_pointer_cast<Char>(chr)->get_char());
+  }
+  return std::make_shared<String>(result);
+}
+
+const std::vector<std::shared_ptr<Object>>& String::iter () {
+  return string;
 }
 
 std::string String::as_string () {
-  return string;
+  std::string result;
+  for (std::shared_ptr<Object> chr: string) {
+    result.push_back(std::dynamic_pointer_cast<Char>(chr)->get_char());
+  }
+  return result;
 }
 
 void String::subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) {
@@ -81,7 +123,7 @@ void String::subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) {
   if (index >= string.size()) {
     throw InterpretationException("Subscription index is out of bounds");
   }
-  string[index] = std::dynamic_pointer_cast<Char>(rhs)->get_char();
+  string[index] = std::dynamic_pointer_cast<Char>(rhs);
 }
 
 std::shared_ptr<Usize> String::len () const {

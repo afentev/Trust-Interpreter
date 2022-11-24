@@ -28,12 +28,12 @@ class Object : public Expression {
   virtual std::shared_ptr<Object> operator/ (const Object& other);
   virtual std::shared_ptr<Object> operator% (const Object& other);
 
-  virtual std::shared_ptr<Boolean> operator< (const Object& other) = 0;
-  virtual std::shared_ptr<Boolean> operator<= (const Object& other) = 0;
+  virtual std::shared_ptr<Boolean> operator< (const Object& other) const = 0;
+  virtual std::shared_ptr<Boolean> operator<= (const Object& other) const = 0;
   virtual std::shared_ptr<Boolean> operator== (const Object& other) const = 0;
-  virtual std::shared_ptr<Boolean> operator!= (const Object& other) = 0;
-  virtual std::shared_ptr<Boolean> operator>= (const Object& other) = 0;
-  virtual std::shared_ptr<Boolean> operator> (const Object& other) = 0;
+  virtual std::shared_ptr<Boolean> operator!= (const Object& other) const = 0;
+  virtual std::shared_ptr<Boolean> operator>= (const Object& other) const = 0;
+  virtual std::shared_ptr<Boolean> operator> (const Object& other) const = 0;
 
   virtual std::shared_ptr<Boolean> operator&& (const Object& other);
   virtual std::shared_ptr<Boolean> operator|| (const Object& other);
@@ -49,9 +49,11 @@ class Object : public Expression {
   virtual std::shared_ptr<Usize> as_usize ();
   virtual std::shared_ptr<Char> as_char ();
 
+  virtual const std::vector<std::shared_ptr<Object>>& iter ();
   virtual bool as_predicate ();
   virtual std::string as_string () = 0;
 
+  virtual Object& operator++ ();
   virtual void subscript_assign (const Object& pos, std::shared_ptr<Object> rhs);
 
   virtual std::shared_ptr<Usize> len () const;

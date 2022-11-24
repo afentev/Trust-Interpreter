@@ -9,12 +9,12 @@ class Boolean : public Object, public std::enable_shared_from_this<Boolean> {
 
   Boolean& operator= (const Boolean& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Boolean> operator&& (const Object& other) override;
   std::shared_ptr<Boolean> operator|| (const Object& other) override;

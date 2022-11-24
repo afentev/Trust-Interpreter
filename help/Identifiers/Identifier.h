@@ -14,6 +14,7 @@ class Identifier {
   std::shared_ptr<Object> get_object ();
   void set_object (std::shared_ptr<Object> value);
   uint8_t get_scope ();
+  void set_constantness (bool new_const);
   bool get_constantness ();
   bool is_initialised ();
   void set_initialised (bool new_value);
@@ -23,7 +24,9 @@ class Identifier {
  private:
   std::shared_ptr<Object> object;
   const uint8_t scope_layer;
-  const bool is_constant;
+  mutable bool is_constant;
+  // can be modified via "set_constantness" function. it can be called when identifier is borrowed in range-based loop
+
   bool _is_initialised;
 };
 

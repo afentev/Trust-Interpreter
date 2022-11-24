@@ -58,6 +58,7 @@ class Visitor {
   void visit (std::shared_ptr<IfStatement> statement);
   void visit (std::shared_ptr<IfElseStatement> statement);
   void visit (std::shared_ptr<ForStatement> statement);
+  void visit (std::shared_ptr<ForIterableStatement> statement);
   void visit (std::shared_ptr<AssignmentStatement> statement);
   void visit (std::shared_ptr<SubscriptionAssignment> statement);
   void visit (std::shared_ptr<ExpressionList> statement);

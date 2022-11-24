@@ -5,6 +5,10 @@
 Identifier::Identifier (std::shared_ptr<Object> obj, uint8_t layer, bool is_const, bool is_init) :
     object(std::move(obj)), scope_layer(layer), is_constant(is_const), _is_initialised(is_init) {}
 
+void Identifier::set_constantness (bool new_const) {
+  is_constant = new_const;
+}
+
 std::shared_ptr<Object> Identifier::get_object () {
   return object;
 }

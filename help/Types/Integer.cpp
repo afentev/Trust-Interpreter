@@ -35,12 +35,12 @@ std::shared_ptr<Object> Integer::operator% (const Object& other) {
   return std::make_shared<Integer>(number % dynamic_cast<const Integer&>(other).number);
 }
 
-std::shared_ptr<Boolean> Integer::operator< (const Object& other) {
+std::shared_ptr<Boolean> Integer::operator< (const Object& other) const {
   check_type("<", this, other);
   return std::make_shared<Boolean>(number < dynamic_cast<const Integer&>(other).number);
 }
 
-std::shared_ptr<Boolean> Integer::operator<= (const Object& other) {
+std::shared_ptr<Boolean> Integer::operator<= (const Object& other) const {
   check_type("<=", this, other);
   return std::make_shared<Boolean>(number <= dynamic_cast<const Integer&>(other).number);
 }
@@ -50,17 +50,17 @@ std::shared_ptr<Boolean> Integer::operator== (const Object& other) const {
   return std::make_shared<Boolean>(number == dynamic_cast<const Integer&>(other).number);
 }
 
-std::shared_ptr<Boolean> Integer::operator!= (const Object& other) {
+std::shared_ptr<Boolean> Integer::operator!= (const Object& other) const {
   check_type("!=", this, other);
   return std::make_shared<Boolean>(number != dynamic_cast<const Integer&>(other).number);
 }
 
-std::shared_ptr<Boolean> Integer::operator>= (const Object& other) {
+std::shared_ptr<Boolean> Integer::operator>= (const Object& other) const {
   check_type(">=", this, other);
   return std::make_shared<Boolean>(number >= dynamic_cast<const Integer&>(other).number);
 }
 
-std::shared_ptr<Boolean> Integer::operator> (const Object& other) {
+std::shared_ptr<Boolean> Integer::operator> (const Object& other) const {
   check_type(">", this, other);
   return std::make_shared<Boolean>(number > dynamic_cast<const Integer&>(other).number);
 }
@@ -91,6 +91,11 @@ int32_t Integer::to_int () {
 
 std::string Integer::get_type () const {
   return "i32";
+}
+
+Object& Integer::operator++ () {
+  ++number;
+  return *this;
 }
 
 void Integer::assign_into (std::shared_ptr<Object> lhs) {

@@ -31,6 +31,7 @@
 #include "help/Statements/IfStatement.h"
 #include "help/Statements/IfElseStatement.h"
 #include "help/Statements/ForStatement.h"
+#include "help/Statements/ForIterableStatement.h"
 #include "help/Statements/VariableDeclaration.h"
 #include "help/Statements/VariableDeclInit.h"
 #include "help/Statements/TypelessVariableDecl.h"

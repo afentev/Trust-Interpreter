@@ -9,12 +9,12 @@ class Char : public Object, public std::enable_shared_from_this<Char> {
 
   Char& operator= (const Char& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Integer> as_i32 () override;
   std::shared_ptr<Usize> as_usize () override;

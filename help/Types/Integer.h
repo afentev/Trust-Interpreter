@@ -15,12 +15,12 @@ class Integer : public Object, public std::enable_shared_from_this<Integer> {
   std::shared_ptr<Object> operator/ (const Object& other) override;
   std::shared_ptr<Object> operator% (const Object& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Object> operator- () override;
 
@@ -32,6 +32,7 @@ class Integer : public Object, public std::enable_shared_from_this<Integer> {
   int32_t to_int ();
 
   std::string get_type () const override;
+  Object& operator++ () override;
   void assign_into (std::shared_ptr<Object> lhs) override;
 
   void accept (Visitor* visitor) override;

@@ -26,8 +26,8 @@ fn main() {
     let string = "abacaba";
 
     let z = z_function(string);
-    for i in 0..z.len() as i32 {
-        print!("{} ", z[i as usize]);
+    for val in z {
+        print!("{} ", val);
     }
     println!();
 }

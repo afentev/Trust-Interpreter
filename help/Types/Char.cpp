@@ -10,12 +10,12 @@ Char& Char::operator= (const Char& other) {
   return *this;
 }
 
-std::shared_ptr<Boolean> Char::operator< (const Object& other) {
+std::shared_ptr<Boolean> Char::operator< (const Object& other) const {
   check_type("<", this, other);
   return std::make_shared<Boolean>(symbol < dynamic_cast<const Char&>(other).symbol);
 }
 
-std::shared_ptr<Boolean> Char::operator<= (const Object& other) {
+std::shared_ptr<Boolean> Char::operator<= (const Object& other) const {
   check_type("<=", this, other);
   return std::make_shared<Boolean>(symbol <= dynamic_cast<const Char&>(other).symbol);
 }
@@ -25,17 +25,17 @@ std::shared_ptr<Boolean> Char::operator== (const Object& other) const {
   return std::make_shared<Boolean>(symbol == dynamic_cast<const Char&>(other).symbol);
 }
 
-std::shared_ptr<Boolean> Char::operator!= (const Object& other) {
+std::shared_ptr<Boolean> Char::operator!= (const Object& other) const {
   check_type("!=", this, other);
   return std::make_shared<Boolean>(symbol != dynamic_cast<const Char&>(other).symbol);
 }
 
-std::shared_ptr<Boolean> Char::operator>= (const Object& other) {
+std::shared_ptr<Boolean> Char::operator>= (const Object& other) const {
   check_type(">=", this, other);
   return std::make_shared<Boolean>(symbol >= dynamic_cast<const Char&>(other).symbol);
 }
 
-std::shared_ptr<Boolean> Char::operator> (const Object& other) {
+std::shared_ptr<Boolean> Char::operator> (const Object& other) const {
   check_type(">", this, other);
   return std::make_shared<Boolean>(symbol > dynamic_cast<const Char&>(other).symbol);
 }

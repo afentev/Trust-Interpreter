@@ -30,12 +30,12 @@ std::shared_ptr<Object> Float::operator/ (const Object& other) {
   return std::make_shared<Float>(number / dynamic_cast<const Float&>(other).number);
 }
 
-std::shared_ptr<Boolean> Float::operator< (const Object& other) {
+std::shared_ptr<Boolean> Float::operator< (const Object& other) const {
   check_type("<", this, other);
   return std::make_shared<Boolean>(number < dynamic_cast<const Float&>(other).number);
 }
 
-std::shared_ptr<Boolean> Float::operator<= (const Object& other) {
+std::shared_ptr<Boolean> Float::operator<= (const Object& other) const {
   check_type("<=", this, other);
   return std::make_shared<Boolean>(number <= dynamic_cast<const Float&>(other).number);
 }
@@ -45,17 +45,17 @@ std::shared_ptr<Boolean> Float::operator== (const Object& other) const {
   return std::make_shared<Boolean>(number == dynamic_cast<const Float&>(other).number);
 }
 
-std::shared_ptr<Boolean> Float::operator!= (const Object& other) {
+std::shared_ptr<Boolean> Float::operator!= (const Object& other) const {
   check_type("!=", this, other);
   return std::make_shared<Boolean>(number != dynamic_cast<const Float&>(other).number);
 }
 
-std::shared_ptr<Boolean> Float::operator>= (const Object& other) {
+std::shared_ptr<Boolean> Float::operator>= (const Object& other) const {
   check_type(">=", this, other);
   return std::make_shared<Boolean>(number >= dynamic_cast<const Float&>(other).number);
 }
 
-std::shared_ptr<Boolean> Float::operator> (const Object& other) {
+std::shared_ptr<Boolean> Float::operator> (const Object& other) const {
   check_type(">", this, other);
   return std::make_shared<Boolean>(number > dynamic_cast<const Float&>(other).number);
 }

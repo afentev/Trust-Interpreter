@@ -34,6 +34,7 @@
     class AssignmentStatement;
     class ExpressionList;
     class ForStatement;
+    class ForIterableStatement;
     class IfElseStatement;
     class IfStatement;
     class PrintStatement;
@@ -120,6 +121,7 @@
     #include "help/Statements/IfStatement.h"
     #include "help/Statements/IfElseStatement.h"
     #include "help/Statements/ForStatement.h"
+    #include "help/Statements/ForIterableStatement.h"
     #include "help/Statements/VariableDeclaration.h"
     #include "help/Statements/VariableDeclInit.h"
     #include "help/Statements/TypelessVariableDecl.h"
@@ -233,7 +235,7 @@
 %nterm <std::shared_ptr<Statement>> mut_let_statement;
 %nterm <std::shared_ptr<Statement>> const_let_statement;
 %nterm <std::shared_ptr<Statement>> if_statement;
-%nterm <std::shared_ptr<ForStatement>> for_loop;
+%nterm <std::shared_ptr<Statement>> for_loop;
 %nterm <std::shared_ptr<ExpressionList>> expression_list;
 %nterm <std::shared_ptr<PrintStatement>> print_statement;
 %nterm <std::string> type;
@@ -336,7 +338,9 @@ for_loop:
     "for" "identifier" "in" expression ".." expression "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6, $8, false, true);}
     | "for" "mut" "identifier" "in" expression ".." expression "{" statements "}" {$$ = std::make_shared<ForStatement>($3, $5, $7, $9, false, false);}
     | "for" "identifier" "in" expression "..=" expression "{" statements "}" {$$ = std::make_shared<ForStatement>($2, $4, $6, $8, true, true);}
-    | "for" "mut" "identifier" "in" expression "..=" expression "{" statements "}" {$$ = std::make_shared<ForStatement>($3, $5, $7, $9, true, false);};
+    | "for" "mut" "identifier" "in" expression "..=" expression "{" statements "}" {$$ = std::make_shared<ForStatement>($3, $5, $7, $9, true, false);}
+    | "for" "identifier" "in" expression "{" statements "}" {$$ = std::make_shared<ForIterableStatement>($2, $4, $6, true);}
+    | "for" "mut" "identifier" "in" expression "{" statements "}" {$$ = std::make_shared<ForIterableStatement>($3, $5, $7, false);};
 
 type:
     "i32" {$$ = "i32";}

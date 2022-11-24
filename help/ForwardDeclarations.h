@@ -27,6 +27,7 @@ class InterpretationException;
 class AssignmentStatement;
 class ExpressionList;
 class ForStatement;
+class ForIterableStatement;
 class IfElseStatement;
 class IfStatement;
 class PrintStatement;

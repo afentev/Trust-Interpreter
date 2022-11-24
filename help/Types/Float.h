@@ -14,12 +14,12 @@ class Float : public Object, public std::enable_shared_from_this<Float> {
   std::shared_ptr<Object> operator* (const Object& other) override;
   std::shared_ptr<Object> operator/ (const Object& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Object> operator- () override;
 

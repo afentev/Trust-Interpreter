@@ -93,8 +93,16 @@ std::shared_ptr<Char> Object::as_char () {
   throw InterpretationException("Can not cast " + get_type() + " to char");
 }
 
+const std::vector<std::shared_ptr<Object>>& Object::iter () {
+  throw InterpretationException("Can not iterate through type " + get_type());
+}
+
 bool Object::as_predicate () {
   throw InterpretationException("Invalid usage of type " + get_type() + " in condition");
+}
+
+Object& Object::operator++ () {
+  throw InterpretationException("INTERNAL ERROR: FOR-LOOP PREFIX INCREMENT WAS CALLED ON TYPE " + get_type());
 }
 
 void Object::subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) {

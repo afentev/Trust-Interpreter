@@ -74,6 +74,7 @@
     class AssignmentStatement;
     class ExpressionList;
     class ForStatement;
+    class ForIterableStatement;
     class IfElseStatement;
     class IfStatement;
     class PrintStatement;
@@ -114,7 +115,7 @@
     class ParamList;
     class Argument;
 
-#line 118 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 119 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -254,7 +255,7 @@
 #endif
 
 namespace yy {
-#line 258 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 259 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
@@ -494,40 +495,38 @@ namespace yy {
       // expression_list
       char dummy7[sizeof (std::shared_ptr<ExpressionList>)];
 
-      // for_loop
-      char dummy8[sizeof (std::shared_ptr<ForStatement>)];
-
       // function_declaration
-      char dummy9[sizeof (std::shared_ptr<FunctionDeclaration>)];
+      char dummy8[sizeof (std::shared_ptr<FunctionDeclaration>)];
 
       // function_declaration_list
-      char dummy10[sizeof (std::shared_ptr<FunctionDeclarationList>)];
+      char dummy9[sizeof (std::shared_ptr<FunctionDeclarationList>)];
 
       // param_list
-      char dummy11[sizeof (std::shared_ptr<ParamList>)];
+      char dummy10[sizeof (std::shared_ptr<ParamList>)];
 
       // print_statement
-      char dummy12[sizeof (std::shared_ptr<PrintStatement>)];
+      char dummy11[sizeof (std::shared_ptr<PrintStatement>)];
 
       // program
-      char dummy13[sizeof (std::shared_ptr<Program>)];
+      char dummy12[sizeof (std::shared_ptr<Program>)];
 
       // statement
       // if_statement
       // let_statement
       // mut_let_statement
       // const_let_statement
-      char dummy14[sizeof (std::shared_ptr<Statement>)];
+      // for_loop
+      char dummy13[sizeof (std::shared_ptr<Statement>)];
 
       // statements
-      char dummy15[sizeof (std::shared_ptr<Statements>)];
+      char dummy14[sizeof (std::shared_ptr<Statements>)];
 
       // "identifier"
       // "string_literal"
       // "comment_line"
       // type
       // primitive_type
-      char dummy16[sizeof (std::string)];
+      char dummy15[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -819,10 +818,6 @@ namespace yy {
         value.move< std::shared_ptr<ExpressionList> > (std::move (that.value));
         break;
 
-      case symbol_kind::S_for_loop: // for_loop
-        value.move< std::shared_ptr<ForStatement> > (std::move (that.value));
-        break;
-
       case symbol_kind::S_function_declaration: // function_declaration
         value.move< std::shared_ptr<FunctionDeclaration> > (std::move (that.value));
         break;
@@ -848,6 +843,7 @@ namespace yy {
       case symbol_kind::S_let_statement: // let_statement
       case symbol_kind::S_mut_let_statement: // mut_let_statement
       case symbol_kind::S_const_let_statement: // const_let_statement
+      case symbol_kind::S_for_loop: // for_loop
         value.move< std::shared_ptr<Statement> > (std::move (that.value));
         break;
 
@@ -978,20 +974,6 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const std::shared_ptr<ExpressionList>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ForStatement>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ForStatement>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -1162,10 +1144,6 @@ switch (yykind)
         value.template destroy< std::shared_ptr<ExpressionList> > ();
         break;
 
-      case symbol_kind::S_for_loop: // for_loop
-        value.template destroy< std::shared_ptr<ForStatement> > ();
-        break;
-
       case symbol_kind::S_function_declaration: // function_declaration
         value.template destroy< std::shared_ptr<FunctionDeclaration> > ();
         break;
@@ -1191,6 +1169,7 @@ switch (yykind)
       case symbol_kind::S_let_statement: // let_statement
       case symbol_kind::S_mut_let_statement: // mut_let_statement
       case symbol_kind::S_const_let_statement: // const_let_statement
+      case symbol_kind::S_for_loop: // for_loop
         value.template destroy< std::shared_ptr<Statement> > ();
         break;
 
@@ -2811,7 +2790,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1813,     ///< Last index in yytable_.
+      yylast_ = 1996,     ///< Last index in yytable_.
       yynnts_ = 18,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
@@ -2915,10 +2894,6 @@ switch (yykind)
         value.copy< std::shared_ptr<ExpressionList> > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_for_loop: // for_loop
-        value.copy< std::shared_ptr<ForStatement> > (YY_MOVE (that.value));
-        break;
-
       case symbol_kind::S_function_declaration: // function_declaration
         value.copy< std::shared_ptr<FunctionDeclaration> > (YY_MOVE (that.value));
         break;
@@ -2944,6 +2919,7 @@ switch (yykind)
       case symbol_kind::S_let_statement: // let_statement
       case symbol_kind::S_mut_let_statement: // mut_let_statement
       case symbol_kind::S_const_let_statement: // const_let_statement
+      case symbol_kind::S_for_loop: // for_loop
         value.copy< std::shared_ptr<Statement> > (YY_MOVE (that.value));
         break;
 
@@ -3018,10 +2994,6 @@ switch (yykind)
         value.move< std::shared_ptr<ExpressionList> > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_for_loop: // for_loop
-        value.move< std::shared_ptr<ForStatement> > (YY_MOVE (s.value));
-        break;
-
       case symbol_kind::S_function_declaration: // function_declaration
         value.move< std::shared_ptr<FunctionDeclaration> > (YY_MOVE (s.value));
         break;
@@ -3047,6 +3019,7 @@ switch (yykind)
       case symbol_kind::S_let_statement: // let_statement
       case symbol_kind::S_mut_let_statement: // mut_let_statement
       case symbol_kind::S_const_let_statement: // const_let_statement
+      case symbol_kind::S_for_loop: // for_loop
         value.move< std::shared_ptr<Statement> > (YY_MOVE (s.value));
         break;
 
@@ -3128,7 +3101,7 @@ switch (yykind)
 
 
 } // yy
-#line 3132 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 3105 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 

@@ -11,17 +11,18 @@ class String : public Object, public std::enable_shared_from_this<String> {
 
   std::shared_ptr<Object> operator+ (const Object& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Object> operator[] (const Object& pos) override;
 
   std::shared_ptr<String> as_String () override;
 
+  const std::vector<std::shared_ptr<Object>>& iter () override;
   std::string as_string () override;
 
   void subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) override;
@@ -36,7 +37,7 @@ class String : public Object, public std::enable_shared_from_this<String> {
   ~String () override;
 
  private:
-  std::string string;
+  std::vector<std::shared_ptr<Object>> string;
 };
 
 

@@ -14,6 +14,7 @@ class IDTable {
   void left_scope ();
   void add_identifier (const std::string& name, std::shared_ptr<Object> obj, bool is_const, bool is_init);
   void mut_identifier (const std::string& name, std::shared_ptr<Object> value);
+  void set_mutability (const std::string& name, bool new_value);
   bool is_mutable (const std::string& name);
   std::shared_ptr<Object> get_identifier (const std::string& name);
   uint16_t get_scope ();

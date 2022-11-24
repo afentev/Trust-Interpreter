@@ -11,18 +11,19 @@ class Vector: public Object, public std::enable_shared_from_this<Vector> {
 
   Vector& operator= (const Vector& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Object> operator[] (const Object& pos) override;
 
   void push(std::shared_ptr<Object> value);
   void pop();
 
+  const std::vector<std::shared_ptr<Object>>& iter () override;
   std::string as_string () override;
 
   void subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) override;

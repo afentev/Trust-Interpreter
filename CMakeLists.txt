@@ -88,6 +88,6 @@ add_executable(
         main.cpp
         driver.cpp
         ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS} help/Types/Vector.cpp help/Types/Vector.h help/Expressions/VectorEnumerationExpression.cpp help/Expressions/VectorEnumerationExpression.h help/Statements/PushStatement.cpp help/Statements/PushStatement.h help/Statements/PopStatement.cpp help/Statements/PopStatement.h help/Expressions/SizeExpression.cpp help/Expressions/SizeExpression.h help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.h)
+        ${FLEX_MyScanner_OUTPUTS} help/Types/Vector.cpp help/Types/Vector.h help/Expressions/VectorEnumerationExpression.cpp help/Expressions/VectorEnumerationExpression.h help/Statements/PushStatement.cpp help/Statements/PushStatement.h help/Statements/PopStatement.cpp help/Statements/PopStatement.h help/Expressions/SizeExpression.cpp help/Expressions/SizeExpression.h help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.h help/Statements/ForIterableStatement.cpp help/Statements/ForIterableStatement.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

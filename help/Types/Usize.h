@@ -15,12 +15,12 @@ class Usize : public Object, public std::enable_shared_from_this<Usize> {
   std::shared_ptr<Object> operator/ (const Object& other) override;
   std::shared_ptr<Object> operator% (const Object& other) override;
 
-  std::shared_ptr<Boolean> operator< (const Object& other) override;
-  std::shared_ptr<Boolean> operator<= (const Object& other) override;
+  std::shared_ptr<Boolean> operator< (const Object& other) const override;
+  std::shared_ptr<Boolean> operator<= (const Object& other) const override;
   std::shared_ptr<Boolean> operator== (const Object& other) const override;
-  std::shared_ptr<Boolean> operator!= (const Object& other) override;
-  std::shared_ptr<Boolean> operator>= (const Object& other) override;
-  std::shared_ptr<Boolean> operator> (const Object& other) override;
+  std::shared_ptr<Boolean> operator!= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator>= (const Object& other) const override;
+  std::shared_ptr<Boolean> operator> (const Object& other) const override;
 
   std::shared_ptr<Boolean> as_bool () override;
   std::shared_ptr<Integer> as_i32 () override;
@@ -31,6 +31,7 @@ class Usize : public Object, public std::enable_shared_from_this<Usize> {
   size_t to_usize () const;
 
   std::string get_type () const override;
+  Object& operator++ () override;
   void assign_into (std::shared_ptr<Object> lhs) override;
 
   void accept (Visitor* visitor) override;

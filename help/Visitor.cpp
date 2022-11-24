@@ -299,23 +299,29 @@ void Visitor::visit (std::shared_ptr<IfElseStatement> statement) {
 
 void Visitor::visit (std::shared_ptr<ForStatement> statement) {
   evaluate(statement->get_start());
-  if (object->get_type() != "i32") {
+  std::string left_type = object->get_type();
+  std::shared_ptr<Object> start = object;
+  if (left_type != "i32" && left_type != "usize") {
     throw InterpretationException("Can not use type \"" + object->get_type() + "\" as range bound");
   }
-  int32_t begin = std::dynamic_pointer_cast<Integer>(object)->to_int();
 
   evaluate(statement->get_end());
-  if (object->get_type() != "i32") {
+  std::shared_ptr<Object> end = object;
+  std::string right_type = object->get_type();
+  if (right_type != "i32" && left_type != "usize") {
     throw InterpretationException("Can not use type \"" + object->get_type() + "\" as range bound");
   }
-  int32_t end = std::dynamic_pointer_cast<Integer>(object)->to_int();
+  if (left_type != right_type) {
+    throw InterpretationException("Range bounds types must be the same");
+  }
 
-  for (int32_t current = begin; statement->get_inclusivity() ? current <= end : current < end; ++current) {
+  std::shared_ptr<Object> current = create_object(left_type);
+  start->assign_into(current);
+  for (; (statement->get_inclusivity() ? *current <= *end : *current < *end)->as_predicate(); ++*current) {
     uint16_t restore_scope = variables.get_scope();
 
     variables.add_scope();
-    variables.add_identifier(statement->get_variable(), std::make_shared<Integer>(current), statement->is_var_const(),
-                             true);
+    variables.add_identifier(statement->get_variable(), current, statement->is_var_const(), true);
     try {
       statement->get_statement()->accept(this);
     } catch (BreakInterruption&) {
@@ -323,6 +329,40 @@ void Visitor::visit (std::shared_ptr<ForStatement> statement) {
       break;
     } catch (ContinueInterruption&) {}
     variables.left_scope();
+  }
+}
+
+void Visitor::visit (std::shared_ptr<ForIterableStatement> statement) {
+  evaluate(statement->get_iter());
+  std::shared_ptr<Object> iter = object;
+
+  std::shared_ptr<IDExpression> is_id = std::dynamic_pointer_cast<IDExpression>(statement->get_iter());
+  bool was_mutable = true;
+  if (is_id != nullptr) {
+    // we iterate through variable
+    std::string name = is_id->get_id();
+    bool was_mutable = variables.is_mutable(name);
+    variables.set_mutability(name, false);
+  }
+
+  for (std::shared_ptr<Object> current: iter->iter()) {
+    uint16_t restore_scope = variables.get_scope();
+
+    variables.add_scope();
+    variables.add_identifier(statement->get_variable(), current, statement->is_var_const(), true);
+    try {
+      statement->get_statement()->accept(this);
+    } catch (BreakInterruption&) {
+      variables.reduce_scope(restore_scope);
+      break;
+    } catch (ContinueInterruption&) {}
+    variables.left_scope();
+  }
+
+  if (is_id != nullptr) {
+    // restore mut status of variable
+    std::string name = is_id->get_id();
+    variables.set_mutability(name, was_mutable);
   }
 }
 
