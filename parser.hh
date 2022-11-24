@@ -65,6 +65,7 @@
     class Float;
     class Usize;
     class Char;
+    class Vector;
 
     class BreakStatement;
     class ContinueStatement;
@@ -81,6 +82,8 @@
     class VariableDeclaration;
     class VariableDeclInit;
     class WhileStatement;
+    class PushStatement;
+    class PopStatement;
 
     class AndExpression;
     class AsExpression;
@@ -102,13 +105,16 @@
     class UnaryMinusExpression;
     class SubscriptionExpression;
     class SubscriptionAssignment;
+    class VectorEnumerationExpression;
+    class VectorValueExpression;
+    class SizeExpression;
 
     class FunctionDeclarationList;
     class FunctionDeclaration;
     class ParamList;
     class Argument;
 
-#line 112 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 118 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -248,7 +254,7 @@
 #endif
 
 namespace yy {
-#line 252 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 258 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 
@@ -520,6 +526,7 @@ namespace yy {
       // "string_literal"
       // "comment_line"
       // type
+      // primitive_type
       char dummy16[sizeof (std::string)];
     };
 
@@ -578,63 +585,69 @@ namespace yy {
     TOK_WHILE = 260,               // "while"
     TOK_FOR = 261,                 // "for"
     TOK_IN = 262,                  // "in"
-    TOK_RANGE = 263,               // ".."
-    TOK_RANGEEQ = 264,             // "..="
-    TOK_QUOTE = 265,               // "\""
-    TOK_LET = 266,                 // "let"
-    TOK_MUT = 267,                 // "mut"
-    TOK_RETURN = 268,              // "return"
-    TOK_BREAK = 269,               // "break"
-    TOK_CONTINUE = 270,            // "continue"
-    TOK_AS = 271,                  // "as"
-    TOK_COLON = 272,               // ":"
-    TOK_ASSIGN = 273,              // "="
-    TOK_MINUS = 274,               // "-"
-    TOK_PLUS = 275,                // "+"
-    TOK_PLUSASSIGN = 276,          // "+="
-    TOK_MINUSASSIGN = 277,         // "-="
-    TOK_STARASSIGN = 278,          // "*="
-    TOK_PERCENTASSIGN = 279,       // "%="
-    TOK_SLASHASSIGN = 280,         // "/="
-    TOK_STAR = 281,                // "*"
-    TOK_SLASH = 282,               // "/"
-    TOK_PERCENT = 283,             // "%"
-    TOK_LBRACE = 284,              // "{"
-    TOK_RBRACE = 285,              // "}"
-    TOK_LPAREN = 286,              // "("
-    TOK_RPAREN = 287,              // ")"
-    TOK_LSUBSCR = 288,             // "["
-    TOK_RSUBSCR = 289,             // "]"
-    TOK_NOT = 290,                 // "!"
-    TOK_AND = 291,                 // "&&"
-    TOK_OR = 292,                  // "||"
-    TOK_EQUAL = 293,               // "=="
-    TOK_NEQUAL = 294,              // "!="
-    TOK_GREATER = 295,             // ">"
-    TOK_GREQ = 296,                // ">="
-    TOK_LESS = 297,                // "<"
-    TOK_LEEQ = 298,                // "<="
-    TOK_SEMICOLON = 299,           // ";"
-    TOK_COMMA = 300,               // ","
-    TOK_IF = 301,                  // "if"
-    TOK_ELSE = 302,                // "else"
-    TOK_TRUE = 303,                // "true"
-    TOK_FALSE = 304,               // "false"
-    TOK_INT32 = 305,               // "i32"
-    TOK_FLOAT64 = 306,             // "f64"
-    TOK_STRING = 307,              // "String"
-    TOK_USIZE = 308,               // "usize"
-    TOK_BOOL = 309,                // "bool"
-    TOK_CHAR = 310,                // "char"
-    TOK_PRINT = 311,               // "print!"
-    TOK_PRINTLN = 312,             // "println!"
-    TOK_IDENTIFIER = 313,          // "identifier"
-    TOK_NUMBER = 314,              // "integer_number"
-    TOK_REAL = 315,                // "real_number"
-    TOK_SIZE_T = 316,              // "size_t"
-    TOK_CHARLITERAL = 317,         // "char_literal"
-    TOK_STRLITERAL = 318,          // "string_literal"
-    TOK_COMMENTLINE = 319          // "comment_line"
+    TOK_DOT = 263,                 // "."
+    TOK_RANGE = 264,               // ".."
+    TOK_RANGEEQ = 265,             // "..="
+    TOK_QUOTE = 266,               // "\""
+    TOK_LET = 267,                 // "let"
+    TOK_MUT = 268,                 // "mut"
+    TOK_RETURN = 269,              // "return"
+    TOK_BREAK = 270,               // "break"
+    TOK_CONTINUE = 271,            // "continue"
+    TOK_PUSH = 272,                // "push"
+    TOK_POP = 273,                 // "pop"
+    TOK_LEN = 274,                 // "len"
+    TOK_AS = 275,                  // "as"
+    TOK_COLON = 276,               // ":"
+    TOK_ASSIGN = 277,              // "="
+    TOK_MINUS = 278,               // "-"
+    TOK_PLUS = 279,                // "+"
+    TOK_PLUSASSIGN = 280,          // "+="
+    TOK_MINUSASSIGN = 281,         // "-="
+    TOK_STARASSIGN = 282,          // "*="
+    TOK_PERCENTASSIGN = 283,       // "%="
+    TOK_SLASHASSIGN = 284,         // "/="
+    TOK_STAR = 285,                // "*"
+    TOK_SLASH = 286,               // "/"
+    TOK_PERCENT = 287,             // "%"
+    TOK_LBRACE = 288,              // "{"
+    TOK_RBRACE = 289,              // "}"
+    TOK_LPAREN = 290,              // "("
+    TOK_RPAREN = 291,              // ")"
+    TOK_LSUBSCR = 292,             // "["
+    TOK_RSUBSCR = 293,             // "]"
+    TOK_NOT = 294,                 // "!"
+    TOK_AND = 295,                 // "&&"
+    TOK_OR = 296,                  // "||"
+    TOK_EQUAL = 297,               // "=="
+    TOK_NEQUAL = 298,              // "!="
+    TOK_GREATER = 299,             // ">"
+    TOK_GREQ = 300,                // ">="
+    TOK_LESS = 301,                // "<"
+    TOK_LEEQ = 302,                // "<="
+    TOK_SEMICOLON = 303,           // ";"
+    TOK_COMMA = 304,               // ","
+    TOK_IF = 305,                  // "if"
+    TOK_ELSE = 306,                // "else"
+    TOK_TRUE = 307,                // "true"
+    TOK_FALSE = 308,               // "false"
+    TOK_INT32 = 309,               // "i32"
+    TOK_FLOAT64 = 310,             // "f64"
+    TOK_STRING = 311,              // "String"
+    TOK_USIZE = 312,               // "usize"
+    TOK_BOOL = 313,                // "bool"
+    TOK_CHAR = 314,                // "char"
+    TOK_VEC = 315,                 // "Vec"
+    TOK_VECMACROS = 316,           // "vec!"
+    TOK_PRINT = 317,               // "print!"
+    TOK_PRINTLN = 318,             // "println!"
+    TOK_IDENTIFIER = 319,          // "identifier"
+    TOK_NUMBER = 320,              // "integer_number"
+    TOK_REAL = 321,                // "real_number"
+    TOK_SIZE_T = 322,              // "size_t"
+    TOK_CHARLITERAL = 323,         // "char_literal"
+    TOK_STRLITERAL = 324,          // "string_literal"
+    TOK_COMMENTLINE = 325          // "comment_line"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -651,7 +664,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 65, ///< Number of tokens.
+        YYNTOKENS = 71, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -661,80 +674,87 @@ namespace yy {
         S_WHILE = 5,                             // "while"
         S_FOR = 6,                               // "for"
         S_IN = 7,                                // "in"
-        S_RANGE = 8,                             // ".."
-        S_RANGEEQ = 9,                           // "..="
-        S_QUOTE = 10,                            // "\""
-        S_LET = 11,                              // "let"
-        S_MUT = 12,                              // "mut"
-        S_RETURN = 13,                           // "return"
-        S_BREAK = 14,                            // "break"
-        S_CONTINUE = 15,                         // "continue"
-        S_AS = 16,                               // "as"
-        S_COLON = 17,                            // ":"
-        S_ASSIGN = 18,                           // "="
-        S_MINUS = 19,                            // "-"
-        S_PLUS = 20,                             // "+"
-        S_PLUSASSIGN = 21,                       // "+="
-        S_MINUSASSIGN = 22,                      // "-="
-        S_STARASSIGN = 23,                       // "*="
-        S_PERCENTASSIGN = 24,                    // "%="
-        S_SLASHASSIGN = 25,                      // "/="
-        S_STAR = 26,                             // "*"
-        S_SLASH = 27,                            // "/"
-        S_PERCENT = 28,                          // "%"
-        S_LBRACE = 29,                           // "{"
-        S_RBRACE = 30,                           // "}"
-        S_LPAREN = 31,                           // "("
-        S_RPAREN = 32,                           // ")"
-        S_LSUBSCR = 33,                          // "["
-        S_RSUBSCR = 34,                          // "]"
-        S_NOT = 35,                              // "!"
-        S_AND = 36,                              // "&&"
-        S_OR = 37,                               // "||"
-        S_EQUAL = 38,                            // "=="
-        S_NEQUAL = 39,                           // "!="
-        S_GREATER = 40,                          // ">"
-        S_GREQ = 41,                             // ">="
-        S_LESS = 42,                             // "<"
-        S_LEEQ = 43,                             // "<="
-        S_SEMICOLON = 44,                        // ";"
-        S_COMMA = 45,                            // ","
-        S_IF = 46,                               // "if"
-        S_ELSE = 47,                             // "else"
-        S_TRUE = 48,                             // "true"
-        S_FALSE = 49,                            // "false"
-        S_INT32 = 50,                            // "i32"
-        S_FLOAT64 = 51,                          // "f64"
-        S_STRING = 52,                           // "String"
-        S_USIZE = 53,                            // "usize"
-        S_BOOL = 54,                             // "bool"
-        S_CHAR = 55,                             // "char"
-        S_PRINT = 56,                            // "print!"
-        S_PRINTLN = 57,                          // "println!"
-        S_IDENTIFIER = 58,                       // "identifier"
-        S_NUMBER = 59,                           // "integer_number"
-        S_REAL = 60,                             // "real_number"
-        S_SIZE_T = 61,                           // "size_t"
-        S_CHARLITERAL = 62,                      // "char_literal"
-        S_STRLITERAL = 63,                       // "string_literal"
-        S_COMMENTLINE = 64,                      // "comment_line"
-        S_YYACCEPT = 65,                         // $accept
-        S_program = 66,                          // program
-        S_function_declaration_list = 67,        // function_declaration_list
-        S_function_declaration = 68,             // function_declaration
-        S_param_list = 69,                       // param_list
-        S_argument = 70,                         // argument
-        S_statements = 71,                       // statements
-        S_statement = 72,                        // statement
-        S_print_statement = 73,                  // print_statement
-        S_if_statement = 74,                     // if_statement
-        S_let_statement = 75,                    // let_statement
-        S_mut_let_statement = 76,                // mut_let_statement
-        S_const_let_statement = 77,              // const_let_statement
-        S_for_loop = 78,                         // for_loop
-        S_type = 79,                             // type
-        S_expression = 80,                       // expression
-        S_expression_list = 81                   // expression_list
+        S_DOT = 8,                               // "."
+        S_RANGE = 9,                             // ".."
+        S_RANGEEQ = 10,                          // "..="
+        S_QUOTE = 11,                            // "\""
+        S_LET = 12,                              // "let"
+        S_MUT = 13,                              // "mut"
+        S_RETURN = 14,                           // "return"
+        S_BREAK = 15,                            // "break"
+        S_CONTINUE = 16,                         // "continue"
+        S_PUSH = 17,                             // "push"
+        S_POP = 18,                              // "pop"
+        S_LEN = 19,                              // "len"
+        S_AS = 20,                               // "as"
+        S_COLON = 21,                            // ":"
+        S_ASSIGN = 22,                           // "="
+        S_MINUS = 23,                            // "-"
+        S_PLUS = 24,                             // "+"
+        S_PLUSASSIGN = 25,                       // "+="
+        S_MINUSASSIGN = 26,                      // "-="
+        S_STARASSIGN = 27,                       // "*="
+        S_PERCENTASSIGN = 28,                    // "%="
+        S_SLASHASSIGN = 29,                      // "/="
+        S_STAR = 30,                             // "*"
+        S_SLASH = 31,                            // "/"
+        S_PERCENT = 32,                          // "%"
+        S_LBRACE = 33,                           // "{"
+        S_RBRACE = 34,                           // "}"
+        S_LPAREN = 35,                           // "("
+        S_RPAREN = 36,                           // ")"
+        S_LSUBSCR = 37,                          // "["
+        S_RSUBSCR = 38,                          // "]"
+        S_NOT = 39,                              // "!"
+        S_AND = 40,                              // "&&"
+        S_OR = 41,                               // "||"
+        S_EQUAL = 42,                            // "=="
+        S_NEQUAL = 43,                           // "!="
+        S_GREATER = 44,                          // ">"
+        S_GREQ = 45,                             // ">="
+        S_LESS = 46,                             // "<"
+        S_LEEQ = 47,                             // "<="
+        S_SEMICOLON = 48,                        // ";"
+        S_COMMA = 49,                            // ","
+        S_IF = 50,                               // "if"
+        S_ELSE = 51,                             // "else"
+        S_TRUE = 52,                             // "true"
+        S_FALSE = 53,                            // "false"
+        S_INT32 = 54,                            // "i32"
+        S_FLOAT64 = 55,                          // "f64"
+        S_STRING = 56,                           // "String"
+        S_USIZE = 57,                            // "usize"
+        S_BOOL = 58,                             // "bool"
+        S_CHAR = 59,                             // "char"
+        S_VEC = 60,                              // "Vec"
+        S_VECMACROS = 61,                        // "vec!"
+        S_PRINT = 62,                            // "print!"
+        S_PRINTLN = 63,                          // "println!"
+        S_IDENTIFIER = 64,                       // "identifier"
+        S_NUMBER = 65,                           // "integer_number"
+        S_REAL = 66,                             // "real_number"
+        S_SIZE_T = 67,                           // "size_t"
+        S_CHARLITERAL = 68,                      // "char_literal"
+        S_STRLITERAL = 69,                       // "string_literal"
+        S_COMMENTLINE = 70,                      // "comment_line"
+        S_YYACCEPT = 71,                         // $accept
+        S_program = 72,                          // program
+        S_function_declaration_list = 73,        // function_declaration_list
+        S_function_declaration = 74,             // function_declaration
+        S_param_list = 75,                       // param_list
+        S_argument = 76,                         // argument
+        S_statements = 77,                       // statements
+        S_statement = 78,                        // statement
+        S_print_statement = 79,                  // print_statement
+        S_if_statement = 80,                     // if_statement
+        S_let_statement = 81,                    // let_statement
+        S_mut_let_statement = 82,                // mut_let_statement
+        S_const_let_statement = 83,              // const_let_statement
+        S_for_loop = 84,                         // for_loop
+        S_type = 85,                             // type
+        S_primitive_type = 86,                   // primitive_type
+        S_expression = 87,                       // expression
+        S_expression_list = 88                   // expression_list
       };
     };
 
@@ -839,6 +859,7 @@ namespace yy {
       case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
+      case symbol_kind::S_primitive_type: // primitive_type
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -1181,6 +1202,7 @@ switch (yykind)
       case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
+      case symbol_kind::S_primitive_type: // primitive_type
         value.template destroy< std::string > ();
         break;
 
@@ -1517,6 +1539,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_DOT (location_type l)
+      {
+        return symbol_type (token::TOK_DOT, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_DOT (const location_type& l)
+      {
+        return symbol_type (token::TOK_DOT, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_RANGE (location_type l)
       {
         return symbol_type (token::TOK_RANGE, std::move (l));
@@ -1632,6 +1669,51 @@ switch (yykind)
       make_CONTINUE (const location_type& l)
       {
         return symbol_type (token::TOK_CONTINUE, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PUSH (location_type l)
+      {
+        return symbol_type (token::TOK_PUSH, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PUSH (const location_type& l)
+      {
+        return symbol_type (token::TOK_PUSH, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_POP (location_type l)
+      {
+        return symbol_type (token::TOK_POP, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_POP (const location_type& l)
+      {
+        return symbol_type (token::TOK_POP, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LEN (location_type l)
+      {
+        return symbol_type (token::TOK_LEN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LEN (const location_type& l)
+      {
+        return symbol_type (token::TOK_LEN, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -2237,6 +2319,36 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_VEC (location_type l)
+      {
+        return symbol_type (token::TOK_VEC, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_VEC (const location_type& l)
+      {
+        return symbol_type (token::TOK_VEC, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VECMACROS (location_type l)
+      {
+        return symbol_type (token::TOK_VECMACROS, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_VECMACROS (const location_type& l)
+      {
+        return symbol_type (token::TOK_VECMACROS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_PRINT (location_type l)
       {
         return symbol_type (token::TOK_PRINT, std::move (l));
@@ -2399,7 +2511,7 @@ switch (yykind)
 
 
     /// Stored state numbers (used for stacks).
-    typedef unsigned char state_type;
+    typedef short state_type;
 
     /// The arguments of the error message.
     int yy_syntax_error_arguments_ (const context& yyctx,
@@ -2447,15 +2559,15 @@ switch (yykind)
     static const signed char yydefact_[];
 
     // YYPGOTO[NTERM-NUM].
-    static const signed char yypgoto_[];
+    static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const unsigned char yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const unsigned char yytable_[];
+    static const short yytable_[];
 
     static const short yycheck_[];
 
@@ -2699,8 +2811,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1698,     ///< Last index in yytable_.
-      yynnts_ = 17,  ///< Number of nonterminal symbols.
+      yylast_ = 1813,     ///< Last index in yytable_.
+      yynnts_ = 18,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
 
@@ -2752,10 +2864,11 @@ switch (yykind)
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
       45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
-      55,    56,    57,    58,    59,    60,    61,    62,    63,    64
+      55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    66,    67,    68,    69,    70
     };
     // Last valid token kind.
-    const int code_max = 319;
+    const int code_max = 325;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2842,6 +2955,7 @@ switch (yykind)
       case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
+      case symbol_kind::S_primitive_type: // primitive_type
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2944,6 +3058,7 @@ switch (yykind)
       case symbol_kind::S_STRLITERAL: // "string_literal"
       case symbol_kind::S_COMMENTLINE: // "comment_line"
       case symbol_kind::S_type: // type
+      case symbol_kind::S_primitive_type: // primitive_type
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -3013,7 +3128,7 @@ switch (yykind)
 
 
 } // yy
-#line 3017 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
+#line 3132 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/parser.hh"
 
 
 

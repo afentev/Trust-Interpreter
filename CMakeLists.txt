@@ -40,7 +40,7 @@ BISON_TARGET(
         MyParser
         parser.y
         ${ParserExample_SOURCE_DIR}/parser.cpp
-        COMPILE_FLAGS --graph
+        COMPILE_FLAGS "--graph -Wcounterexamples"
         DEFINES_FILE ${ParserExample_SOURCE_DIR}/parser.hh
 )
 
@@ -57,30 +57,29 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++20")
 
 add_executable(
         02-ParserExample
-        help/Expressions/OrExpression.cpp
-        help/Expressions/AndExpression.cpp help/Expressions/EqualExpression.cpp
+        help/Expressions/OrExpression.cpp help/Expressions/AndExpression.cpp help/Expressions/EqualExpression.cpp
         help/Expressions/NotEqualExpression.cpp help/Expressions/GreaterEqExpression.cpp
-        help/Expressions/GreaterExpression.cpp help/Expressions/LessEqExpression.cpp
-        help/Expressions/LessExpression.cpp help/Expressions/NotExpression.cpp
-        help/Expressions/AsExpression.cpp help/Expressions/DivExpression.cpp help/Expressions/ModExpression.cpp
-        help/Expressions/MulExpression.cpp help/Expressions/UnaryMinusExpression.cpp
-        help/Expressions/PlusExpression.cpp help/Expressions/MinusExpression.cpp
-        help/Expressions/IDExpression.cpp
+        help/Expressions/GreaterExpression.cpp help/Expressions/LessEqExpression.cpp help/Expressions/LessExpression.cpp
+        help/Expressions/NotExpression.cpp help/Expressions/AsExpression.cpp help/Expressions/DivExpression.cpp
+        help/Expressions/ModExpression.cpp help/Expressions/MulExpression.cpp help/Expressions/UnaryMinusExpression.cpp
+        help/Expressions/PlusExpression.cpp help/Expressions/MinusExpression.cpp help/Expressions/IDExpression.cpp
+        help/Expressions/FunctionCall.cpp help/Expressions/SubscriptionExpression.cpp
 
-        help/Statements/ExpressionList.cpp
-        help/Statements/PrintStatement.cpp help/Statements/Interruptions/BreakStatement.cpp
-        help/Statements/Interruptions/ContinueStatement.cpp help/Statements/Interruptions/Interruptions.cpp
-        help/Statements/WhileStatement.cpp help/Statements/IfStatement.cpp help/Statements/IfElseStatement.cpp
-        help/Statements/AssignmentStatement.cpp help/Statements/VariableDeclInit.cpp
-        help/Visitor.cpp help/Statements/Statements.cpp help/Program.cpp help/Statements/VariableDeclaration.cpp
-        help/Statements/ForStatement.cpp help/Statements/TypelessVariableDecl.cpp
-        help/Statements/Interruptions/ReturnStatement.cpp
+        help/Statements/ExpressionList.cpp help/Statements/PrintStatement.cpp
+        help/Statements/Interruptions/BreakStatement.cpp help/Statements/Interruptions/ContinueStatement.cpp
+        help/Statements/Interruptions/Interruptions.cpp help/Statements/WhileStatement.cpp
+        help/Statements/IfStatement.cpp help/Statements/IfElseStatement.cpp help/Statements/AssignmentStatement.cpp
+        help/Statements/VariableDeclInit.cpp help/Visitor.cpp help/Statements/Statements.cpp help/Program.cpp
+        help/Statements/VariableDeclaration.cpp help/Statements/ForStatement.cpp
+        help/Statements/TypelessVariableDecl.cpp help/Statements/Interruptions/ReturnStatement.cpp
+        help/Statements/SubscriptionAssignment.cpp
 
         help/Types/Boolean.cpp help/Types/Integer.cpp help/Types/String.cpp help/Types/Float.cpp help/Types/Object.cpp
+        help/Types/Usize.cpp help/Types/Char.cpp
 
         help/InterpretationExceptions/InterpretationExceptions.cpp
 
-        help/Identifiers/IDTable.cpp help/Identifiers/Identifier.cpp
+        help/Identifiers/IDTable.cpp help/Identifiers/Identifier.cpp help/Functions/FunctionsTable.cpp
 
         help/Functions/FunctionDeclarationList.cpp help/Functions/FunctionDeclarationList.h
         help/Functions/FunctionDeclaration.cpp help/Functions/FunctionDeclaration.h help/Functions/ParamList.cpp
@@ -89,6 +88,6 @@ add_executable(
         main.cpp
         driver.cpp
         ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS} help/Expressions/FunctionCall.cpp help/Expressions/FunctionCall.h help/Functions/FunctionsTable.cpp help/Functions/FunctionsTable.h help/Types/Usize.cpp help/Types/Usize.h help/Expressions/SubscriptionExpression.cpp help/Expressions/SubscriptionExpression.h help/Statements/SubscriptionAssignment.cpp help/Statements/SubscriptionAssignment.h help/Types/Char.cpp help/Types/Char.h)
+        ${FLEX_MyScanner_OUTPUTS} help/Types/Vector.cpp help/Types/Vector.h help/Expressions/VectorEnumerationExpression.cpp help/Expressions/VectorEnumerationExpression.h help/Statements/PushStatement.cpp help/Statements/PushStatement.h help/Statements/PopStatement.cpp help/Statements/PopStatement.h help/Expressions/SizeExpression.cpp help/Expressions/SizeExpression.h help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.h)
 
 target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})

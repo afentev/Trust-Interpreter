@@ -23,6 +23,9 @@
 #include "help/Expressions/IDExpression.h"
 #include "help/Expressions/AsExpression.h"
 #include "help/Expressions/SubscriptionExpression.h"
+#include "help/Expressions/VectorEnumerationExpression.h"
+#include "help/Expressions/VectorValueExpression.h"
+#include "help/Expressions/SizeExpression.h"
 
 #include "help/Statements/WhileStatement.h"
 #include "help/Statements/IfStatement.h"
@@ -33,6 +36,8 @@
 #include "help/Statements/TypelessVariableDecl.h"
 #include "help/Statements/AssignmentStatement.h"
 #include "help/Statements/SubscriptionAssignment.h"
+#include "help/Statements/PushStatement.h"
+#include "help/Statements/PopStatement.h"
 #include "help/Statements/ExpressionList.h"
 #include "help/Statements/PrintStatement.h"
 #include "help/Statements/Interruptions/ReturnStatement.h"

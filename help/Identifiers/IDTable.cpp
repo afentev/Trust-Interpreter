@@ -21,28 +21,21 @@ void IDTable::add_identifier (const std::string& name, std::shared_ptr<Object> o
 }
 
 void IDTable::mut_identifier (const std::string& name, std::shared_ptr<Object> value) {
-  auto var_stack = identifiers.find(name);
-  if (var_stack == identifiers.end()) {
-    throw InterpretationException("Use of undeclared variable \"" + name + "\"");
-  } else if (var_stack->second.empty()) {
-    throw InterpretationException("Use of undeclared variable \"" + name + "\". It probably went out of scope");
-  }
-  Identifier& object = var_stack->second.top();
+  Identifier& object = safe_get_identifier(name);
   if (object.get_constantness()) {
-    throw InterpretationException("Attempt of modifying non-mut identifier");
+    throw InterpretationException("Attempt of modifying non-mut identifier \"" + name + "\"");
   }
   object.set_object(std::move(value));
   object.set_initialised(true);
 }
 
+bool IDTable::is_mutable (const std::string& name) {
+  Identifier& object = safe_get_identifier(name);
+  return !object.get_constantness();
+}
+
 std::shared_ptr<Object> IDTable::get_identifier (const std::string& name) {
-  auto var_stack = identifiers.find(name);
-  if (var_stack == identifiers.end()) {
-    throw InterpretationException("Use of undeclared variable \"" + name + "\"");
-  } else if (var_stack->second.empty()) {
-    throw InterpretationException("Use of undeclared variable \"" + name + "\". It probably went out of scope");
-  }
-  Identifier& object = var_stack->second.top();
+  Identifier& object = safe_get_identifier(name);
   if (!object.is_initialised()) {
     throw InterpretationException("Use of uninitialised variable \"" + name + "\"");
   }
@@ -56,6 +49,16 @@ uint16_t IDTable::get_scope () {
 void IDTable::reduce_scope (uint16_t new_scope) {
   current_scope = new_scope;
   unwind_stack();
+}
+
+Identifier& IDTable::safe_get_identifier (const std::string& name) {
+  auto var_stack = identifiers.find(name);
+  if (var_stack == identifiers.end()) {
+    throw InterpretationException("Use of undeclared variable \"" + name + "\"");
+  } else if (var_stack->second.empty()) {
+    throw InterpretationException("Use of undeclared variable \"" + name + "\". It probably went out of scope");
+  }
+  return var_stack->second.top();
 }
 
 void IDTable::unwind_stack () {

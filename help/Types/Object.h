@@ -9,15 +9,18 @@ class String;
 class Float;
 class Usize;
 class Char;
+class Vector;
 
 class Object : public Expression {
  public:
+  Object& operator= (const Object& other) = delete;
   virtual Object& operator= (const Boolean& other);
   virtual Object& operator= (const Integer& other);
   virtual Object& operator= (const Float& other);
   virtual Object& operator= (const String& other);
   virtual Object& operator= (const Usize& other);
   virtual Object& operator= (const Char& other);
+  virtual Object& operator= (const Vector& other);
 
   virtual std::shared_ptr<Object> operator+ (const Object& other);
   virtual std::shared_ptr<Object> operator- (const Object& other);
@@ -49,8 +52,9 @@ class Object : public Expression {
   virtual bool as_predicate ();
   virtual std::string as_string () = 0;
 
-  virtual void subscript_assign (const Object& pos, const Object& rhs);
+  virtual void subscript_assign (const Object& pos, std::shared_ptr<Object> rhs);
 
+  virtual std::shared_ptr<Usize> len () const;
   virtual std::string get_type () const = 0;
   virtual void assign_into (std::shared_ptr<Object> lhs) = 0;
   /* this is needed for dynamic function dispatch. For example:

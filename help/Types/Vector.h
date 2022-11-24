@@ -1,15 +1,15 @@
-#ifndef PARSEREXAMPLE_STRING_H
-#define PARSEREXAMPLE_STRING_H
+#ifndef PARSEREXAMPLE_VECTOR_H
+#define PARSEREXAMPLE_VECTOR_H
 
+#include <vector>
 #include "help/Types/Object.h"
 
-class String : public Object, public std::enable_shared_from_this<String> {
+class Vector: public Object, public std::enable_shared_from_this<Vector> {
  public:
-  explicit String (const std::string& value, bool strip = true);
+  Vector(std::string type, bool is_pure_empty);
+  Vector(std::shared_ptr<Object> value, std::shared_ptr<Object> count);
 
-  String& operator= (const String& other) override;
-
-  std::shared_ptr<Object> operator+ (const Object& other) override;
+  Vector& operator= (const Vector& other) override;
 
   std::shared_ptr<Boolean> operator< (const Object& other) override;
   std::shared_ptr<Boolean> operator<= (const Object& other) override;
@@ -20,7 +20,8 @@ class String : public Object, public std::enable_shared_from_this<String> {
 
   std::shared_ptr<Object> operator[] (const Object& pos) override;
 
-  std::shared_ptr<String> as_String () override;
+  void push(std::shared_ptr<Object> value);
+  void pop();
 
   std::string as_string () override;
 
@@ -30,14 +31,14 @@ class String : public Object, public std::enable_shared_from_this<String> {
   std::string get_type () const override;
   void assign_into (std::shared_ptr<Object> lhs) override;
 
-  static std::string remove_escape_chars (const std::string& string);
-
   void accept (Visitor* visitor) override;
-  ~String () override;
+  ~Vector() override;
 
  private:
-  std::string string;
+  std::vector<std::shared_ptr<Object>> array;
+  std::string type;
+  const bool is_pure_empty;  // whether object was created via empty vec![]
 };
 
 
-#endif //PARSEREXAMPLE_STRING_H
+#endif //PARSEREXAMPLE_VECTOR_H

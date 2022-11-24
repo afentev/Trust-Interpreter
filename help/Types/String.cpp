@@ -1,9 +1,7 @@
 #include "Boolean.h"
-#include "Integer.h"
 #include "String.h"
-#include "Float.h"
-#include "Usize.h"
 #include "Char.h"
+#include "Usize.h"
 
 String::String (const std::string& value, bool strip) : string() {
   if (strip) {
@@ -73,8 +71,8 @@ std::string String::as_string () {
   return string;
 }
 
-void String::subscript_assign (const Object& pos, const Object& rhs) {
-  check_type("[]", operator[](pos).get(), rhs);
+void String::subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) {
+  check_type("[]", operator[](pos).get(), *rhs);
   std::string pos_type = pos.get_type();
   if (pos_type != "usize") {
     throw InterpretationException("Subscription index must be usize type, not " + pos_type);
@@ -83,7 +81,11 @@ void String::subscript_assign (const Object& pos, const Object& rhs) {
   if (index >= string.size()) {
     throw InterpretationException("Subscription index is out of bounds");
   }
-  string[index] = dynamic_cast<const Char&>(rhs).get_char();
+  string[index] = std::dynamic_pointer_cast<Char>(rhs)->get_char();
+}
+
+std::shared_ptr<Usize> String::len () const {
+  return std::make_shared<Usize>(string.size());
 }
 
 std::string String::get_type () const {

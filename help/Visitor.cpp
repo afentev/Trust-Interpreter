@@ -15,7 +15,7 @@ void Visitor::visit (std::shared_ptr<Program> program) {
   std::cerr << "\n" << "Program finished with exit code " << exit_code << std::endl;
 }
 
-void Visitor::visit(std::shared_ptr<FunctionDeclarationList> function_declaration_list) {
+void Visitor::visit (std::shared_ptr<FunctionDeclarationList> function_declaration_list) {
   std::shared_ptr<FunctionDeclaration> main_function = nullptr;
   for (const std::shared_ptr<FunctionDeclaration>& function: function_declaration_list->get_declarations()) {
     if (function->get_name() == "main") {
@@ -39,12 +39,12 @@ void Visitor::visit(std::shared_ptr<FunctionDeclarationList> function_declaratio
   main_function->accept(this);
 }
 
-void Visitor::visit(std::shared_ptr<FunctionDeclaration> function) {
-  function->get_statements()->accept(this);
-  std::shared_ptr<ReturnStatement> return_expression = function->get_return_expression();
-  if (return_expression != nullptr) {
-    return_expression->accept(this);
+void Visitor::visit (std::shared_ptr<FunctionDeclaration> function) {
+  std::shared_ptr<ReturnStatement> return_stat = function->get_return_expression();
+  if (return_stat != nullptr) {
+    function->get_statements()->add_statement(return_stat);
   }
+  function->get_statements()->accept(this);
 }
 
 void Visitor::visit (std::shared_ptr<Expression> expression) {
@@ -75,16 +75,30 @@ void Visitor::visit (std::shared_ptr<Char> expression) {
   object = expression;
 }
 
+void Visitor::visit (std::shared_ptr<Vector> expression) {
+  object = expression;
+}
+
 void Visitor::visit (std::shared_ptr<NotExpression> expression) {
   object = !*evaluate(expression->get_expression());
 }
 
 void Visitor::visit (std::shared_ptr<AndExpression> expression) {
-  object = *evaluate(expression->get_left_exp()) && *evaluate(expression->get_right_exp());
+  std::shared_ptr<Object> left = evaluate(expression->get_left_exp());
+  if (left->as_predicate()) {
+    object = evaluate(expression->get_right_exp());
+  } else {
+    object = left;
+  }
 }
 
 void Visitor::visit (std::shared_ptr<OrExpression> expression) {
-  object = *evaluate(expression->get_left_exp()) || *evaluate(expression->get_right_exp());
+  std::shared_ptr<Object> left = evaluate(expression->get_left_exp());
+  if (!left->as_predicate()) {
+    object = evaluate(expression->get_right_exp());
+  } else {
+    object = left;
+  }
 }
 
 void Visitor::visit (std::shared_ptr<DivExpression> expression) {
@@ -172,6 +186,30 @@ void Visitor::visit (std::shared_ptr<LessExpression> expression) {
 
 void Visitor::visit (std::shared_ptr<IDExpression> expression) {
   object = variables.get_identifier(expression->get_id());
+}
+
+void Visitor::visit (std::shared_ptr<VectorEnumerationExpression> expression) {
+  std::shared_ptr<ExpressionList> values = expression->get_values();
+  if (values->subs_number() == 0) {
+    object = std::make_shared<Vector>("void", true);
+    return;
+  }
+  evaluate(values->get_expression(0));
+  std::shared_ptr<Vector> vec = std::make_shared<Vector>(object->get_type(), false);
+  vec->push(object);
+
+  for (int number = 1; number < values->subs_number(); ++number) {
+    evaluate(values->get_expression(number));
+    vec->push(object);
+  }
+  object = vec;
+}
+
+void Visitor::visit (std::shared_ptr<VectorValueExpression> expression) {
+  std::shared_ptr<Object> value = evaluate(expression->get_value());
+  std::shared_ptr<Object> count = evaluate(expression->get_count());
+
+  object = std::make_shared<Vector>(value, count);
 }
 
 void Visitor::visit (std::shared_ptr<AsExpression> expression) {
@@ -294,11 +332,17 @@ void Visitor::visit (std::shared_ptr<AssignmentStatement> statement) {
 }
 
 void Visitor::visit (std::shared_ptr<SubscriptionAssignment> statement) {
+  std::string identifier = statement->get_lhs();
+
+  if (!variables.is_mutable(identifier)) {
+    throw InterpretationException("Subscription assignment is forbidden for non-mut types");
+  }
+
   evaluate(statement->get_rhs());
   std::shared_ptr<Object> rhs = object;
 
   std::shared_ptr<Object> index = evaluate(statement->get_index());
-  variables.get_identifier(statement->get_lhs())->subscript_assign(*index, *rhs);
+  variables.get_identifier(identifier)->subscript_assign(*index, rhs);
 }
 
 void Visitor::visit (std::shared_ptr<ExpressionList> statement) {}
@@ -328,9 +372,15 @@ void Visitor::visit (std::shared_ptr<PrintStatement> statement) {
   }
 }
 
-void Visitor::visit(std::shared_ptr<SubscriptionExpression> expression) {
+void Visitor::visit (std::shared_ptr<SubscriptionExpression> expression) {
   object = (*evaluate(expression->get_lhs()))[*evaluate(expression->get_index())];
+}
 
+void Visitor::visit (std::shared_ptr<SizeExpression> expression) {
+  std::string identifier = expression->get_lhs();
+  std::shared_ptr<Object> variable = variables.get_identifier(identifier);
+
+  object = variable->len();
 }
 
 void Visitor::visit (std::shared_ptr<BreakStatement> statement) {
@@ -339,6 +389,31 @@ void Visitor::visit (std::shared_ptr<BreakStatement> statement) {
 
 void Visitor::visit (std::shared_ptr<ContinueStatement> statement) {
   throw ContinueInterruption();
+}
+
+void Visitor::visit (std::shared_ptr<PushStatement> statement) {
+  std::string identifier = statement->get_lhs();
+  std::shared_ptr<Object> vector = variables.get_identifier(identifier);
+  evaluate(statement->get_expression());
+  if (!vector->get_type().starts_with("Vec")) {
+    throw InterpretationException("Calling push method allowed only with vec");
+  }
+  if (!variables.is_mutable(identifier)) {
+    throw InterpretationException("Calling push on non-mut vec is forbidden");
+  }
+  std::dynamic_pointer_cast<Vector>(vector)->push(object);
+}
+
+void Visitor::visit (std::shared_ptr<PopStatement> statement) {
+  std::string identifier = statement->get_lhs();
+  std::shared_ptr<Object> vector = variables.get_identifier(identifier);
+  if (!vector->get_type().starts_with("Vec")) {
+    throw InterpretationException("Calling pop method allowed only with vec");
+  }
+  if (!variables.is_mutable(identifier)) {
+    throw InterpretationException("Calling pop on non-mut vec is forbidden");
+  }
+  std::dynamic_pointer_cast<Vector>(vector)->pop();
 }
 
 void Visitor::visit (std::shared_ptr<ReturnStatement> statement) {

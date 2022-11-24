@@ -14,8 +14,8 @@ class Visitor {
  public:
   void visit (std::shared_ptr<Program> program);
 
-  void visit(std::shared_ptr<FunctionDeclarationList> function_declaration_list);
-  void visit(std::shared_ptr<FunctionDeclaration> function);
+  void visit (std::shared_ptr<FunctionDeclarationList> function_declaration_list);
+  void visit (std::shared_ptr<FunctionDeclaration> function);
 
   void visit (std::shared_ptr<Expression> expression);
 
@@ -25,6 +25,7 @@ class Visitor {
   void visit (std::shared_ptr<String> expression);
   void visit (std::shared_ptr<Usize> expression);
   void visit (std::shared_ptr<Char> expression);
+  void visit (std::shared_ptr<Vector> expression);
 
   void visit (std::shared_ptr<NotExpression> expression);
   void visit (std::shared_ptr<AndExpression> expression);
@@ -45,6 +46,9 @@ class Visitor {
   void visit (std::shared_ptr<AsExpression> expression);
   void visit (std::shared_ptr<SubscriptionExpression> expression);
   void visit (std::shared_ptr<FunctionCall> expression);
+  void visit (std::shared_ptr<VectorEnumerationExpression> expression);
+  void visit (std::shared_ptr<VectorValueExpression> expression);
+  void visit (std::shared_ptr<SizeExpression> expression);
 
   void visit (std::shared_ptr<Statements> statement);
   void visit (std::shared_ptr<VariableDeclaration> statement);
@@ -61,10 +65,12 @@ class Visitor {
   void visit (std::shared_ptr<BreakStatement> statement);
   void visit (std::shared_ptr<ContinueStatement> statement);
   void visit (std::shared_ptr<ReturnStatement> statement);
+  void visit (std::shared_ptr<PushStatement> statement);
+  void visit (std::shared_ptr<PopStatement> statement);
 
-  std::shared_ptr<Object> evaluate(std::shared_ptr<Expression> expression);
+  std::shared_ptr<Object> evaluate (std::shared_ptr<Expression> expression);
 
-  void prepare_for_call(Visitor& consumer, std::shared_ptr<FunctionCall> callee);
+  void prepare_for_call (Visitor& consumer, std::shared_ptr<FunctionCall> callee);
 
   ~Visitor ();
 

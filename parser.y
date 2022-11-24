@@ -25,6 +25,7 @@
     class Float;
     class Usize;
     class Char;
+    class Vector;
 
     class BreakStatement;
     class ContinueStatement;
@@ -41,6 +42,8 @@
     class VariableDeclaration;
     class VariableDeclInit;
     class WhileStatement;
+    class PushStatement;
+    class PopStatement;
 
     class AndExpression;
     class AsExpression;
@@ -62,6 +65,9 @@
     class UnaryMinusExpression;
     class SubscriptionExpression;
     class SubscriptionAssignment;
+    class VectorEnumerationExpression;
+    class VectorValueExpression;
+    class SizeExpression;
 
     class FunctionDeclarationList;
     class FunctionDeclaration;
@@ -85,6 +91,7 @@
     #include "help/Types/String.h"
     #include "help/Types/Usize.h"
     #include "help/Types/Char.h"
+    #include "help/Types/Vector.h"
 
     #include "help/Expressions/NotExpression.h"
     #include "help/Expressions/AndExpression.h"
@@ -105,6 +112,9 @@
     #include "help/Expressions/IDExpression.h"
     #include "help/Expressions/AsExpression.h"
     #include "help/Expressions/SubscriptionExpression.h"
+    #include "help/Expressions/VectorEnumerationExpression.h"
+    #include "help/Expressions/VectorValueExpression.h"
+    #include "help/Expressions/SizeExpression.h"
 
     #include "help/Statements/WhileStatement.h"
     #include "help/Statements/IfStatement.h"
@@ -120,6 +130,8 @@
     #include "help/Statements/Interruptions/ContinueStatement.h"
     #include "help/Statements/Interruptions/ReturnStatement.h"
     #include "help/Statements/SubscriptionAssignment.h"
+    #include "help/Statements/PushStatement.h"
+    #include "help/Statements/PopStatement.h"
 
     #include "help/Functions/FunctionDeclarationList.h"
     #include "help/Functions/FunctionDeclaration.h"
@@ -147,6 +159,7 @@
     WHILE "while"
     FOR "for"
     IN "in"
+    DOT "."
     RANGE ".."
     RANGEEQ "..="
     QUOTE "\""
@@ -155,6 +168,9 @@
     RETURN "return"
     BREAK "break"
     CONTINUE "continue"
+    PUSH "push"
+    POP "pop"
+    LEN "len"
     AS "as"
     COLON ":"
     ASSIGN "="
@@ -195,6 +211,8 @@
     USIZE "usize"
     BOOL "bool"
     CHAR "char"
+    VEC "Vec"
+    VECMACROS "vec!"
     PRINT "print!"
     PRINTLN "println!"
 ;
@@ -219,6 +237,7 @@
 %nterm <std::shared_ptr<ExpressionList>> expression_list;
 %nterm <std::shared_ptr<PrintStatement>> print_statement;
 %nterm <std::string> type;
+%nterm <std::string> primitive_type;
 
 %nterm <std::shared_ptr<FunctionDeclarationList>> function_declaration_list;
 %nterm <std::shared_ptr<FunctionDeclaration>> function_declaration;
@@ -234,10 +253,6 @@
 program:
     function_declaration_list {$$ = std::make_shared<Program>($1);
                                driver.program = $$;};
-    //"fn" "main" "(" ")" "{" statements "}" {
-    //                                  $$ = std::make_shared<Program>($6);
-    //                                  driver.program = $$;
-    //                          };
 
 function_declaration_list:
     %empty {$$ = std::make_shared<FunctionDeclarationList>();}
@@ -271,11 +286,13 @@ statement:
     | print_statement {$$ = $1;}
     | let_statement {$$ = $1;}
     | "identifier" "[" expression "]" "=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, $6);}
-    | "identifier" "[" expression "]" "+=" expression ";" {}
-    | "identifier" "[" expression "]" "-=" expression ";" {}
-    | "identifier" "[" expression "]" "*=" expression ";" {}
-    | "identifier" "[" expression "]" "%=" expression ";" {}
-    | "identifier" "[" expression "]" "/=" expression ";" {}
+    | "identifier" "[" expression "]" "+=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, std::make_shared<PlusExpression>(std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3), $6));}
+    | "identifier" "[" expression "]" "-=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, std::make_shared<MinusExpression>(std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3), $6));}
+    | "identifier" "[" expression "]" "*=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, std::make_shared<MulExpression>(std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3), $6));}
+    | "identifier" "[" expression "]" "%=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, std::make_shared<ModExpression>(std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3), $6));}
+    | "identifier" "[" expression "]" "/=" expression ";" {$$ = std::make_shared<SubscriptionAssignment>($1, $3, std::make_shared<DivExpression>(std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3), $6));}
+    | "identifier" "." "push" "(" expression ")" ";" {$$ = std::make_shared<PushStatement>($1, $5);}
+    | "identifier" "." "pop" "(" ")" ";" {$$ = std::make_shared<PopStatement>($1);}
     | "identifier" "=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, $3);}
     | "identifier" "+=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<PlusExpression>(std::make_shared<IDExpression>($1), $3));}
     | "identifier" "-=" expression ";" {$$ = std::make_shared<AssignmentStatement>($1, std::make_shared<MinusExpression>(std::make_shared<IDExpression>($1), $3));}
@@ -290,8 +307,12 @@ statement:
     | "return" expression ";" {$$ = std::make_shared<ReturnStatement>($2);};
 
 print_statement:
-    "print!" "(" "string_literal" expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $4, false);};
-    | "println!" "(" "string_literal" expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $4, true);};
+    "print!" "(" ")" ";" {$$ = std::make_shared<PrintStatement>("\"\"", std::make_shared<ExpressionList>(), false);}
+    | "print!" "(" "string_literal" ")" ";" {$$ = std::make_shared<PrintStatement>($3, std::make_shared<ExpressionList>(), false);}
+    | "print!" "(" "string_literal" "," expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $5, false);}
+    | "println!" "(" ")" ";" {$$ = std::make_shared<PrintStatement>("\"\"", std::make_shared<ExpressionList>(), true);}
+    | "println!" "(" "string_literal" ")" ";" {$$ = std::make_shared<PrintStatement>($3, std::make_shared<ExpressionList>(), true);}
+    | "println!" "(" "string_literal" "," expression_list ")" ";" {$$ = std::make_shared<PrintStatement>($3, $5, true);};
 
 if_statement:
     "if" expression "{" statements "}" {$$ = std::make_shared<IfStatement>($2, $4);}
@@ -323,6 +344,14 @@ type:
     | "f64" {$$ = "f64";}
     | "String" {$$ = "String";}
     | "bool" {$$ = "bool";}
+    | "char" {$$ = "char";}
+    | "Vec" "<" type ">" {$$ = "Vec<" + $3 + ">";};
+
+primitive_type:
+    "i32" {$$ = "i32";}
+    | "usize" {$$ = "usize";}
+    | "f64" {$$ = "f64";}
+    | "bool" {$$ = "bool";}
     | "char" {$$ = "char";};
 
 expression:
@@ -333,12 +362,15 @@ expression:
     | "true" {$$ = std::make_shared<Boolean> (true);}
     | "string_literal" {$$ = std::make_shared<String> ($1);}
     | "char_literal" {$$ = std::make_shared<Char> ($1);}
+    | "vec!" "[" expression_list "]" {$$ = std::make_shared<VectorEnumerationExpression>($3);}
+    | "vec!" "[" expression ";" expression "]" {$$ = std::make_shared<VectorValueExpression>($3, $5);}
     | "identifier" {$$ = std::make_shared<IDExpression> ($1);}
     | "identifier" "(" expression_list ")" {$$ = std::make_shared<FunctionCall>($1, $3);}
     | "!" expression {$$ = std::make_shared<NotExpression> ($2);}
     | "(" expression ")" {$$ = $2;}
     | "-" expression {$$ = std::make_shared<UnaryMinusExpression> ($2);}
     | "identifier" "[" expression "]" {$$ = std::make_shared<SubscriptionExpression>(std::make_shared<IDExpression>($1), $3);}
+    | "identifier" "." "len" "(" ")" {$$ = std::make_shared<SizeExpression>($1);}
     | expression "<" expression {$$ = std::make_shared<LessExpression> ($1, $3);}
     | expression "<=" expression {$$ = std::make_shared<LessEqExpression> ($1, $3);}
     | expression "==" expression {$$ = std::make_shared<EqualExpression> ($1, $3);}
@@ -352,20 +384,21 @@ expression:
     | expression "%" expression {$$ = std::make_shared<ModExpression> ($1, $3);}
     | expression "+" expression {$$ = std::make_shared<PlusExpression> ($1, $3);}
     | expression "-" expression {$$ = std::make_shared<MinusExpression> ($1, $3);}
-    | expression "as" type {$$ = std::make_shared<AsExpression>($1, $3);};
+    | expression "as" primitive_type {$$ = std::make_shared<AsExpression>($1, $3);};
 
 expression_list:
     %empty {$$ = std::make_shared<ExpressionList>();}
     | expression {$$ = std::make_shared<ExpressionList>(); $$->add_expression($1);}
     | expression_list "," expression {$1->add_expression($3); $$ = $1;};
 
-%left "=";
+%left "=" "+=" "-=" "*=" "/=" "%=";
+%left ".." "..=";
 %left "||";
 %left "&&";
-%left "==" "!=";
-%left ">" "<" "<=" ">=";
+%left "==" "!=" ">" "<" "<=" ">=";
 %left "+" "-";
 %left "*" "/" "%";
+%left "as";
 %left "!";
 
 %%

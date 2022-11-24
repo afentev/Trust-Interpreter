@@ -1,4 +1,5 @@
 #include "help/Types/Object.h"
+#include "help/Types/Vector.h"
 
 Object& Object::operator= (const Boolean& other) {
   throw InterpretationException("Can not assign bool to " + get_type());
@@ -22,6 +23,10 @@ Object& Object::operator= (const Usize& other) {
 
 Object& Object::operator= (const Char& other) {
   throw InterpretationException("Can not assign char to " + get_type());
+}
+
+Object& Object::operator= (const Vector& other) {
+  throw InterpretationException("Can not assign " + other.get_type() + " to " + get_type());
 }
 
 std::shared_ptr<Object> Object::operator+ (const Object& other) {
@@ -65,7 +70,7 @@ std::shared_ptr<Object> Object::operator[] (const Object& pos) {
 }
 
 std::shared_ptr<Boolean> Object::as_bool () {
-  throw InterpretationException("Can not cast " + get_type() + " to char");
+  throw InterpretationException("Can not cast " + get_type() + " to bool");
 }
 
 std::shared_ptr<Integer> Object::as_i32 () {
@@ -92,8 +97,12 @@ bool Object::as_predicate () {
   throw InterpretationException("Invalid usage of type " + get_type() + " in condition");
 }
 
-void Object::subscript_assign (const Object& pos, const Object& rhs) {
+void Object::subscript_assign (const Object& pos, std::shared_ptr<Object> rhs) {
   throw InterpretationException("Invalid operand type for operator[]: " + get_type());
+}
+
+std::shared_ptr<Usize> Object::len () const {
+  throw InterpretationException("Calling size method allowed only with vec and String");
 }
 
 void Object::check_type (const std::string& operator_symbol, const Object* expected, const Object& got) {

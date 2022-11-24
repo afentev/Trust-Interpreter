@@ -1,9 +1,7 @@
 #include "Boolean.h"
 #include "Integer.h"
-#include "String.h"
 #include "Float.h"
 #include "Usize.h"
-#include "Char.h"
 
 Integer::Integer (int32_t value) : number(value) {}
 

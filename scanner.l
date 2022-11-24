@@ -95,6 +95,9 @@ comment_line "//".*"\n"
 "return"   return yy::parser::make_RETURN(loc);
 "break"    return yy::parser::make_BREAK(loc);
 "continue" return yy::parser::make_CONTINUE(loc);
+"push"     return yy::parser::make_PUSH(loc);
+"pop"      return yy::parser::make_POP(loc);
+"len"     return yy::parser::make_LEN(loc);
 "as"       return yy::parser::make_AS(loc);
 "fn"       return yy::parser::make_FN(loc);
 "->"       return yy::parser::make_ARROW(loc);
@@ -105,6 +108,8 @@ comment_line "//".*"\n"
 "String"   return yy::parser::make_STRING(loc);
 "bool"     return yy::parser::make_BOOL(loc);
 "char"     return yy::parser::make_CHAR(loc);
+"Vec"      return yy::parser::make_VEC(loc);
+"vec!"     return yy::parser::make_VECMACROS(loc);
 
 "true"     return yy::parser::make_TRUE(loc);
 "false"     return yy::parser::make_FALSE(loc);
@@ -135,6 +140,7 @@ comment_line "//".*"\n"
 "while"    return yy::parser::make_WHILE(loc);
 "for"      return yy::parser::make_FOR(loc);
 "in"       return yy::parser::make_IN(loc);
+"."        return yy::parser::make_DOT(loc);
 ".."       return yy::parser::make_RANGE(loc);
 "..="      return yy::parser::make_RANGEEQ(loc);
 ">"        return yy::parser::make_GREATER(loc);

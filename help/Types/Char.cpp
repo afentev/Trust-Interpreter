@@ -1,9 +1,7 @@
 #include "Boolean.h"
 #include "Integer.h"
-#include "String.h"
-#include "Float.h"
-#include "Usize.h"
 #include "Char.h"
+#include "Usize.h"
 
 Char::Char (unsigned char symbol) : symbol(symbol) {}
 
@@ -19,27 +17,27 @@ std::shared_ptr<Boolean> Char::operator< (const Object& other) {
 
 std::shared_ptr<Boolean> Char::operator<= (const Object& other) {
   check_type("<=", this, other);
-  return std::make_shared<Boolean>(symbol < dynamic_cast<const Char&>(other).symbol);
+  return std::make_shared<Boolean>(symbol <= dynamic_cast<const Char&>(other).symbol);
 }
 
 std::shared_ptr<Boolean> Char::operator== (const Object& other) const {
   check_type("==", this, other);
-  return std::make_shared<Boolean>(symbol < dynamic_cast<const Char&>(other).symbol);
+  return std::make_shared<Boolean>(symbol == dynamic_cast<const Char&>(other).symbol);
 }
 
 std::shared_ptr<Boolean> Char::operator!= (const Object& other) {
   check_type("!=", this, other);
-  return std::make_shared<Boolean>(symbol < dynamic_cast<const Char&>(other).symbol);
+  return std::make_shared<Boolean>(symbol != dynamic_cast<const Char&>(other).symbol);
 }
 
 std::shared_ptr<Boolean> Char::operator>= (const Object& other) {
   check_type(">=", this, other);
-  return std::make_shared<Boolean>(symbol < dynamic_cast<const Char&>(other).symbol);
+  return std::make_shared<Boolean>(symbol >= dynamic_cast<const Char&>(other).symbol);
 }
 
 std::shared_ptr<Boolean> Char::operator> (const Object& other) {
   check_type(">", this, other);
-  return std::make_shared<Boolean>(symbol < dynamic_cast<const Char&>(other).symbol);
+  return std::make_shared<Boolean>(symbol > dynamic_cast<const Char&>(other).symbol);
 }
 
 std::shared_ptr<Integer> Char::as_i32 () {

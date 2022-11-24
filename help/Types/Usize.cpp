@@ -1,9 +1,7 @@
 #include "Boolean.h"
 #include "Integer.h"
-#include "String.h"
 #include "Float.h"
 #include "Usize.h"
-#include "Char.h"
 
 Usize::Usize (size_t value) : number(value) {}
 

@@ -18,6 +18,7 @@ class Integer;
 class Float;
 class Usize;
 class Char;
+class Vector;
 
 class BreakStatement;
 class ContinueStatement;
@@ -35,6 +36,8 @@ class VariableDeclaration;
 class VariableDeclInit;
 class WhileStatement;
 class SubscriptionAssignment;
+class PushStatement;
+class PopStatement;
 
 class AndExpression;
 class AsExpression;
@@ -55,5 +58,8 @@ class OrExpression;
 class PlusExpression;
 class UnaryMinusExpression;
 class SubscriptionExpression;
+class VectorEnumerationExpression;
+class VectorValueExpression;
+class SizeExpression;
 
 #endif //PARSEREXAMPLE_FORWARDDECLARATIONS_H
