@@ -15,6 +15,9 @@ Vector::Vector (std::shared_ptr<Object> value, std::shared_ptr<Object> count) : 
 
 Vector& Vector::operator= (const Vector& other) {
   if (other.is_pure_empty) {
+    if (type == "void") {
+      throw InterpretationException("Vec declaration via type inference can not be done from vec![]");
+    }
     array.clear();
     return *this;
   }

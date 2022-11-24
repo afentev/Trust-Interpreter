@@ -1,0 +1,33 @@
+fn z_function(s: String) -> Vec<usize> {
+    let n = s.len();
+    let mut z = vec![0usize; n];
+    let mut l = 0usize;
+    let mut r = 0usize;
+    for index in 1..n as i32 {
+        let i = index as usize;
+        if i <= r {
+            z[i] = r - i + 1usize;
+            if z[i - l] < z[i] {
+                z[i] = z[i - l];
+            }
+        }
+        while i + z[i] < n && s[z[i]] == s[i + z[i]] {
+            z[i] += 1usize;
+        }
+        if i + z[i] - 1usize > r {
+            l = i;
+            r = i + z[i] - 1usize;
+        }
+    }
+    return z;
+}
+
+fn main() {
+    let string = "abacaba";
+
+    let z = z_function(string);
+    for i in 0..z.len() as i32 {
+        print!("{} ", z[i as usize]);
+    }
+    println!();
+}
