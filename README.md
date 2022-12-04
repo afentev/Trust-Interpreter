@@ -1,1 +1,1 @@
-# Mini-Rust-Interpreter
+Trust-Interpreter
