@@ -31,12 +31,12 @@
 // version 2.2 of Bison.
 
 /**
- ** \file /Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/location.hh
+ ** \file /Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/location.hh
  ** Define the yy::location class.
  */
 
-#ifndef YY_YY_USERS_USER_DOCUMENTS_3_FORMALLANGS_MINI_FORTRAN_INTERPRETER_LOCATION_HH_INCLUDED
-# define YY_YY_USERS_USER_DOCUMENTS_3_FORMALLANGS_MINI_FORTRAN_INTERPRETER_LOCATION_HH_INCLUDED
+#ifndef YY_YY_USERS_USER_DOCUMENTS_3_FORMALLANGS_TRUSTLANGINTERPRETER_LOCATION_HH_INCLUDED
+# define YY_YY_USERS_USER_DOCUMENTS_3_FORMALLANGS_TRUSTLANGINTERPRETER_LOCATION_HH_INCLUDED
 
 # include <iostream>
 # include <string>
@@ -54,7 +54,7 @@
 # endif
 
 namespace yy {
-#line 58 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/location.hh"
+#line 58 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/location.hh"
 
   /// A point in a source file.
   class position
@@ -299,6 +299,6 @@ namespace yy {
   }
 
 } // yy
-#line 303 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/Mini-Fortran-Interpreter/location.hh"
+#line 303 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/location.hh"
 
-#endif // !YY_YY_USERS_USER_DOCUMENTS_3_FORMALLANGS_MINI_FORTRAN_INTERPRETER_LOCATION_HH_INCLUDED
+#endif // !YY_YY_USERS_USER_DOCUMENTS_3_FORMALLANGS_TRUSTLANGINTERPRETER_LOCATION_HH_INCLUDED

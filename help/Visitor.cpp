@@ -36,6 +36,9 @@ void Visitor::visit (std::shared_ptr<FunctionDeclarationList> function_declarati
       functions.add_function(function);
     }
   }
+  if (main_function == nullptr) {
+    throw InterpretationException("Program must contain main function");
+  }
   main_function->accept(this);
 }
 

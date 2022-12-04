@@ -1,6 +1,7 @@
 #ifndef PARSEREXAMPLE_IDENTIFIER_H
 #define PARSEREXAMPLE_IDENTIFIER_H
 
+#include <memory>
 #include <string>
 #include <utility>
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(ParserExample)
+project(TrustLangInterpreter)
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
     execute_process(
@@ -32,22 +32,22 @@ find_package(FLEX REQUIRED)
 
 set(
         HEADERS
-        ${ParserExample_SOURCE_DIR}/driver.hh
-        ${ParserExample_SOURCE_DIR}/parser.hh
+        ${TrustLangInterpreter_SOURCE_DIR}/driver.hh
+        ${TrustLangInterpreter_SOURCE_DIR}/parser.hh
 )
 
 BISON_TARGET(
         MyParser
         parser.y
-        ${ParserExample_SOURCE_DIR}/parser.cpp
+        ${TrustLangInterpreter_SOURCE_DIR}/parser.cpp
         COMPILE_FLAGS "--graph -Wcounterexamples"
-        DEFINES_FILE ${ParserExample_SOURCE_DIR}/parser.hh
+        DEFINES_FILE ${TrustLangInterpreter_SOURCE_DIR}/parser.hh
 )
 
 FLEX_TARGET(
         MyScanner
         scanner.l
-        ${ParserExample_SOURCE_DIR}/scanner.cpp
+        ${TrustLangInterpreter_SOURCE_DIR}/scanner.cpp
 )
 
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
@@ -56,7 +56,7 @@ ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++20")
 
 add_executable(
-        02-ParserExample
+        TrustLangInterpreter
         help/Expressions/OrExpression.cpp help/Expressions/AndExpression.cpp help/Expressions/EqualExpression.cpp
         help/Expressions/NotEqualExpression.cpp help/Expressions/GreaterEqExpression.cpp
         help/Expressions/GreaterExpression.cpp help/Expressions/LessEqExpression.cpp help/Expressions/LessExpression.cpp
@@ -64,6 +64,8 @@ add_executable(
         help/Expressions/ModExpression.cpp help/Expressions/MulExpression.cpp help/Expressions/UnaryMinusExpression.cpp
         help/Expressions/PlusExpression.cpp help/Expressions/MinusExpression.cpp help/Expressions/IDExpression.cpp
         help/Expressions/FunctionCall.cpp help/Expressions/SubscriptionExpression.cpp
+        help/Expressions/VectorEnumerationExpression.cpp help/Expressions/SizeExpression.cpp
+        help/Expressions/VectorValueExpression.cpp
 
         help/Statements/ExpressionList.cpp help/Statements/PrintStatement.cpp
         help/Statements/Interruptions/BreakStatement.cpp help/Statements/Interruptions/ContinueStatement.cpp
@@ -72,22 +74,18 @@ add_executable(
         help/Statements/VariableDeclInit.cpp help/Visitor.cpp help/Statements/Statements.cpp help/Program.cpp
         help/Statements/VariableDeclaration.cpp help/Statements/ForStatement.cpp
         help/Statements/TypelessVariableDecl.cpp help/Statements/Interruptions/ReturnStatement.cpp
-        help/Statements/SubscriptionAssignment.cpp
+        help/Statements/SubscriptionAssignment.cpp help/Statements/PushStatement.cpp
+        help/Statements/PopStatement.cpp help/Statements/ForIterableStatement.cpp
 
         help/Types/Boolean.cpp help/Types/Integer.cpp help/Types/String.cpp help/Types/Float.cpp help/Types/Object.cpp
-        help/Types/Usize.cpp help/Types/Char.cpp
+        help/Types/Usize.cpp help/Types/Char.cpp help/Types/Vector.cpp
 
         help/InterpretationExceptions/InterpretationExceptions.cpp
 
         help/Identifiers/IDTable.cpp help/Identifiers/Identifier.cpp help/Functions/FunctionsTable.cpp
 
-        help/Functions/FunctionDeclarationList.cpp help/Functions/FunctionDeclarationList.h
-        help/Functions/FunctionDeclaration.cpp help/Functions/FunctionDeclaration.h help/Functions/ParamList.cpp
-        help/Functions/ParamList.h
+        help/Functions/FunctionDeclarationList.cpp help/Functions/FunctionDeclaration.cpp help/Functions/ParamList.cpp
 
-        main.cpp
-        driver.cpp
-        ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS} help/Types/Vector.cpp help/Types/Vector.h help/Expressions/VectorEnumerationExpression.cpp help/Expressions/VectorEnumerationExpression.h help/Statements/PushStatement.cpp help/Statements/PushStatement.h help/Statements/PopStatement.cpp help/Statements/PopStatement.h help/Expressions/SizeExpression.cpp help/Expressions/SizeExpression.h help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.cpp help/Expressions/VectorValueExpression.h help/Statements/ForIterableStatement.cpp help/Statements/ForIterableStatement.h)
+        main.cpp driver.cpp ${BISON_MyParser_OUTPUTS} ${FLEX_MyScanner_OUTPUTS})
 
-target_include_directories(02-ParserExample PRIVATE ${ParserExample_SOURCE_DIR})
+target_include_directories(TrustLangInterpreter PRIVATE ${TrustLangInterpreter_SOURCE_DIR})

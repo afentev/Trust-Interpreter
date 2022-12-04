@@ -1,6 +1,7 @@
 #ifndef PARSEREXAMPLE_OBJECT_H
 #define PARSEREXAMPLE_OBJECT_H
 
+#include <vector>
 #include "help/Expressions/Expression.h"
 
 class Boolean;

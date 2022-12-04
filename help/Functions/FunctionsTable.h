@@ -1,6 +1,7 @@
 #ifndef PARSEREXAMPLE_FUNCTIONSTABLE_H
 #define PARSEREXAMPLE_FUNCTIONSTABLE_H
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 

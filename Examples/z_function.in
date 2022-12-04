@@ -3,8 +3,7 @@ fn z_function(s: String) -> Vec<usize> {
     let mut z = vec![0usize; n];
     let mut l = 0usize;
     let mut r = 0usize;
-    for index in 1..n as i32 {
-        let i = index as usize;
+    for i in 1usize..n {
         if i <= r {
             z[i] = r - i + 1usize;
             if z[i - l] < z[i] {
