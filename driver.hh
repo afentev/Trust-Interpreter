@@ -12,13 +12,11 @@ class Driver {
  public:
   Driver ();
 
-  std::map<std::string, int> variables;
   int result;
 
   int parse (const std::string& f);
 
   std::string file;
-
 
   void scan_begin ();
 

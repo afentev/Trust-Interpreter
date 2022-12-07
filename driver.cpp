@@ -42,6 +42,4 @@ void Driver::scan_end () {
 void Driver::execute () {
   Visitor visitor;
   visitor.visit(program);
-
-//    call_visitor.Visit(class_tree.GetNode("main")->GetFunction("main"));
 }

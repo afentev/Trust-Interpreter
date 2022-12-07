@@ -53,9 +53,69 @@
     class Scanner;
     class Driver;
 
-    #include "help/ForwardDeclarations.h"
+    class Program;
+    class Visitor;
+    class Statement;
+    class Expression;
 
-#line 59 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/parser.hh"
+    class Object;
+    class Boolean;
+    class String;
+    class Integer;
+    class Float;
+    class Usize;
+    class Char;
+    class Vector;
+
+    class BreakStatement;
+    class ContinueStatement;
+    class ReturnStatement;
+    class InterpretationException;
+    class AssignmentStatement;
+    class ExpressionList;
+    class ForStatement;
+    class ForIterableStatement;
+    class IfElseStatement;
+    class IfStatement;
+    class PrintStatement;
+    class Statements;
+    class TypelessVariableDecl;
+    class VariableDeclaration;
+    class VariableDeclInit;
+    class WhileStatement;
+    class PushStatement;
+    class PopStatement;
+
+    class AndExpression;
+    class AsExpression;
+    class DivExpression;
+    class EqualExpression;
+    class FunctionCall;
+    class GreaterEqExpression;
+    class GreaterExpression;
+    class IDExpression;
+    class LessEqExpression;
+    class LessExpression;
+    class MinusExpression;
+    class ModExpression;
+    class MulExpression;
+    class NotEqualExpression;
+    class NotExpression;
+    class OrExpression;
+    class PlusExpression;
+    class UnaryMinusExpression;
+    class SubscriptionExpression;
+    class SubscriptionAssignment;
+    class VectorEnumerationExpression;
+    class VectorValueExpression;
+    class SizeExpression;
+
+    class FunctionDeclarationList;
+    class FunctionDeclaration;
+    class ParamList;
+    class Argument;
+
+#line 119 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -195,7 +255,7 @@
 #endif
 
 namespace yy {
-#line 199 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/parser.hh"
+#line 259 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/parser.hh"
 
 
 
@@ -2730,7 +2790,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1963,     ///< Last index in yytable_.
+      yylast_ = 1996,     ///< Last index in yytable_.
       yynnts_ = 18,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
@@ -3041,7 +3101,7 @@ switch (yykind)
 
 
 } // yy
-#line 3045 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/parser.hh"
+#line 3105 "/Users/user/Documents/Физтех/3 семестр/FormalLangs/TrustLangInterpreter/parser.hh"
 
 
 
