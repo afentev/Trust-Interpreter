@@ -1,0 +1,26 @@
+fn linear_eratosthenes(n: usize) {
+    // sieve of eratosthenes with linear time complexity
+    let mut lp = vec![0usize; n + 1usize];
+    let mut pr: Vec<usize> = vec![];
+
+    for i in 2usize..=n {
+        if lp[i] == 0usize {
+            lp[i] = i;
+            pr.push(i);
+        }
+        for j in 0usize..pr.len() {
+            let j = j as usize;
+            if pr[j] > lp[i] || i * pr[j] > n {
+                break;
+            }
+            lp[i * pr[j]] = pr[j];
+        }
+    }
+    for index in 0usize..pr.len() {
+        println!("{}", pr[index as usize]);
+    }
+}
+
+fn main() {
+    linear_eratosthenes(1000usize);
+}
